@@ -19,17 +19,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="vaihe2.KyselyGUIController">
+<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vaihe2.KyselyGUIController">
    <bottom>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Uusi vastaus">
+            <Button mnemonicParsing="false" onAction="#uusiVastaus" text="Uusi vastaus">
                <tooltip>
                   <Tooltip text="Lisää uusi jäsen" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" text="Tallenna">
+            <Button mnemonicParsing="false" onAction="#tallennaVastaus" text="Tallenna">
                <tooltip>
                   <Tooltip text="Tallenna kyselyn vastaus" />
                </tooltip>
@@ -45,21 +44,21 @@
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" text="Avaa" />
-                  <MenuItem mnemonicParsing="false" text="Tallenna" />
-                  <MenuItem mnemonicParsing="false" text="Lopeta" />
+              <MenuItem mnemonicParsing="false" onAction="#avaaKysely" text="Avaa" />
+                  <MenuItem mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
+                  <MenuItem mnemonicParsing="false" onAction="#lopeta" text="Lopeta" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" text="Lisaa uusi vastaus" />
-                  <MenuItem mnemonicParsing="false" text="Poista vastaus" />
+              <MenuItem mnemonicParsing="false" onAction="#lisaaUusiVastaus" text="Lisaa uusi vastaus" />
+                  <MenuItem mnemonicParsing="false" onAction="#poistaVastaus" text="Poista vastaus" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Tietoja">
             <items>
-              <MenuItem mnemonicParsing="false" text="Apua" />
-                  <MenuItem mnemonicParsing="false" text="Tiedot" />
+              <MenuItem mnemonicParsing="false" onAction="#apua" text="Apua" />
+                  <MenuItem mnemonicParsing="false" onAction="#tiedot" text="Tiedot" />
             </items>
           </Menu>
         </menus>

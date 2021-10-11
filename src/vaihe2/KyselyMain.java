@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 
 
 /**
+ * Kysely-ohjelman paaohjelma
  * @author Antiikdev & Doomslizer
  * @version 28.9.2021
  *
