@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="375.0" prefWidth="503.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="375.0" prefWidth="503.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vaihe2.KyselyKaynnistysController">
    <children>
       <BorderPane layoutX="152.0" layoutY="46.0" prefHeight="340.0" prefWidth="200.0">
          <top>
@@ -20,8 +20,8 @@
       </BorderPane>
       <HBox layoutX="319.0" layoutY="127.0" prefHeight="38.0" prefWidth="137.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="51.0" text="OK" />
-            <Button mnemonicParsing="false" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="51.0" text="OK" />
+            <Button mnemonicParsing="false" onAction="#sulje" text="Cancel" />
          </children>
       </HBox>
       <Label layoutX="29.0" layoutY="216.0" text="Syötä kyselyn nimi:">
