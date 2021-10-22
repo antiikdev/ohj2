@@ -4,19 +4,20 @@
 package kysely;
 
 /**
- * @author ilkka
+ * Koehenkilot-luokka
+ * @author Antiik & Doomslizer
  * @version 21 Oct 2021
  *
  */
 public class Koehenkilot {
     
-    private static final int MAX_KOEHENKILOITA = 5;
+    private static final int MAX_KOEHENKILOITA = 8;
     private int lkm = 0;
     private Koehenkilo[] alkiot;
     
     
     /**
-     * Luodaan laustava taulukko
+     * Luodaan alaustava taulukko
      * TODO: taulukon kasvattaminen
      */
     public Koehenkilot() {
@@ -26,10 +27,10 @@ public class Koehenkilot {
     
     /**
      * @param koehenkilo uusi
-     * TODO: TallennaException? Testit?
+     * @throws TallennaException jos tietorakenne on jo taynna
      */
-    public void lisaa(Koehenkilo koehenkilo) {
-        if ( lkm >= alkiot.length) return;
+    public void lisaa(Koehenkilo koehenkilo) throws TallennaException {
+        if ( lkm >= alkiot.length) throw new TallennaException("Liikaa alkioita");
         this.alkiot[this.lkm] = koehenkilo;
         lkm++;
     }
@@ -39,13 +40,15 @@ public class Koehenkilot {
      * Palauttaa viitteen i:teen alkioon
      * @param i alkio
      * @return alkion viite
+     * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella
      */
-    public Koehenkilo anna(int i) {
+    public Koehenkilo anna(int i) throws IndexOutOfBoundsException {
+        if (i < 0 || this.lkm <= i)
+            throw new IndexOutOfBoundsException("Laitoin indeksi: " + i);
         return alkiot[i];
     }
     
-    
-    
+     
     /**
      * Palauttaa kyselyn koehenkiloiden lukumaaran
      * @return koehenkiloiden lukumaara
@@ -67,10 +70,18 @@ public class Koehenkilot {
         p02.rekisteroi();
         p02.taytaEsimTiedot();
         
-        // TODO: try-catch?
-        koehenkilot.lisaa(p01);
-        koehenkilot.lisaa(p02);
-        
+        try {
+            koehenkilot.lisaa(p01);
+            koehenkilot.lisaa(p02);
+            koehenkilot.lisaa(p02);
+            koehenkilot.lisaa(p02);
+            koehenkilot.lisaa(p02);
+            koehenkilot.lisaa(p02);
+            koehenkilot.lisaa(p02);
+        } catch (TallennaException e) {
+            System.err.println(e.getMessage());
+        }
+
         System.out.println("--- Koehenkilot testi ---");
         
         for (int i = 0; i < koehenkilot.getLkm(); i++) {

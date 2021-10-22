@@ -8,12 +8,13 @@ import java.io.PrintStream;
 
 /**
  * Koehenkilo-luokka
- * @author ilkka & topi
+ * @author Antiik & Doomslizer
  * @version 21 Oct 2021
  *
  */
 public class Koehenkilo {
     private int     koehenkiloNro;
+    private String  nimi            = ""; // JOS halutaan nimeta koehenkiloita
     private String  sukupuoli       = ""; // alustetaan tyhjaksi, jotta ei NULL
     private String  ikaryhma        = "";
      
@@ -29,9 +30,22 @@ public class Koehenkilo {
     
     
     /**
+     * Arvotaan satunnainen kokoknaisluku valille:
+     * @param ala arvonnan alaraja
+     * @param yla arvonnan ylaraja
+     * @return satunnainen luku ala ja yla valilta
+     */
+    public static int rand(int ala, int yla) {
+        double n = (yla-ala)*Math.random() + ala;
+        return (int)Math.round(n);
+    }
+    
+    
+    /**
      * Taytetaan esimerkkitiedot
      */
     public void taytaEsimTiedot() {
+        nimi = "k" + rand(100, 999);
         sukupuoli = "f";
         ikaryhma = "21-28";
     }
@@ -44,6 +58,7 @@ public class Koehenkilo {
      */
     public void tulosta(PrintStream out) {
         out.println("Koehenkilonumero " + koehenkiloNro);
+        out.println("Nimi " + nimi);
         out.println("Sukupuoli " + sukupuoli);
         out.println("Ikaryhma " + ikaryhma);
     }
@@ -90,6 +105,15 @@ public class Koehenkilo {
     public int getKoehenkiloNro() {
         return koehenkiloNro;
     }
+    
+    
+    /**
+     * Palauttaa koehenkilon nimen
+     * @return koehenkilon nimi
+     */
+    public String getNimi() {
+        return nimi;
+    }
 
     
     /**
@@ -99,15 +123,15 @@ public class Koehenkilo {
         Koehenkilo p01 = new Koehenkilo();
         Koehenkilo p02 = new Koehenkilo();
         
-        // p01.rekisteroi();
-        // p02.rekisteroi();
+        p01.rekisteroi();
+        p02.rekisteroi();
         
         p01.tulosta(System.out);
-        // p01.taytaEsimTiedot();
+        p01.taytaEsimTiedot();
         p01.tulosta(System.out);
         
         p02.tulosta(System.out);
-        // p02.taytaEsimTiedot();
+        p02.taytaEsimTiedot();
         p02.tulosta(System.out);
     }
 

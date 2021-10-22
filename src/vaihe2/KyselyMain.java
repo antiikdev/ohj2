@@ -2,15 +2,16 @@ package vaihe2;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import kysely.Kysely;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
 
 /**
- * Kysely-ohjelman paaohjelma
+ * Paaohjelma Kysely-ohjelman kaynnistamiseksi 
  * @author Antiikdev & Doomslizer
- * @version 28.9.2021
+ * @version 28.9.2021; 22.10.2021
  *
  */
 public class KyselyMain extends Application {
@@ -19,19 +20,27 @@ public class KyselyMain extends Application {
         try {
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("KyselyGUIView.fxml"));
             final Pane root = ldr.load();
-            //final KyselyGUIController kyselyCtrl = (KyselyGUIController) ldr.getController();
+            final KyselyGUIController kyselyCtrl = (KyselyGUIController) ldr.getController();
+            
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("kysely.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("kysely");
+            primaryStage.setTitle("kysely");   
+            
+            // Osoitetaan uusi kysely...
+            Kysely kysely = new Kysely();
+            kyselyCtrl.setKysely(kysely);
+            
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
+    
     /**
-     * @param args Ei käytössä
+     * Kaynnistetaan kayttoliittyma
+     * @param args komentorivin parametrit
      */
     public static void main(String[] args) {
         launch(args);
