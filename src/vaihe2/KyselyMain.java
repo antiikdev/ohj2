@@ -25,7 +25,7 @@ public class KyselyMain extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("kysely.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("kysely");   
+            primaryStage.setTitle("kysely");
             
             // Osoitetaan uusi kysely...
             Kysely kysely = new Kysely();

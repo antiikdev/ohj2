@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
@@ -23,13 +24,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import kysely.Koehenkilo;
 import kysely.Kysely;
+import kysely.Kysymys;
 import kysely.TallennaException;
 
 /**
  * Luokka kyselyn käyttöliittymän tapahtumien kontrolloimiseksi
  * @author Antiikdev & Doomslizer
- * @created 28.9.2021
- * @version 11.10.2021
+ * @version 28.9.2021 - ensimmainen GUI-versio
+ * @version 11.10.2021 - nappainten toimimattomuus ilmoitukset lisatty
+ * @version 3.11.2021 - kysymykset lisatty
  *
  */
 public class KyselyGUIController implements Initializable {
@@ -49,9 +52,9 @@ public class KyselyGUIController implements Initializable {
     }
     
     
-// ==========================================
-    // MENUBAR ITEMIT: Tiedosto
+// ================== TOIMINNOT ========================
     
+    // -------- MENUBAR ITEMIT: Tiedosto -------
     @FXML void avaaKysely() {
         ModalController.showModal(KyselyGUIController.class.getResource("KyselyKaynnistysView.fxml"), "Kysely", null, "");
     }
@@ -64,16 +67,16 @@ public class KyselyGUIController implements Initializable {
         Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
-    // MENUBAR ITEMIT: Muokkaa
-    @FXML void lisaaUusiVastaus() {
+    // ---------- MENUBAR ITEMIT: Muokkaa ----------
+    @FXML void lisaaUusi() {
         Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
-    @FXML void poistaVastaus() {
+    @FXML void poistaTama() {
         Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
-    // MENUBAR ITEMIT: Muokkaa
+    // ---------- MENUBAR ITEMIT: Tietoja ---------- 
     @FXML void apua() {
         Dialogs.showMessageDialog("Apua ei ole saatavilla!");
     }
@@ -82,24 +85,33 @@ public class KyselyGUIController implements Initializable {
         Dialogs.showMessageDialog("Kysely-ohjelma, ver. X, (c) Antiikdev & Doomslizer, 2021");
     }
     
-    // VASTAUSTEN KASITTELY
-    @FXML void uusiVastaus() {
+    
+    // -------------------------------------------------------
+    // Koehenkiloiden, kysymysten ja vastausten lisaaminen (HT5)
+    // -------------------------------------------------------
+    @FXML void uusiKoehenkilo() {
         // Dialogs.showMessageDialog("Uuden vastauksen lisäys ei vielä toimi!");
-        lisaaUusiVastausKyselyyn();
+        lisaaUusiKoehenkiloKyselyyn();
     }
     
-    @FXML void tallennaVastaus() {
+    @FXML void tallennaTama() {
         Dialogs.showMessageDialog("Vastauksen tallennus ei vielä toimi!");
     }
     
+    @FXML void uusiKysymys() {
+        lisaaUusiKysymys();
+    }
     
-// ===============================================
+    
+    
+// =============================================================
 // TASTA ETEENPAIN KAYTTOLIITTYMAAN SUORAAN LIITTYVAA KOODIA
+// =============================================================
     
     // Esitellaan kysely-attribuutti
     private Kysely kysely;
-    
-    private TextArea areaKoehenkilo = new TextArea(); // Poistetaan lopuksi
+    private Koehenkilo koehenkiloKohdalla;
+    private TextArea areaKoehenkilo = new TextArea(); // Poistetaan lopuksi tama tekstialue
     
     
     /**
@@ -119,14 +131,28 @@ public class KyselyGUIController implements Initializable {
      * Naytetaan koehenkilo
      */
     private void naytaKoehenkilo() {
-        Koehenkilo koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
+        koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
         
         if (koehenkiloKohdalla == null) return;
         
         areaKoehenkilo.setText("");
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKoehenkilo)) {
-                koehenkiloKohdalla.tulosta(os);
+                tulosta(os, koehenkiloKohdalla);
         }
+    }
+    
+    
+    /*
+     * Naytetaan koehenkilo ja kysymykset
+     */
+    private void tulosta(PrintStream os, final Koehenkilo koehenkilo) {
+        os.println("----------------------");
+        koehenkilo.tulosta(os);
+        List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
+        for (Kysymys kys: kysymykset)
+            kys.tulosta(os);
+        os.println("----------------------");
+        
     }
     
     
@@ -146,7 +172,7 @@ public class KyselyGUIController implements Initializable {
     /*
      * Lisaa kyselyyn uuden vastauksen
      */
-    private void lisaaUusiVastausKyselyyn() {
+    private void lisaaUusiKoehenkiloKyselyyn() {
         Koehenkilo koehenkilo = new Koehenkilo();
         koehenkilo.rekisteroi();
         koehenkilo.taytaEsimTiedot(); // TODO: Korvattava dialogilla
@@ -158,6 +184,20 @@ public class KyselyGUIController implements Initializable {
         }
         hae(koehenkilo.getKoehenkiloNro());
     }
+    
+
+    /** 
+     * Lisaa uuden kysymyksen koehenkilolle
+     */ 
+    public void lisaaUusiKysymys() { 
+        if ( koehenkiloKohdalla == null ) return;
+        Kysymys kys = new Kysymys();
+        kys.rekisteroi();
+        kys.taytaEsimKysymysTiedot(koehenkiloKohdalla.getKoehenkiloNro());
+        kysely.lisaa(kys);
+        hae(koehenkiloKohdalla.getKoehenkiloNro());
+    } 
+
     
     
     /**

@@ -23,16 +23,28 @@
    <bottom>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#uusiVastaus" text="Uusi vastaus">
+            <Button mnemonicParsing="false" onAction="#uusiKoehenkilo" text="Lisaa koehenkilo">
                <tooltip>
                   <Tooltip text="Lisää uusi jäsen" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" onAction="#tallennaVastaus" text="Tallenna">
+            <Button mnemonicParsing="false" onAction="#tallennaTama" text="Tallenna">
                <tooltip>
                   <Tooltip text="Tallenna kyselyn vastaus" />
                </tooltip>
             </Button>
+            <Button mnemonicParsing="false" onAction="#uusiKysymys" text="Lisaa kysymys">
+               <HBox.margin>
+                  <Insets left="40.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Poista kysymys" />
+            <Button mnemonicParsing="false" text="Lisaa vastaus">
+               <HBox.margin>
+                  <Insets left="40.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Poista vastaus" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -51,8 +63,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#lisaaUusiVastaus" text="Lisaa uusi vastaus" />
-                  <MenuItem mnemonicParsing="false" onAction="#poistaVastaus" text="Poista vastaus" />
+              <MenuItem mnemonicParsing="false" onAction="#lisaaUusi" text="Lisaa uusi vastaus" />
+                  <MenuItem mnemonicParsing="false" onAction="#poistaTama" text="Poista vastaus" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Tietoja">
@@ -94,9 +106,9 @@
                         <Insets left="65.0" />
                      </VBox.margin>
                   </MenuButton>
-                  <Label text="Vastaajat">
+                  <Label text="Koehenkilot">
                      <VBox.margin>
-                        <Insets left="70.0" />
+                        <Insets left="65.0" />
                      </VBox.margin>
                   </Label>
                </children>
