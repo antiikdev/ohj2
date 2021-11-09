@@ -26,6 +26,7 @@ import kysely.Koehenkilo;
 import kysely.Kysely;
 import kysely.Kysymys;
 import kysely.TallennaException;
+import kysely.Vastaus;
 
 /**
  * Luokka kyselyn käyttöliittymän tapahtumien kontrolloimiseksi
@@ -102,7 +103,9 @@ public class KyselyGUIController implements Initializable {
         lisaaUusiKysymys();
     }
     
-    
+    @FXML void uusiVastaus() {
+        lisaaUusiVastaus();
+    }
     
 // =============================================================
 // TASTA ETEENPAIN KAYTTOLIITTYMAAN SUORAAN LIITTYVAA KOODIA
@@ -151,6 +154,9 @@ public class KyselyGUIController implements Initializable {
         List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
         for (Kysymys kys: kysymykset)
             kys.tulosta(os);
+        List<Vastaus> vastaukset = kysely.annaVastaukset(koehenkilo);
+        for (Vastaus vas: vastaukset)
+            vas.tulosta(os);
         os.println("----------------------");
         
     }
@@ -198,6 +204,17 @@ public class KyselyGUIController implements Initializable {
         hae(koehenkiloKohdalla.getKoehenkiloNro());
     } 
 
+    /** 
+     * Lisaa uuden vastauksen koehenkilolle
+     */ 
+    public void lisaaUusiVastaus() { 
+        if ( koehenkiloKohdalla == null ) return;
+        Vastaus vas = new Vastaus();
+        vas.rekisteroi();
+        vas.taytaEsimVastausTiedot(koehenkiloKohdalla.getKoehenkiloNro());
+        kysely.lisaa(vas);
+        hae(koehenkiloKohdalla.getKoehenkiloNro());
+    } 
     
     
     /**

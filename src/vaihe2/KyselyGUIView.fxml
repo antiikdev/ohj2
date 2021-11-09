@@ -39,7 +39,7 @@
                </HBox.margin>
             </Button>
             <Button mnemonicParsing="false" text="Poista kysymys" />
-            <Button mnemonicParsing="false" text="Lisaa vastaus">
+            <Button mnemonicParsing="false" onAction="#uusiVastaus" text="Lisaa vastaus">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>

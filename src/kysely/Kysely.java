@@ -15,6 +15,7 @@ import java.util.List;
 public class Kysely {
     private Koehenkilot koehenkilot = new Koehenkilot();
     private final Kysymykset kysymykset = new Kysymykset();
+    private final Vastaukset vastaukset = new Vastaukset();
     
     /**
      * Lisataan koehenkilo
@@ -36,6 +37,14 @@ public class Kysely {
         this.kysymykset.lisaa(kysymys);
     }
     
+    /**
+     * Lisataan vastaus
+     * @param vastaus lisattava vastaus
+     * TODO: testit
+     */
+    public void lisaa(Vastaus vastaus) {
+        this.vastaukset.lisaa(vastaus);
+    }
     
     /**
      * @return koehenkiloiden lukumaaran
@@ -83,6 +92,36 @@ public class Kysely {
      */
     public List<Kysymys> annaKysymykset(Koehenkilo koehenkilo) {
         return kysymykset.annaKysymykset(koehenkilo.getKoehenkiloNro());
+    }
+    
+    /**
+     * Antaa koehenkilon vastaukset 
+     * @param koehenkilo jonka vastauksia haetaan
+     * @return tietorakenne, jossa viitteet loydettyihin vastauksiin
+     * @example
+     * <pre name="test">
+     *  #import java.util.*;
+     *  
+     *  Kysely kysely = new Kysely();
+     *  Koehenkilo k01 = new Koehenkilo(); Koehenkilo k02 = new Koehenkilo();
+     *  Koehenkilo k03 = new Koehenkilo();
+     *  
+     *  k01.rekisteroi(); k02.rekisteroi(); k03.rekisteroi();
+     *  int id1 = k01.getKoehenkiloNro(); int id2 = k02.getKoehenkiloNro();
+     *  
+     *  Vastaus vas1 = new Vastaus(id1); kysely.lisaa(vas1);
+     *  Vastaus vas2 = new Vastaus(id2); kysely.lisaa(vas2);
+     *  
+     *  List<Vastaus> loydetyt;
+     *  loydetyt = kysely.annaVastaukset(k03);
+     *  loydetyt.size() === 0;
+     *  loydetyt = kysely.annaVastaukset(k01);
+     *  loydetyt.size() === 1;
+     *  loydetyt.get(0) == kys1 === true;
+     * </pre>
+     */
+    public List<Vastaus> annaVastaukset(Koehenkilo koehenkilo) {
+        return vastaukset.annaVastaukset(koehenkilo.getKoehenkiloNro());
     }
     
     
