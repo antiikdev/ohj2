@@ -70,12 +70,12 @@ public class Vastaus {
      * @example
      * <pre name="test">
      *   Vastaus v1 = new Vastaus();
-     *   v1.getTunnusNro() === 0;
+     *   v1.getId() === 0;
      *   v1.rekisteroi();
      *   Vastaus v2 = new Vastaus();
      *   v2.rekisteroi();
-     *   int n1 = v1.getTunnusNro();
-     *   int n2 = v2.getTunnusNro();
+     *   int n1 = v1.getId();
+     *   int n2 = v2.getId();
      *   n1 === n2-1;
      * </pre>
      */
@@ -102,6 +102,8 @@ public class Vastaus {
     public int getKoehenkiloNro() {
         return this.koehenkiloNro;
     }
+    
+    
     
 
     /**

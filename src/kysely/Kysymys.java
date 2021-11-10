@@ -74,12 +74,12 @@ public class Kysymys {
      * @example
      * <pre name="test">
      *   Kysymys k1 = new Kysymys();
-     *   k1.getTunnusNro() === 0;
+     *   k1.getId() === 0;
      *   k1.rekisteroi();
      *   Kysymys k2 = new Kysymys();
      *   k2.rekisteroi();
-     *   int n1 = k1.getTunnusNro();
-     *   int n2 = k2.getTunnusNro();
+     *   int n1 = k1.getId();
+     *   int n2 = k2.getId();
      *   n1 === n2-1;
      * </pre>
 
