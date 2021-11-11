@@ -3,7 +3,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
- * Kysymys-luokka
+ * Vastaus-luokka
  * @author Antiik & Doomslizer
  * @version 9 Nov 2021
  *
@@ -13,7 +13,7 @@ public class Vastaus {
     private int koehenkiloNro;
     private String vastaus;
     private String vastausTyyppi;
-    private String vastausVaihtoehdot;
+    private String vastausVaihtoehdot; //Varmaan turha
     
     private static int seuraavaNro = 1;
     

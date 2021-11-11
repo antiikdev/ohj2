@@ -25,7 +25,7 @@ public class Vastaukset {
     
     /**
      * Lisataan vastaus
-     * @param vas lisattava kysymys
+     * @param vas lisattava vastaus
      */
     public void lisaa(Vastaus vas) {
         // Tietorakenteesta loytyy valmiiksi .add-metodi lisaamiseen
@@ -40,18 +40,18 @@ public class Vastaukset {
      * @example
      * <pre name="test">
      *  #import java.util.*;
-     *  Kysymykset kyssarit = new Kysymykset();
-     *  Kysymys kys1 = new Kysymys(1); kyssarit.lisaa(kys1);
-     *  Kysymys kys2 = new Kysymys(2); kyssarit.lisaa(kys2);
-     *  Kysymys kys3 = new Kysymys(1); kyssarit.lisaa(kys3);
-     *  Kysymys kys4 = new Kysymys(2); kyssarit.lisaa(kys4);
+     *  Vastaukset vassarit = new Vastaukset();
+     *  Vastaus vas1 = new Vastaus(1); vassarit.lisaa(vas1);
+     *  Vastaus vas2 = new Vastaus(2); vassarit.lisaa(vas2);
+     *  Vastaus vas3 = new Vastaus(1); vassarit.lisaa(vas3);
+     *  Vastaus vas4 = new Vastaus(2); vassarit.lisaa(vas4);
      *  
-     *  List<Kysymys> loydetyt;
-     *  loydetyt = kyssarit.annaKysymykset(6);
+     *  List<Vastaus> loydetyt;
+     *  loydetyt = vassarit.annaVastaukset(6);
      *  loydetyt.size() === 0;
-     *  loydetyt = kyssarit.annaKysymykset(1);
+     *  loydetyt = vassarit.annaVastaukset(1);
      *  loydetyt.size() === 2;
-     *  loydetyt.get(0) == kys1 === true;
+     *  loydetyt.get(0) == vas1 === true;
      * </pre>
      */
     public List<Vastaus> annaVastaukset(int id) {
@@ -63,7 +63,7 @@ public class Vastaukset {
     
     
     /**
-     * Testi paaohjelma kysymykset-luokalle
+     * Testi paaohjelma vastaukset-luokalle
      * @param args ei kaytossa
      */
     public static void main(String[] args) {
