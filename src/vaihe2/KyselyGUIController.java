@@ -62,6 +62,7 @@ public class KyselyGUIController implements Initializable {
     
     @FXML void tallenna() {
         Dialogs.showMessageDialog("Ei vielä toimi!");
+        // TODO: HT6
     }
     
     @FXML void lopeta() {
@@ -87,9 +88,9 @@ public class KyselyGUIController implements Initializable {
     }
     
     
-    // -------------------------------------------------------
-    // Koehenkiloiden, kysymysten ja vastausten lisaaminen (HT5)
-    // -------------------------------------------------------
+// ----------------------------------------------------------------------------
+// HT5: Koehenkiloiden, kysymysten ja vastausten lisaaminen
+// ----------------------------------------------------------------------------
     @FXML void uusiKoehenkilo() {
         // Dialogs.showMessageDialog("Uuden vastauksen lisäys ei vielä toimi!");
         lisaaUusiKoehenkiloKyselyyn();
@@ -106,6 +107,19 @@ public class KyselyGUIController implements Initializable {
     @FXML void uusiVastaus() {
         lisaaUusiVastaus();
     }
+// ----------------------------------------------------------------------------    
+    
+    
+// ----------------------------------------------------------------------------
+// HT6: Koehenkiloiden, kysymysten ja vastausten lisaaminen
+// ----------------------------------------------------------------------------
+   
+    
+    
+// ----------------------------------------------------------------------------   
+    
+    
+    
     
 // =============================================================
 // TASTA ETEENPAIN KAYTTOLIITTYMAAN SUORAAN LIITTYVAA KOODIA

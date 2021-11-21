@@ -6,6 +6,8 @@ package kysely;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
  * Koehenkilo-luokka
  * @author Antiik & Doomslizer
@@ -114,7 +116,71 @@ public class Koehenkilo {
     public String getNimi() {
         return nimi;
     }
+    
+    
+ // ------------------------- HT6-vaihe -------------------------
+ // -------------------------------------------------------------
+    /**
+     * Asettaa koehenkilolle numeron ja varmistaa etta
+     * seuraava numero on aina suurempi kuin tahan mennessa suurin.
+     * @param nr asetettava koehenkilonumero
+     */
+    private void setKoehenkiloNro(int nr) {
+        koehenkiloNro = nr;
+        if (koehenkiloNro >= seuraavaNro) seuraavaNro = koehenkiloNro + 1; 
+    }
+    
+    
+    /**
+     * Tulostetaan merkkijonona
+     * @example
+     * <pre name="test">
+     *   Koehenkilo koehenkilo = new Koehenkilo();
+     *   koehenkilo.parse("1|k100|f|15-21");
+     *   koehenkilo.toString().startsWith("1|k100|f|15-21") === true;
+     * </pre>  
 
+     */
+    @Override
+    public String toString() {
+        return "" +
+                getKoehenkiloNro() + "|" +
+                nimi + "|" +
+                sukupuoli + "|" +
+                ikaryhma;
+    }
+    
+    
+    /**
+     * Koehenkilon tiedot selvitetaan,
+     * erotellaan |-merkilla merkkijonosta.
+     * Huolehtii, etta seuraavaNro on suurempi kuin tuleva koehenkiloNro
+     * @param rivi merkkijonorivi joka luetaan
+     * @example
+     * <pre name="test">
+     *   Koehenkilo koehenkilo = new Koehenkilo();
+     *   koehenkilo.parse("3|k100|f|15-21");
+     *   koehenkilo.getKoehenkiloNro() === 3;
+     *   koehenkilo.toString().startsWith("3|k100|f|15-21") === true;
+     *
+     *   koehenkilo.rekisteroi();
+     *   int n = koehenkilo.getKoehenkiloNro();
+     *   koehenkilo.parse(""+(n+20));
+     *   koehenkilo.rekisteroi();
+     *   koehenkilo.getKoehenkiloNro() === n+20+1;
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuilder sb = new StringBuilder(rivi);
+        setKoehenkiloNro(Mjonot.erota(sb, '|', getKoehenkiloNro()));
+        nimi = Mjonot.erota(sb, '|', nimi);
+        sukupuoli = Mjonot.erota(sb, '|', sukupuoli);
+        ikaryhma = Mjonot.erota(sb, '|', ikaryhma);
+    }
+    
+// ------------------------- HT6-vaihe -------------------------
+// -------------------------------------------------------------
+    
     
     /**
      * @param args ei kaytossa

@@ -3,6 +3,7 @@
  */
 package kysely;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -123,6 +124,70 @@ public class Kysely {
     public List<Vastaus> annaVastaukset(Koehenkilo koehenkilo) {
         return vastaukset.annaVastaukset(koehenkilo.getKoehenkiloNro());
     }
+    
+    
+
+// -------------------------- HT6-vaihe --------------------------
+// ---------------------------------------------------------------
+    
+    /**
+     * Asettaa tiedostojen perusnimet
+     * @param nimi uusi nimi
+     */
+    public void setTiedosto(String nimi) {
+        File dir = new File(nimi);
+        dir.mkdirs();
+        String hakemistonNimi = "";
+        if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
+        koehenkilot.setTiedostonPerusNimi(hakemistonNimi + "kyselytiedot");
+        // TODO: koehenkilot.setTiedostonPerusNimi(hakemistonNimi + "kysymykset");
+        // TODO: harrastukset
+    }
+
+    
+    /**
+     * @param nimi tiedoston josta luetaan
+     * @throws TallennaException virhe talteen
+     */
+    public void lueTiedostosta(String nimi) throws TallennaException {
+        koehenkilot = new Koehenkilot(); // tyhjennetaan jos olemassa oleva
+        // TODO: kysymykset = new Kysymykset();
+
+        setTiedosto(nimi);
+        koehenkilot.lueTiedostosta();
+        // TODO: kysymykset.lueTiedostosta();
+    }
+    
+    
+    /**
+     * Tallentaa tiedot tiedostoon
+     * Tallenttaa kyselyn tiedot tiedostoon.  
+     * @throws TallennaException jos tallettamisessa ongelmia
+     */
+    public void tallenna() throws TallennaException {
+        String virhe = "";
+        try {
+            koehenkilot.tallenna();
+        } catch ( TallennaException ex ) {
+            virhe = ex.getMessage();
+        }
+        
+        /**
+         * TODO: Kysymykset....
+        try {
+            kysymykset.tallenna();
+        } catch ( TallennaException ex ) {
+            virhe += ex.getMessage();
+        }
+        */
+        
+        if ( !"".equals(virhe) ) throw new TallennaException(virhe);
+        
+    }
+     
+    
+// -------------------------- HT6-vaihe --------------------------
+// ---------------------------------------------------------------  
     
     
     /**
