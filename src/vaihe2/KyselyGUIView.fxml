@@ -23,28 +23,28 @@
    <bottom>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#uusiKoehenkilo" text="Lisaa koehenkilo">
+            <Button mnemonicParsing="false" onAction="#handleUusiKoehenkilo" text="Lisaa koehenkilo">
                <tooltip>
                   <Tooltip text="Lisää uusi jäsen" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" onAction="#tallennaTama" text="Tallenna">
+            <Button mnemonicParsing="false" onAction="#handleTallennaTama" text="Tallenna">
                <tooltip>
                   <Tooltip text="Tallenna kyselyn vastaus" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" onAction="#uusiKysymys" text="Lisaa kysymys">
+            <Button mnemonicParsing="false" onAction="#handleUusiKysymys" text="Lisaa kysymys">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Poista kysymys" />
-            <Button mnemonicParsing="false" onAction="#uusiVastaus" text="Lisaa vastaus">
+            <Button mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista kysymys" />
+            <Button mnemonicParsing="false" onAction="#handleUusiVastaus" text="Lisaa vastaus">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Poista vastaus" />
+            <Button mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista vastaus" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -56,21 +56,21 @@
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#avaaKysely" text="Avaa" />
-                  <MenuItem mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
-                  <MenuItem mnemonicParsing="false" onAction="#lopeta" text="Lopeta" />
+              <MenuItem mnemonicParsing="false" onAction="#handleAvaaKysely" text="Avaa" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#lisaaUusi" text="Lisaa uusi vastaus" />
-                  <MenuItem mnemonicParsing="false" onAction="#poistaTama" text="Poista vastaus" />
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiVastaus" text="Lisaa uusi vastaus" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista vastaus" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Tietoja">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#apua" text="Apua" />
-                  <MenuItem mnemonicParsing="false" onAction="#tiedot" text="Tiedot" />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTiedot" text="Tiedot" />
             </items>
           </Menu>
         </menus>

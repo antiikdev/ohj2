@@ -19,7 +19,7 @@ public class Koehenkilo {
     private String  nimi            = ""; // JOS halutaan nimeta koehenkiloita
     private String  sukupuoli       = ""; // alustetaan tyhjaksi, jotta ei NULL
     private String  ikaryhma        = "";
-     
+    
     private static int seuraavaNro    = 1;
     
     
@@ -59,10 +59,8 @@ public class Koehenkilo {
      * @param out tietovirtaan tulostus
      */
     public void tulosta(PrintStream out) {
-        out.println("Koehenkilonumero " + koehenkiloNro);
-        out.println("Nimi " + nimi);
-        out.println("Sukupuoli " + sukupuoli);
-        out.println("Ikaryhma " + ikaryhma);
+        out.print(koehenkiloNro + "|" + nimi + "|" + sukupuoli + "|" + ikaryhma);
+        out.println();
     }
     
     
@@ -118,6 +116,7 @@ public class Koehenkilo {
     }
     
     
+ // -------------------------------------------------------------
  // ------------------------- HT6-vaihe -------------------------
  // -------------------------------------------------------------
     /**
@@ -178,11 +177,12 @@ public class Koehenkilo {
         ikaryhma = Mjonot.erota(sb, '|', ikaryhma);
     }
     
-// ------------------------- HT6-vaihe -------------------------
+// -------------------------------------------------------------
 // -------------------------------------------------------------
     
     
     /**
+     * Paaohjelma testaukseen
      * @param args ei kaytossa
      */
     public static void main(String[] args) {

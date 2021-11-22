@@ -22,7 +22,7 @@ public class Koehenkilot {
     private static final int MAX_KOEHENKILOITA = 8;
     private int lkm = 0;
     private Koehenkilo[] alkiot;
-    private String tiedostonPerusNimi = "kyselytiedot";
+    private String tiedostonPerusNimi = "";
     
     
     /**
@@ -74,9 +74,10 @@ public class Koehenkilot {
         return lkm;
     }
     
-
- // -------------------------- HT6-vaihe --------------------------
- // ---------------------------------------------------------------
+    
+// ---------------------------------------------------------------
+// -------------------------- HT6-vaihe --------------------------
+// ---------------------------------------------------------------
     
     /**
      * Palauttaa tiedoston nimen, jota käytetään tallennukseen
@@ -111,9 +112,10 @@ public class Koehenkilot {
      */
     public void lueTiedostosta() throws TallennaException {
         // throw new TallennaException("Ei osata viela lukea tiedostoa " + hakemisto);
-        String nimi = "tutkimus/koehenkilot.dat";
+        // String nimi = "tutkimus/koehenkilot.dat";
+        if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "koehenkilot.dat";
         
-        try (Scanner fi = new Scanner(new FileInputStream(new File(nimi)))) {
+        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedostonPerusNimi)))) {
             while ( fi.hasNext() ) {
                 String s = "";
                 s = fi.nextLine();
@@ -122,7 +124,7 @@ public class Koehenkilot {
                 lisaa(koehenkilo);
             }
         } catch ( FileNotFoundException e) {
-            throw new TallennaException("Ei  saa luettua tiedostoa: " + nimi);
+            throw new TallennaException("Ei  saa luettua tiedostoa: " + tiedostonPerusNimi);
         }
     }
     
@@ -137,7 +139,8 @@ public class Koehenkilot {
      * @throws TallennaException poikkeus jos tallennus epäonnistuu
      */
     public void tallenna() throws TallennaException {
-        File ftied = new File("tutkimus/koehenkilot.dat");
+        if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "koehenkilot.dat";
+        File ftied = new File(tiedostonPerusNimi);
         try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
             for (int i = 0; i < getLkm(); i++) {
                 Koehenkilo koehenkilo = anna(i);
@@ -147,11 +150,11 @@ public class Koehenkilot {
             throw new TallennaException("Tiedosto " + ftied.getName() + " ei aukea");
         }
     }
-// -------------------------- HT6-vaihe --------------------------
 // ---------------------------------------------------------------
-    
+// ---------------------------------------------------------------    
     
     /**
+     * Paaohjelma luokan testaamiseen
      * @param args ei kaytossa
      */
     public static void main(String[] args) {
@@ -174,11 +177,11 @@ public class Koehenkilot {
             koehenkilot.lisaa(p01);
             koehenkilot.lisaa(p02);
             
-            System.out.println("--- Koehenkilot testi ---");
+            // System.out.println("--- Koehenkilot testi ---");
             
             for (int i = 0; i < koehenkilot.getLkm(); i++) {
                 Koehenkilo koehenkilo = koehenkilot.anna(i);
-                System.out.println("Koehenkilo indeksi: " + i);
+                // System.out.println("Koehenkilo indeksi: " + i);
                 koehenkilo.tulosta(System.out);
             }
             

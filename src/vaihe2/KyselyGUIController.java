@@ -56,34 +56,34 @@ public class KyselyGUIController implements Initializable {
 // ================== TOIMINNOT ========================
     
     // -------- MENUBAR ITEMIT: Tiedosto -------
-    @FXML void avaaKysely() {
+    @FXML void handleAvaaKysely() {
         ModalController.showModal(KyselyGUIController.class.getResource("KyselyKaynnistysView.fxml"), "Kysely", null, "");
     }
     
-    @FXML void tallenna() {
-        Dialogs.showMessageDialog("Ei vielä toimi!");
-        // TODO: HT6
+    @FXML void handleTallenna() {
+        tallenna();
+        // Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
-    @FXML void lopeta() {
-        Dialogs.showMessageDialog("Ei vielä toimi!");
+    @FXML void handleLopeta() {
+        Dialogs.showMessageDialog("Älä mene njet njet!");
     }
     
     // ---------- MENUBAR ITEMIT: Muokkaa ----------
-    @FXML void lisaaUusi() {
+    @FXML void handleLisaaUusi() {
         Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
-    @FXML void poistaTama() {
+    @FXML void handlePoistaTama() {
         Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
     // ---------- MENUBAR ITEMIT: Tietoja ---------- 
-    @FXML void apua() {
+    @FXML void handleApua() {
         Dialogs.showMessageDialog("Apua ei ole saatavilla!");
     }
     
-    @FXML void tiedot() {
+    @FXML void handleTiedot() {
         Dialogs.showMessageDialog("Kysely-ohjelma, ver. X, (c) Antiikdev & Doomslizer, 2021");
     }
     
@@ -91,45 +91,135 @@ public class KyselyGUIController implements Initializable {
 // ----------------------------------------------------------------------------
 // HT5: Koehenkiloiden, kysymysten ja vastausten lisaaminen
 // ----------------------------------------------------------------------------
-    @FXML void uusiKoehenkilo() {
+    @FXML void handleUusiKoehenkilo() {
         // Dialogs.showMessageDialog("Uuden vastauksen lisäys ei vielä toimi!");
         lisaaUusiKoehenkiloKyselyyn();
     }
     
-    @FXML void tallennaTama() {
-        Dialogs.showMessageDialog("Vastauksen tallennus ei vielä toimi!");
+    @FXML void handleTallennaTama() {
+        tallenna();
+        // Dialogs.showMessageDialog("Vastauksen tallennus ei vielä toimi!");
     }
     
-    @FXML void uusiKysymys() {
+    @FXML void handleUusiKysymys() {
         lisaaUusiKysymys();
     }
     
-    @FXML void uusiVastaus() {
+    @FXML void handleUusiVastaus() {
         lisaaUusiVastaus();
     }
 // ----------------------------------------------------------------------------    
     
+
+// =======================================================================
+//  Tasta eteenpain kayttoliittymaan EI suoraan liittyvaa koodia
+//=======================================================================
     
 // ----------------------------------------------------------------------------
-// HT6: Koehenkiloiden, kysymysten ja vastausten lisaaminen
+// HT6: Koehenkiloiden, kysymysten ja vastausten lisaaminen (tiedostoon luku ja kirjoittaminen)
+//      - sisaltaa muokattua koodia aikaisemmista vaiheista. 
 // ----------------------------------------------------------------------------
-   
     
-    
-// ----------------------------------------------------------------------------   
-    
-    
-    
-    
-// =============================================================
-// TASTA ETEENPAIN KAYTTOLIITTYMAAN SUORAAN LIITTYVAA KOODIA
-// =============================================================
-    
-    // Esitellaan kysely-attribuutti
+    // HT6: Esitellaan "kyselynimi"-attribuutti
+    private String kyselynimi = "";
     private Kysely kysely;
     private Koehenkilo koehenkiloKohdalla;
     private TextArea areaKoehenkilo = new TextArea(); // Poistetaan lopuksi tama tekstialue
+   
+   /**
+    * Alustaa kyselyn lukemalla sen valitun nimisestä tiedostosta
+    * @param nimi tiedosto josta luetaan
+    * @return null jos onnistuu, muuten virhe tekstina
+    */
+    protected String lueTiedosto(String nimi) {
+        // Tassa voisi asettaa kyselynimen, jolle "kyselynimi"-attribuuttikin olisi valmiina:
+        if ( nimi.length() < 0) kyselynimi = "koehenkilot.dat";
+        else kyselynimi = nimi;
+        // setTitle("Kysely - " + kyselynimi);
+        
+        try {
+            kysely.lueTiedostosta(kyselynimi);
+            hae(0);
+            return null;
+        } catch (TallennaException e) {
+            hae(0);
+            String virhe = e.getMessage(); 
+            if ( virhe != null ) Dialogs.showMessageDialog(virhe);
+            return virhe;
+        }
+     }
     
+    
+    /**
+     * Kysytään tiedoston nimi ja luetaan se
+     * @return true jos onnistui, false jos ei
+     */
+    public boolean avaa() {
+        // String uusinimi = KyselyKaynnistysController.kysyNimi(null, kyselynimi);
+        // if (uusinimi == null) return false;
+        lueTiedosto(kyselynimi);
+        return true;
+    }
+
+    
+    /**
+     * Tietojen tallennus
+     * @return null jos onnistuu, muuten virhe tekstinä
+     */
+    private String tallenna() {
+        try {
+            kysely.tallenna();
+            return null;
+        } catch (TallennaException ex) {
+            Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
+            return ex.getMessage();
+        }
+    }
+    
+    
+    /**
+     * 
+     */
+    protected void naytaJasen() {
+        koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
+
+        if (koehenkiloKohdalla == null) {
+            areaKoehenkilo.clear();
+            return;
+        }
+
+        areaKoehenkilo.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKoehenkilo)) {
+            tulosta(os,koehenkiloKohdalla); 
+        }
+    }
+    
+    
+    /*
+     * Naytetaan koehenkilo ja kysymykset
+     */
+    private void tulosta(PrintStream os, final Koehenkilo koehenkilo) {
+        os.println("----------------------");
+        koehenkilo.tulosta(os);
+        os.println("----------------------");
+        
+        /** TODO: HT6 kysymykset
+         *  TODO: HT6 vastaukset
+        try {
+            List<Kysymykset> kysymykset = kysely.annaKysymykset(koehenkilo);
+            for (Kysymys kys:kysymykset) 
+                kys.tulosta(os);     
+        } catch (TallennaException ex) {
+            Dialogs.showMessageDialog("Harrastusten hakemisessa ongelmia! " + ex.getMessage());
+        }  
+        */ 
+    }
+// ----------------------------------------------------------------------------
+    
+
+// ----------------------------------------------------------------------------   
+// HT5 tai sitä aikaisempaa koodia 
+// ----------------------------------------------------------------------------   
     
     /**
      * Muut alustukset ja Gridpanelin tilalle tekstikentta,
@@ -159,23 +249,10 @@ public class KyselyGUIController implements Initializable {
     }
     
     
-    /*
-     * Naytetaan koehenkilo ja kysymykset
+    /**
+     * Haetaan jasenten tiedot listaan
+     * @param knro koehenkilon numero, joka aktivoidaan haun jälkeen
      */
-    private void tulosta(PrintStream os, final Koehenkilo koehenkilo) {
-        os.println("----------------------");
-        koehenkilo.tulosta(os);
-        List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
-        for (Kysymys kys: kysymykset)
-            kys.tulosta(os);
-        List<Vastaus> vastaukset = kysely.annaVastaukset(koehenkilo);
-        for (Vastaus vas: vastaukset)
-            vas.tulosta(os);
-        os.println("----------------------");
-        
-    }
-    
-    
     private void hae (int knro) {
         chooserKoehenkilot.clear();
         
@@ -187,7 +264,6 @@ public class KyselyGUIController implements Initializable {
         }
         chooserKoehenkilot.setSelectedIndex(index); // muutosviesti
     }
-    
     
     /*
      * Lisaa kyselyyn uuden vastauksen
@@ -205,7 +281,6 @@ public class KyselyGUIController implements Initializable {
         hae(koehenkilo.getKoehenkiloNro());
     }
     
-
     /** 
      * Lisaa uuden kysymyksen koehenkilolle
      */ 

@@ -135,11 +135,12 @@ public class Kysely {
      * @param nimi uusi nimi
      */
     public void setTiedosto(String nimi) {
-        File dir = new File(nimi);
-        dir.mkdirs();
-        String hakemistonNimi = "";
-        if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
-        koehenkilot.setTiedostonPerusNimi(hakemistonNimi + "kyselytiedot");
+        // TODO: kansioon tiedoston luonti?
+        // File dir = new File(nimi);
+        // dir.mkdirs();
+        // String hakemistonNimi = "";
+        // if ( !nimi.isEmpty() ) hakemistonNimi = "koehenkilot.dat";
+        koehenkilot.setTiedostonPerusNimi(nimi);
         // TODO: koehenkilot.setTiedostonPerusNimi(hakemistonNimi + "kysymykset");
         // TODO: harrastukset
     }
@@ -184,17 +185,23 @@ public class Kysely {
         if ( !"".equals(virhe) ) throw new TallennaException(virhe);
         
     }
-     
-    
-// -------------------------- HT6-vaihe --------------------------
 // ---------------------------------------------------------------  
     
     
     /**
+     * Paaohjelma testaamiseen
      * @param args ei kaytossa
      */
     public static void main(String[] args) {
         Kysely kysely = new Kysely();
+        
+        // Tiedostosta lukemisen testaus:
+        String tiednimi = "koehenkilot.dat";
+        try {
+            kysely.lueTiedostosta(tiednimi);
+        } catch (TallennaException ex) {
+            System.err.println(ex);
+        }
         
         Koehenkilo p01 = new Koehenkilo();
         Koehenkilo p02 = new Koehenkilo();
@@ -207,11 +214,6 @@ public class Kysely {
         // TallennaException paikkaan
         try {
             kysely.lisaa(p01);
-            kysely.lisaa(p02);
-            kysely.lisaa(p02);
-            kysely.lisaa(p02);
-            kysely.lisaa(p02);
-            kysely.lisaa(p02);
             kysely.lisaa(p02);
         } catch (TallennaException e) {
             System.err.println(e.getMessage());

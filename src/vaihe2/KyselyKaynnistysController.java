@@ -15,14 +15,12 @@ import javafx.fxml.FXML;
 public class KyselyKaynnistysController implements ModalControllerInterface<String>
 {    
     //ok nappi
-    @FXML void ok()
-    {
+    @FXML void ok() {
         Dialogs.showMessageDialog("Ei oo mittää!");
     }
 
     //close nappi
-    @FXML void sulje()
-    {
+    @FXML void sulje() {
         Dialogs.showMessageDialog("Et oo menossa minnekään!");
     }
 

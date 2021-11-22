@@ -1,0 +1,28 @@
+---------------------------------------------------------
+KyselyMain - kaynnistetaan softa
+	kyselyCtrl.lueTiedosto(params.getRaw().get(0));
+		kysely.lueTiedostosta(nimi);
+			setTiedosto(nimi);
+				koehenkilot.setTiedostonPerusNimi(hakemistonNimi + "kyselytiedot");
+			koehenkilot.lueTiedostosta();
+				koehenkilo.parse(s);
+				lisaa(koehenkilo);
+---------------------------------------------------------
+KyselyGUIController – klikataan Lisaa koehenkilö
+    uusiKoehenkilo()
+        lisaaUusiKoehenkiloKyselyyn()
+            Koehenkilo() – parametriton konstruktori
+            Koehenkilo.rekisteroi()
+            Koehenkilo.taytaEsimTiedot()
+            Kysely.lisaa(koehenkilo)
+                Koehenkilot.lisaa(koehenkilo)
+            hae(koehenkilo.getKoehenkiloNro())
+                chooserKoehenkilot.clear()
+                kysely.getKoehenkiloita()
+                    Koehenkilot.getLkm()
+                kysely.annaKoehenkilo()
+                    Koehenkilot.anna(i)
+                Koehenkilo.getKoehenkiloNro()
+                chooserKoehenkilot.add(koehenkilo.getnimi(), koehenk)
+                chooserKoehenkilot.setSelectedIndex(index)		
+---------------------------------------------------------
