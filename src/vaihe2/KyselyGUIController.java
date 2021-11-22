@@ -61,17 +61,22 @@ public class KyselyGUIController implements Initializable {
     }
     
     @FXML void handleTallenna() {
+        // HT6: tallennus
         tallenna();
         // Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
     @FXML void handleLopeta() {
-        Dialogs.showMessageDialog("Älä mene njet njet!");
+        // HT6: Tallennetaan ja lopetetaan
+        tallenna();
+        Platform.exit();
+        // Dialogs.showMessageDialog("Älä mene njet njet!");
     }
     
     // ---------- MENUBAR ITEMIT: Muokkaa ----------
     @FXML void handleLisaaUusi() {
-        Dialogs.showMessageDialog("Ei vielä toimi!");
+        lisaaUusiKoehenkiloKyselyyn();
+        // Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
     @FXML void handlePoistaTama() {
@@ -117,10 +122,10 @@ public class KyselyGUIController implements Initializable {
     
 // ----------------------------------------------------------------------------
 // HT6: Koehenkiloiden, kysymysten ja vastausten lisaaminen (tiedostoon luku ja kirjoittaminen)
-//      - sisaltaa muokattua koodia aikaisemmista vaiheista. 
+//      - sisaltaa myos muokattuja metodeja aikaisemmista tyovaiheista. 
 // ----------------------------------------------------------------------------
     
-    // HT6: Esitellaan "kyselynimi"-attribuutti
+    // HT6: Esitelty alla "kyselynimi"-attribuutti
     private String kyselynimi = "";
     private Kysely kysely;
     private Koehenkilo koehenkiloKohdalla;
@@ -203,17 +208,37 @@ public class KyselyGUIController implements Initializable {
         koehenkilo.tulosta(os);
         os.println("----------------------");
         
-        /** TODO: HT6 kysymykset
-         *  TODO: HT6 vastaukset
+        // TODO: HT6 kysymykset ja vastaukset
         try {
-            List<Kysymykset> kysymykset = kysely.annaKysymykset(koehenkilo);
+            List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
             for (Kysymys kys:kysymykset) 
                 kys.tulosta(os);     
         } catch (TallennaException ex) {
-            Dialogs.showMessageDialog("Harrastusten hakemisessa ongelmia! " + ex.getMessage());
+            Dialogs.showMessageDialog("Kysymysten hakemisessa ongelmia! " + ex.getMessage());
         }  
-        */ 
     }
+    
+    
+    /** 
+     * Lisaa uuden kysymyksen koehenkilolle
+     */ 
+    public void lisaaUusiKysymys() { 
+        if ( koehenkiloKohdalla == null ) return;
+        Kysymys kys = new Kysymys();
+        kys.rekisteroi();
+        kys.taytaEsimKysymysTiedot(koehenkiloKohdalla.getKoehenkiloNro());
+        try {
+            kysely.lisaa(kys);
+        } catch (TallennaException e) {
+            Dialogs.showMessageDialog("Ongelmia lisaamisessa! " + e.getMessage());
+        }
+        hae(koehenkiloKohdalla.getKoehenkiloNro());
+    } 
+    
+    
+    // TODO: lisaaUusiVastaus
+    
+// ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
     
 
@@ -281,17 +306,6 @@ public class KyselyGUIController implements Initializable {
         hae(koehenkilo.getKoehenkiloNro());
     }
     
-    /** 
-     * Lisaa uuden kysymyksen koehenkilolle
-     */ 
-    public void lisaaUusiKysymys() { 
-        if ( koehenkiloKohdalla == null ) return;
-        Kysymys kys = new Kysymys();
-        kys.rekisteroi();
-        kys.taytaEsimKysymysTiedot(koehenkiloKohdalla.getKoehenkiloNro());
-        kysely.lisaa(kys);
-        hae(koehenkiloKohdalla.getKoehenkiloNro());
-    } 
 
     /** 
      * Lisaa uuden vastauksen koehenkilolle

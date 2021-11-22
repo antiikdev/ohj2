@@ -41,8 +41,9 @@ public class Koehenkilot {
      */
     public void lisaa(Koehenkilo koehenkilo) throws TallennaException {
         if ( lkm > alkiot.length ) throw new TallennaException("Liikaa alkioita");
+        // HT6: Kasvatetaan taulukko (+10)
         if ( lkm >= alkiot.length) {
-            Koehenkilo[] uusi = new Koehenkilo[lkm + 10]; // Kasvatetaan +10
+            Koehenkilo[] uusi = new Koehenkilo[lkm + 10]; 
             for (int i = 0; i < lkm; i++) {
                 uusi[i] = this.alkiot[i];
             }
@@ -76,7 +77,7 @@ public class Koehenkilot {
     
     
 // ---------------------------------------------------------------
-// -------------------------- HT6-vaihe --------------------------
+// ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
 // ---------------------------------------------------------------
     
     /**
@@ -133,8 +134,9 @@ public class Koehenkilot {
      * TALLENNETAAN koehenkilot tiedostoon
      * Tiedostomuoto:
      * <pre>
-     * 1|k100|m|15-21|
-     * 2|k101|f|21-28|
+     * id|nimi|sukupuoli|ikaryhma|
+     * 1|k100|  m       |15-21|
+     * 2|k101|  f       |21-28|
      * </pre>
      * @throws TallennaException poikkeus jos tallennus epäonnistuu
      */
@@ -152,6 +154,7 @@ public class Koehenkilot {
     }
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------    
+    
     
     /**
      * Paaohjelma luokan testaamiseen

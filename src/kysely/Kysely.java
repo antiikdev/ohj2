@@ -15,14 +15,13 @@ import java.util.List;
  */
 public class Kysely {
     private Koehenkilot koehenkilot = new Koehenkilot();
-    private final Kysymykset kysymykset = new Kysymykset();
-    private final Vastaukset vastaukset = new Vastaukset();
+    private Kysymykset kysymykset = new Kysymykset();
+    private Vastaukset vastaukset = new Vastaukset();
     
     /**
      * Lisataan koehenkilo
      * @param koehenkilo koehenkilo
      * @throws TallennaException jos lisaysta ei voida tehda
-     *
      */
     public void lisaa(Koehenkilo koehenkilo) throws TallennaException {
         this.koehenkilot.lisaa(koehenkilo);
@@ -32,16 +31,15 @@ public class Kysely {
     /**
      * Lisataan kysymys
      * @param kysymys lisattava kysymys
-     * TODO: testit
+     * @throws TallennaException jos ongelmia
      */
-    public void lisaa(Kysymys kysymys) {
+    public void lisaa(Kysymys kysymys) throws TallennaException {
         this.kysymykset.lisaa(kysymys);
     }
     
     /**
      * Lisataan vastaus
      * @param vastaus lisattava vastaus
-     * TODO: testit
      */
     public void lisaa(Vastaus vastaus) {
         this.vastaukset.lisaa(vastaus);
@@ -126,8 +124,8 @@ public class Kysely {
     }
     
     
-
-// -------------------------- HT6-vaihe --------------------------
+// ---------------------------------------------------------------
+// ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
 // ---------------------------------------------------------------
     
     /**
@@ -141,8 +139,9 @@ public class Kysely {
         // String hakemistonNimi = "";
         // if ( !nimi.isEmpty() ) hakemistonNimi = "koehenkilot.dat";
         koehenkilot.setTiedostonPerusNimi(nimi);
-        // TODO: koehenkilot.setTiedostonPerusNimi(hakemistonNimi + "kysymykset");
-        // TODO: harrastukset
+
+        // TODO: Kysymykset ja vastaukset
+        
     }
 
     
@@ -151,12 +150,15 @@ public class Kysely {
      * @throws TallennaException virhe talteen
      */
     public void lueTiedostosta(String nimi) throws TallennaException {
-        koehenkilot = new Koehenkilot(); // tyhjennetaan jos olemassa oleva
-        // TODO: kysymykset = new Kysymykset();
+        // tyhjennetaan jos olemassa oleva
+        koehenkilot = new Koehenkilot(); 
+        kysymykset = new Kysymykset();
+        // TODO: vastaukset
 
         setTiedosto(nimi);
         koehenkilot.lueTiedostosta();
-        // TODO: kysymykset.lueTiedostosta();
+        kysymykset.lueTiedostosta();
+        // TODO: vastaukset
     }
     
     
@@ -166,26 +168,32 @@ public class Kysely {
      * @throws TallennaException jos tallettamisessa ongelmia
      */
     public void tallenna() throws TallennaException {
+        // HT6: tallennetaan kaikki tietueet ja
+        // otetaan kaikista talteen virheet jos niita loytyy
         String virhe = "";
+        
+        // Koehenkilot tallennus
         try {
             koehenkilot.tallenna();
         } catch ( TallennaException ex ) {
             virhe = ex.getMessage();
         }
         
-        /**
-         * TODO: Kysymykset....
+        // Kysymykset tallennus
         try {
             kysymykset.tallenna();
         } catch ( TallennaException ex ) {
             virhe += ex.getMessage();
         }
-        */
+        
+        // TODO: Vastaukset tallennus
+        
         
         if ( !"".equals(virhe) ) throw new TallennaException(virhe);
         
     }
 // ---------------------------------------------------------------  
+// ---------------------------------------------------------------    
     
     
     /**
@@ -210,8 +218,7 @@ public class Kysely {
         p02.rekisteroi();
         p02.taytaEsimTiedot();
         
-        // Virheiden kasittely, sailotaan eli tallennetaan
-        // TallennaException paikkaan
+        // Virheiden kasittely, sailotaan eli tallennetaan: TallennaException
         try {
             kysely.lisaa(p01);
             kysely.lisaa(p02);

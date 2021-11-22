@@ -3,9 +3,16 @@
  */
 package kysely;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Kysymykset-luokka
@@ -14,6 +21,10 @@ import java.util.List;
  *
  */
 public class Kysymykset {
+    
+    private String tiedostonPerusNimi = "";
+    // private boolean muutettu = false;
+    
     // Tietorakenteiden perintahierrarkiasta ylimmaisen Collection > Iterable
     private Collection<Kysymys> alkiot = new ArrayList<Kysymys>();
     
@@ -33,12 +44,13 @@ public class Kysymykset {
     public void lisaa(Kysymys kys) {
         // Tietorakenteesta loytyy valmiiksi .add-metodi lisaamiseen
         alkiot.add(kys);
+        // muutettu = true;
     }
     
     
     /**
      * Etsitaan koehenkilon kysymykset
-     * @param id koehenkilon keta etsitaan
+     * @param koehenkiloN jolla haetaan
      * @return loydetyista lista
      * @example
      * <pre name="test">
@@ -57,12 +69,92 @@ public class Kysymykset {
      *  loydetyt.get(0) == kys1 === true;
      * </pre>
      */
-    public List<Kysymys> annaKysymykset(int id) {
+    public List<Kysymys> annaKysymykset(int koehenkiloN) {
         ArrayList<Kysymys> loydetyt = new ArrayList<Kysymys>();
-        for (Kysymys kys: alkiot) // Toimii iteraattorin ansiosta
-            if (kys.getId() == id) loydetyt.add(kys);
+        for (Kysymys kys : alkiot)
+            if ( kys.getKoehenkiloNro() == koehenkiloN ) loydetyt.add(kys);
         return loydetyt;
     }
+    
+    
+// ---------------------------------------------------------------
+// ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
+// ---------------------------------------------------------------
+    
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+    
+    
+    /**
+     * Asettaa tiedoston perusnimen ilan tarkenninta
+     * @param nimi tallennustiedoston perusnimi
+     */
+    public void setTiedostonPerusNimi(String nimi) {
+        tiedostonPerusNimi = nimi;
+    }
+
+    
+    /**
+     * Lukee koehenkilot tiedostosta
+     * @throws TallennaException jos lukeminen epaonnistuu
+     * TODO: HT6 TESTit
+     */
+    public void lueTiedostosta() throws TallennaException {
+        // throw new TallennaException("Ei osata viela lukea tiedostoa " + hakemisto);
+        // String nimi = "tutkimus/kysymykset.dat";
+        if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "kysymykset.dat";
+        try (Scanner fi = new Scanner(new FileInputStream(new File(tiedostonPerusNimi)))) {
+            
+            String rivi = "";
+            while ( fi.hasNext() ) {
+                rivi = rivi.trim();
+                rivi = fi.nextLine();
+                Kysymys kys = new Kysymys();
+                kys.parse(rivi);
+                lisaa(kys);
+            }
+            // muutettu = false;
+            
+        } catch ( FileNotFoundException e) {
+            throw new TallennaException("Ei  saa luettua tiedostoa: " + tiedostonPerusNimi);
+        }
+    }
+    
+    
+    /**
+     * TALLENNETAAN koehenkilot tiedostoon
+     * Tiedostomuoto:
+     * <pre>
+     * id| koehenkiloNro| kysymys                   |kysymysTyyppi|vastausVaihtoehdot|
+     * 1|k000|Mika seuraavista on kissa?|monivalinta|a) kissa, b) tiikeri|
+     * 2|k001|Kuinka paljon pidat kissoista?|likert|0: en pida, 5: paljon|
+     * </pre>
+     * @throws TallennaException poikkeus jos tallennus epäonnistuu
+     */
+    public void tallenna() throws TallennaException {
+        // if ( !muutettu ) return;
+        
+        if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "kysymykset.dat";
+        File ftied = new File(tiedostonPerusNimi);
+        // TODO HT6: jos ehtii backup-tiedostojen tekemisen (esim. harrastukset.java)
+        
+        // HT6 tallentaminen:
+        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
+            for (Kysymys kys : this.alkiot) {
+                fo.println(kys.toString());
+            }
+        } catch (FileNotFoundException ex) {
+            throw new TallennaException("Tiedosto " + ftied.getName() + " ei aukea");
+        }
+        // muutettu = false;
+    }
+// ---------------------------------------------------------------
+// ---------------------------------------------------------------        
     
     
     /**
@@ -72,27 +164,43 @@ public class Kysymykset {
     public static void main(String[] args) {
         Kysymykset kysymykset = new Kysymykset();
         
+        try {
+            kysymykset.lueTiedostosta();
+        } catch (TallennaException ex) {
+            System.err.println(ex);
+        }
+        
         Kysymys kyssari1 = new Kysymys();
         kyssari1.taytaEsimKysymysTiedot(1);
         Kysymys kyssari2 = new Kysymys();
         kyssari2.taytaEsimKysymysTiedot(2);
         Kysymys kyssari3 = new Kysymys();
-        kyssari3.taytaEsimKysymysTiedot(3);
+        kyssari3.taytaEsimKysymysTiedot(2);
         Kysymys kyssari4 = new Kysymys();
-        kyssari4.taytaEsimKysymysTiedot(4);
+        kyssari4.taytaEsimKysymysTiedot(2);
         
         kysymykset.lisaa(kyssari1);
         kysymykset.lisaa(kyssari2);
         kysymykset.lisaa(kyssari3);
         kysymykset.lisaa(kyssari4);
-        
-        System.out.println("----- Kysymykset testausta -----");
-        
-        List<Kysymys> kysymykset2 = kysymykset.annaKysymykset(4);
-        for (Kysymys kys: kysymykset2) {
-            System.out.print(kys.getKoehenkiloNro() + " ");
-            kys.tulosta(System.out);
-        }
 
+        // System.out.println("----- Kysymykset testausta -----");
+        List<Kysymys> kysymykset2 = kysymykset.annaKysymykset(2);
+
+        try {
+            for (Kysymys kys : kysymykset2) {
+                // System.out.print(kys.getKoehenkiloNro() + " ");
+                kys.tulosta(System.out);
+            }
+        } catch (TallennaException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            kysymykset.tallenna();
+        } catch (TallennaException e) {
+            e.printStackTrace();
+        }
     }
+    
 }

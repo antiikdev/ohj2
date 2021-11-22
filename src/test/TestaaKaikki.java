@@ -17,7 +17,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     kysely.test.KysymyksetTest.class,
     kysely.test.KoehenkiloTest.class,
-    kysely.test.KyselyTest.class,
+    // kysely.test.KyselyTest.class,
     kysely.test.VastauksetTest.class,
     kysely.test.VastausTest.class,
     kysely.test.KysymysTest.class
