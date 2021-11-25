@@ -215,7 +215,14 @@ public class KyselyGUIController implements Initializable {
                 kys.tulosta(os);     
         } catch (TallennaException ex) {
             Dialogs.showMessageDialog("Kysymysten hakemisessa ongelmia! " + ex.getMessage());
-        }  
+        }
+        try {
+            List<Vastaus> vastaukset = kysely.annaVastaukset(koehenkilo);
+            for (Vastaus vas:vastaukset) 
+                vas.tulosta(os);     
+        } catch (TallennaException ex) {
+            Dialogs.showMessageDialog("Vastausten hakemisessa ongelmia! " + ex.getMessage());
+        }
     }
     
     
@@ -237,6 +244,21 @@ public class KyselyGUIController implements Initializable {
     
     
     // TODO: lisaaUusiVastaus
+    /** 
+     * Lisaa uuden vastauksen koehenkilolle
+     */ 
+    public void lisaaUusiVastaus() { 
+        if ( koehenkiloKohdalla == null ) return;
+        Vastaus vas = new Vastaus();
+        vas.rekisteroi();
+        vas.taytaEsimVastausTiedot(koehenkiloKohdalla.getKoehenkiloNro());
+        try {
+            kysely.lisaa(vas);
+        } catch (TallennaException e) {
+            Dialogs.showMessageDialog("Ongelmia lisaamisessa! " + e.getMessage());
+        }
+        hae(koehenkiloKohdalla.getKoehenkiloNro());
+    } 
     
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -307,17 +329,19 @@ public class KyselyGUIController implements Initializable {
     }
     
 
+    
+    //Vanha
     /** 
      * Lisaa uuden vastauksen koehenkilolle
      */ 
-    public void lisaaUusiVastaus() { 
-        if ( koehenkiloKohdalla == null ) return;
-        Vastaus vas = new Vastaus();
-        vas.rekisteroi();
-        vas.taytaEsimVastausTiedot(koehenkiloKohdalla.getKoehenkiloNro());
-        kysely.lisaa(vas);
-        hae(koehenkiloKohdalla.getKoehenkiloNro());
-    } 
+    //public void lisaaUusiVastaus() { 
+        //if ( koehenkiloKohdalla == null ) return;
+        //Vastaus vas = new Vastaus();
+        //vas.rekisteroi();
+        //vas.taytaEsimVastausTiedot(koehenkiloKohdalla.getKoehenkiloNro());
+        //kysely.lisaa(vas);
+        //hae(koehenkiloKohdalla.getKoehenkiloNro());
+    //} 
     
     
     /**

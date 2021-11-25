@@ -40,8 +40,9 @@ public class Kysely {
     /**
      * Lisataan vastaus
      * @param vastaus lisattava vastaus
+     * @throws TallennaException jos ongelmia
      */
-    public void lisaa(Vastaus vastaus) {
+    public void lisaa(Vastaus vastaus) throws TallennaException {
         this.vastaukset.lisaa(vastaus);
     }
     
@@ -154,11 +155,13 @@ public class Kysely {
         koehenkilot = new Koehenkilot(); 
         kysymykset = new Kysymykset();
         // TODO: vastaukset
+        vastaukset = new Vastaukset();
 
         setTiedosto(nimi);
         koehenkilot.lueTiedostosta();
         kysymykset.lueTiedostosta();
         // TODO: vastaukset
+        vastaukset.lueTiedostosta();
     }
     
     
@@ -187,6 +190,11 @@ public class Kysely {
         }
         
         // TODO: Vastaukset tallennus
+        try {
+            vastaukset.tallenna();
+        } catch ( TallennaException ex ) {
+            virhe += ex.getMessage();
+        }
         
         
         if ( !"".equals(virhe) ) throw new TallennaException(virhe);

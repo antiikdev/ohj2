@@ -2,6 +2,8 @@ package kysely;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
  * Vastaus-luokka
  * @author Antiik & Doomslizer
@@ -25,41 +27,45 @@ public class Vastaus {
         // ei tarvi alustaa
     }
     
+
     /**
-     * Alustetaan id-numero vastaukselle
-     * @param id vastauksen numero
+     * Alustetaan tietyn koehenkilon vastaus
+     * @param koehenkiloN vastauksen viitenumero
      */
-    public Vastaus(int id) {
-        this.id = id;
+    public Vastaus(int koehenkiloN) {
+        this.koehenkiloNro = koehenkiloN;
     }
     
     
     /**
      * ESIMERKKI taytto vastaustiedoille  
-     * @param idNumero henkilon id-numero, joka vastannut vastauksen
+     * @param koehenkiloN henkilon numero, joka vastannut vastauksen
      */
-    public void taytaEsimVastausTiedot(int idNumero) {
-        this.id = idNumero;
+    public void taytaEsimVastausTiedot(int koehenkiloN) {
+        this.koehenkiloNro = koehenkiloN;
         this.vastaus = "A) Kissa";
         this.vastausTyyppi = "Monivalinta";
-        this.vastausVaihtoehdot = "A) Kissa, B) Tiikeri";
+        this.vastausVaihtoehdot = "A) Kissa, B) Tiikeri"; //tätä tietoa ei varmaan tarvii
     }
     
     
     /**
      * Tulostetaan vastauksen tiedot
      * @param out tietovirta johon tulostetaan
+     * @throws TallennaException poikkeustilanteessa
      */
-    public void tulosta(PrintStream out) {
-        out.println("Vastaus: " + vastaus + " " + vastausTyyppi + " Vaihtoehdot: " + vastausVaihtoehdot);
+    public void tulosta(PrintStream out) throws TallennaException {
+        out.println(id + "|" + koehenkiloNro + "|" + vastaus + "|"
+                        + vastausTyyppi + "|" + vastausVaihtoehdot); // -vastausvaihtoehdot
     }
     
     
     /**
      * Tulostetaan koehenkilon tiedot
      * @param os tulostettava tietovirta
+     * @throws TallennaException poikkeustilanteessa
      */
-    public void tulosta(OutputStream os) {
+    public void tulosta(OutputStream os) throws TallennaException {
         tulosta(new PrintStream(os));
     }
     
@@ -103,7 +109,55 @@ public class Vastaus {
         return this.koehenkiloNro;
     }
     
+    // HT6
+    /**
+     * Asettaa id numeron
+     * @param nro asetettava id
+     */
+    private void setId(int nro) {
+        id = nro; 
+    }
     
+    
+    /**
+     * Asettaa koehenkilolle numeron
+     * @param nro asetettava numero
+     */
+    private void setKoehenkiloNro(int nro) {
+        koehenkiloNro = nro; 
+    }
+    
+    
+    /**
+     * Tulostetaan merkkijonona
+     * TODO: Testit
+     */
+    @Override
+    public String toString() {
+        return "" +
+                getId() + "|" +
+                getKoehenkiloNro() + "|" +
+                vastaus + "|" +
+                vastausTyyppi + "|" +
+                vastausVaihtoehdot;
+    }
+    
+    
+    /**
+     * Vastauksen tiedot selvitetaan,
+     * erotellaan |-merkilla merkkijonosta.
+     * Huolehtii, etta seuraavaNro on suurempi kuin tuleva id-numero
+     * @param rivi merkkijonorivi joka luetaan
+     * TODO: Testit
+     */
+    public void parse(String rivi) {
+        StringBuilder sb = new StringBuilder(rivi);
+        setId(Mjonot.erota(sb, '|', getId()));
+        setKoehenkiloNro(Mjonot.erota(sb, '|', getKoehenkiloNro()));
+        vastaus = Mjonot.erota(sb, '|', vastaus);
+        vastausTyyppi = Mjonot.erota(sb, '|', vastausTyyppi);
+        vastausVaihtoehdot = Mjonot.erota(sb, '|', vastausVaihtoehdot);
+    }
     
 
     /**
@@ -112,7 +166,14 @@ public class Vastaus {
     public static void main(String[] args) {
         Vastaus vassari = new Vastaus();
         vassari.taytaEsimVastausTiedot(1);
-        vassari.tulosta(System.out);
+        try
+        {
+            vassari.tulosta(System.out);
+        } catch (TallennaException e)
+        {
+            e.printStackTrace();
+        }
+        
     
     }
 }
