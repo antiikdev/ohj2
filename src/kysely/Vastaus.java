@@ -130,7 +130,6 @@ public class Vastaus {
     
     /**
      * Tulostetaan merkkijonona
-     * TODO: Testit
      */
     @Override
     public String toString() {
@@ -148,7 +147,6 @@ public class Vastaus {
      * erotellaan |-merkilla merkkijonosta.
      * Huolehtii, etta seuraavaNro on suurempi kuin tuleva id-numero
      * @param rivi merkkijonorivi joka luetaan
-     * TODO: Testit
      */
     public void parse(String rivi) {
         StringBuilder sb = new StringBuilder(rivi);

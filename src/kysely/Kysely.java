@@ -134,14 +134,14 @@ public class Kysely {
      * @param nimi uusi nimi
      */
     public void setTiedosto(String nimi) {
-        // TODO: kansioon tiedoston luonti?
+        // Vaihtoehto: kansioon tiedoston luonti?
         // File dir = new File(nimi);
         // dir.mkdirs();
         // String hakemistonNimi = "";
         // if ( !nimi.isEmpty() ) hakemistonNimi = "koehenkilot.dat";
         koehenkilot.setTiedostonPerusNimi(nimi);
 
-        // TODO: Kysymykset ja vastaukset
+        // Vaihtoehto: Kysymykset ja vastaukset
         
     }
 
@@ -154,13 +154,11 @@ public class Kysely {
         // tyhjennetaan jos olemassa oleva
         koehenkilot = new Koehenkilot(); 
         kysymykset = new Kysymykset();
-        // TODO: vastaukset
         vastaukset = new Vastaukset();
 
         setTiedosto(nimi);
         koehenkilot.lueTiedostosta();
         kysymykset.lueTiedostosta();
-        // TODO: vastaukset
         vastaukset.lueTiedostosta();
     }
     
@@ -189,7 +187,6 @@ public class Kysely {
             virhe += ex.getMessage();
         }
         
-        // TODO: Vastaukset tallennus
         try {
             vastaukset.tallenna();
         } catch ( TallennaException ex ) {

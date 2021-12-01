@@ -27,7 +27,6 @@ public class Koehenkilot {
     
     /**
      * Luodaan alaustava taulukko
-     * TODO: taulukon kasvattaminen
      */
     public Koehenkilot() {
         alkiot = new Koehenkilo[MAX_KOEHENKILOITA];
@@ -110,6 +109,7 @@ public class Koehenkilot {
     /**
      * Lukee koehenkilot tiedostosta
      * @throws TallennaException jos lukeminen epaonnistuu
+     * TODO: comtestit
      */
     public void lueTiedostosta() throws TallennaException {
         // throw new TallennaException("Ei osata viela lukea tiedostoa " + hakemisto);

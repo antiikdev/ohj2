@@ -92,7 +92,6 @@ public class Vastaukset {
     /**
      * Lukee koehenkilot tiedostosta
      * @throws TallennaException jos lukeminen epaonnistuu
-     * TODO: HT6 TESTit
      */
     public void lueTiedostosta() throws TallennaException {
         // throw new TallennaException("Ei osata viela lukea tiedostoa " + hakemisto);
@@ -130,7 +129,7 @@ public class Vastaukset {
         
         if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "vastaukset.dat";
         File ftied = new File(tiedostonPerusNimi);
-        // TODO HT6: jos ehtii backup-tiedostojen tekemisen (esim. harrastukset.java)
+        // Vaihtoehto (HT6): jos ehtii backup-tiedostojen tekemisen (esim. harrastukset.java)
         
         // HT6 tallentaminen:
         try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
