@@ -144,11 +144,11 @@
               </rowConstraints>
                <children>
                   <Label text="Ikäryhmä" GridPane.rowIndex="4" />
-                  <TextField text="01" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="editNimi"			text="01" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label layoutX="23.0" layoutY="27.0" text="Sukupuoli" GridPane.rowIndex="3" />
                   <Label layoutX="23.0" layoutY="87.0" text="Vastaus #" GridPane.rowIndex="2" />
-                  <TextField text="f" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField text="15-21" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="editSukupuoli"		text="f" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="editIkaryhma"		text="15-21" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Vastaajan tiedot">
                      <padding>
                         <Insets bottom="5.0" />
@@ -167,7 +167,7 @@
          <children>
             <VBox prefWidth="200.0">
                <children>
-                  <StringGrid rivit="Kysymykset&#10;1. Kysymys&#10;2. Kysymys&#10;3. Kysymys&#10;4. Kysymys&#10;5. Kysymys&#10;6. Kysymys&#10;" />
+                  <StringGrid fx:id="tableKysymykset"	rivit="Kysymykset&#10;1. Kysymys&#10;2. Kysymys&#10;3. Kysymys&#10;4. Kysymys&#10;5. Kysymys&#10;6. Kysymys&#10;" />
                </children>
             </VBox>
          </children>

@@ -13,6 +13,7 @@ import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import kysely.Koehenkilo;
 import kysely.Kysely;
+import kysely.Kysymykset;
 import kysely.Kysymys;
 import kysely.TallennaException;
 import kysely.Vastaus;
@@ -40,6 +42,12 @@ public class KyselyGUIController implements Initializable {
     
     @FXML private ListChooser<Koehenkilo> chooserKoehenkilot; 
     @FXML private ScrollPane panelKoehenkilo;
+    
+    @FXML private TextField editNimi;
+    @FXML private TextField editSukupuoli;
+    @FXML private TextField editIkaryhma;
+    
+    @FXML private StringGrid<Kysymys> tableKysymykset;
     
     
     /**
@@ -129,10 +137,10 @@ public class KyselyGUIController implements Initializable {
     private String kyselynimi = "";
     private Kysely kysely;
     private Koehenkilo koehenkiloKohdalla;
-    private TextArea areaKoehenkilo = new TextArea(); // Poistetaan lopuksi tama tekstialue
+    // private TextArea areaKoehenkilo = new TextArea(); //HT6, poistettu HT7
    
    /**
-    * Alustaa kyselyn lukemalla sen valitun nimisestä tiedostosta
+    * Alustaa kyselyn lukemalla sen valitun nimisesta tiedostosta
     * @param nimi tiedosto josta luetaan
     * @return null jos onnistuu, muuten virhe tekstina
     */
@@ -156,7 +164,7 @@ public class KyselyGUIController implements Initializable {
     
     
     /**
-     * Kysytään tiedoston nimi ja luetaan se
+     * Kysytaan tiedoston nimi ja luetaan se
      * @return true jos onnistui, false jos ei
      */
     public boolean avaa() {
@@ -182,28 +190,12 @@ public class KyselyGUIController implements Initializable {
     }
     
     
-    /**
-     * 
-     */
-    protected void naytaJasen() {
-        koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
-
-        if (koehenkiloKohdalla == null) {
-            areaKoehenkilo.clear();
-            return;
-        }
-
-        areaKoehenkilo.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKoehenkilo)) {
-            tulosta(os,koehenkiloKohdalla); 
-        }
-    }
-    
-    
     /*
      * Naytetaan koehenkilo ja kysymykset
+     * TODO: supresswarning asetettu HT7, tarvetta?
      */
-    private void tulosta(PrintStream os, final Koehenkilo koehenkilo) {
+    @SuppressWarnings("unused")
+	private void tulosta(PrintStream os, final Koehenkilo koehenkilo) {
         os.println("----------------------");
         koehenkilo.tulosta(os);
         os.println("----------------------");
@@ -243,7 +235,6 @@ public class KyselyGUIController implements Initializable {
     } 
     
     
-    // TODO: lisaaUusiVastaus
     /** 
      * Lisaa uuden vastauksen koehenkilolle
      */ 
@@ -265,7 +256,8 @@ public class KyselyGUIController implements Initializable {
     
 
 // ----------------------------------------------------------------------------   
-// HT5 tai sitä aikaisempaa koodia 
+// HT5 tai sita aikaisempaa koodia 
+// (HT7 muokattu: naytaKoehenkilo()    
 // ----------------------------------------------------------------------------   
     
     /**
@@ -273,32 +265,66 @@ public class KyselyGUIController implements Initializable {
      * johon koehenkilon tiedot. Myos koehenkilolistan kuuntelijan alustus
      */
     protected void alusta() {
-        panelKoehenkilo.setContent(areaKoehenkilo);
-        areaKoehenkilo.setFont(new Font("Courier New", 12));
+        // panelKoehenkilo.setContent(areaKoehenkilo); // HT6, poistettu HT7
+        // areaKoehenkilo.setFont(new Font("Courier New", 12)); // HT6, poistettu HT7
         panelKoehenkilo.setFitToHeight(true);
         chooserKoehenkilot.clear(); 
         chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
     }
     
     
+    /**
+     * Nayttaa koehenkiloiden kysymykset
+     * @param koehenkilo joka naytetaan
+     */
+    private void naytaKysymykset(Koehenkilo koehenkilo) {
+    	tableKysymykset.clear();
+    	if (koehenkilo == null) return;
+    	
+    	List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
+		if ( kysymykset.size() == 0 ) return;
+		for ( Kysymys kys : kysymykset )
+			naytaKysymys(kys);
+    }
+    
+    /**
+     * Naytetaan Kysymys per koehenkilo
+     * @param kysymys joka naytetaan
+     */
+    private void naytaKysymys(Kysymys kys) {
+    	// TODO: ratkaisun muutos, korjattava
+        String[] rivi = kys.toString().split("\\|"); 
+        tableKysymykset.add(kys, rivi[2], rivi[3], rivi[4]);
+    }
+
+    
+    
     /*
      * Naytetaan koehenkilo
+     * H7 MUOKATTU
      */
     private void naytaKoehenkilo() {
         koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
         
         if (koehenkiloKohdalla == null) return;
         
+        /*// HT6, H7 poistettu
         areaKoehenkilo.setText("");
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKoehenkilo)) {
                 tulosta(os, koehenkiloKohdalla);
         }
+        */
+        editNimi.setText(koehenkiloKohdalla.getNimi());
+        editSukupuoli.setText(koehenkiloKohdalla.getSukupuoli());
+        editIkaryhma.setText(koehenkiloKohdalla.getIkaryhma());
+        naytaKysymykset(koehenkiloKohdalla);
+        // TODO: jos aikaa niin extrana: naytaVastaukset(); vaatii GUI muokkausta!
     }
     
     
     /**
-     * Haetaan jasenten tiedot listaan
-     * @param knro koehenkilon numero, joka aktivoidaan haun jälkeen
+     * Haetaan koehenkiloiden tiedot listaan
+     * @param knro koehenkilon numero, joka aktivoidaan haun jalkeen
      */
     private void hae (int knro) {
         chooserKoehenkilot.clear();
@@ -311,6 +337,7 @@ public class KyselyGUIController implements Initializable {
         }
         chooserKoehenkilot.setSelectedIndex(index); // muutosviesti
     }
+    
     
     /*
      * Lisaa kyselyyn uuden vastauksen
@@ -328,7 +355,6 @@ public class KyselyGUIController implements Initializable {
         hae(koehenkilo.getKoehenkiloNro());
     }
     
-
     
     //Vanha
     /** 

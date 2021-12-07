@@ -40,7 +40,7 @@ public class KyselyMain extends Application {
             // HT6: Ilmoitetaan suoraan tassa versiossa juuressa oleva tiednimi:
             kyselyCtrl.lueTiedosto("koehenkilot.dat");
             
-            /** Vaihtoehtoinen (esim. KerhoMain.java):
+            /** Vaihtoehtoinen (otettu mallia (HT6): KerhoMain.java):
             // Parameters ilmeisesti ottaa komentorivilta tiedostonimen?
             Application.Parameters params = getParameters();
             if ( params.getRaw().size() > 0 )

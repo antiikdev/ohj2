@@ -106,7 +106,6 @@ public class Koehenkilo {
         return koehenkiloNro;
     }
     
-    
     /**
      * Palauttaa koehenkilon nimen
      * @return koehenkilon nimi
@@ -114,6 +113,22 @@ public class Koehenkilo {
     public String getNimi() {
         return nimi;
     }
+    
+    /**
+     * Palauttaa koehenkilon sukupuolen
+     * @return koehenkilon sukupuoli
+     */
+	public String getSukupuoli() {
+		return sukupuoli;
+	}
+
+   /**
+     * Palauttaa koehenkilon ikaryhman
+     * @return koehenkilon ikaryhma
+     */
+	public String getIkaryhma() {
+		return ikaryhma;
+	}
     
     
  // -------------------------------------------------------------
