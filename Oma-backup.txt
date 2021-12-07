@@ -1,0 +1,21 @@
+koehenkilo.dat
+1|k935|f|21-28
+2|k686|f|21-28
+3|k398|f|21-28
+4|k675|f|21-28
+
+kysymykset.dat
+1|1|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+2|2|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+3|3|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+4|3|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+5|3|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+6|3|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+7|3|Kissapetoelain?|Monivalinta|a)Kissa,b)Tiikeri
+
+vastaukset.dat
+1|1|A) Kissa|Monivalinta|A) Kissa, B) Tiikeri
+2|2|A) Kissa|Monivalinta|A) Kissa, B) Tiikeri
+3|3|A) Kissa|Monivalinta|A) Kissa, B) Tiikeri
+4|3|A) Kissa|Monivalinta|A) Kissa, B) Tiikeri
+5|3|A) Kissa|Monivalinta|A) Kissa, B) Tiikeri

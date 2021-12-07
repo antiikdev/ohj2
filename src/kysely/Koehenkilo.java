@@ -106,6 +106,11 @@ public class Koehenkilo {
         return koehenkiloNro;
     }
     
+    
+// -------------------------------------------------------------
+// ------------------------- HT7-vaihe -------------------------
+// -------------------------------------------------------------
+    
     /**
      * Palauttaa koehenkilon nimen
      * @return koehenkilon nimi
@@ -130,7 +135,29 @@ public class Koehenkilo {
 		return ikaryhma;
 	}
     
+	/**
+	 * Asettaa nimen
+	 */
+	public void setNimi(String s) {
+		nimi = s;
+	}
+
+	/**
+	 * Asettaa  
+	 */
+	public void setSukupuoli(String s) {
+		sukupuoli = s;
+		
+	}
+
+	/**
+	 * Asettaa 
+	 */
+	public void setIkaryhma(String s) {
+		ikaryhma = s;
+	}
     
+	
  // -------------------------------------------------------------
  // ------------------------- HT6-vaihe -------------------------
  // -------------------------------------------------------------

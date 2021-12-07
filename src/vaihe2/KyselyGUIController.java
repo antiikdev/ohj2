@@ -1,6 +1,6 @@
 package vaihe2;
 
-import java.awt.Desktop;
+// import java.awt.Desktop;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URI;
@@ -71,14 +71,14 @@ public class KyselyGUIController implements Initializable {
     @FXML void handleTallenna() {
         // HT6: tallennus
         tallenna();
-        // Dialogs.showMessageDialog("Ei vielä toimi!");
+        // Dialogs.showMessageDialog("Ei viela toimi!");
     }
     
     @FXML void handleLopeta() {
         // HT6: Tallennetaan ja lopetetaan
         tallenna();
         Platform.exit();
-        // Dialogs.showMessageDialog("Älä mene njet njet!");
+        // Dialogs.showMessageDialog("Ala mene njet njet!");
     }
     
     // ---------- MENUBAR ITEMIT: Muokkaa ----------
@@ -88,7 +88,7 @@ public class KyselyGUIController implements Initializable {
     }
     
     @FXML void handlePoistaTama() {
-        Dialogs.showMessageDialog("Ei vielä toimi!");
+        Dialogs.showMessageDialog("Ei viela toimi!");
     }
     
     // ---------- MENUBAR ITEMIT: Tietoja ---------- 
@@ -127,6 +127,108 @@ public class KyselyGUIController implements Initializable {
 // =======================================================================
 //  Tasta eteenpain kayttoliittymaan EI suoraan liittyvaa koodia
 //=======================================================================
+
+// ----------------------------------------------------------------------------
+// HT7: Koehenkiloiden (+kys/vas) tiedot ja muokkaus paaikkunassa
+//       - sisaltaa myos muokattuja metodeja aikaisemmista tyovaiheista. 
+// ----------------------------------------------------------------------------    
+    
+    /**
+     * Muut alustukset ja Gridpanelin tilalle tekstikentta,
+     * johon koehenkilon tiedot. Myos koehenkilolistan kuuntelijan alustus
+     */
+    protected void alusta() {
+        // panelKoehenkilo.setContent(areaKoehenkilo); // HT6, poistettu HT7
+        // areaKoehenkilo.setFont(new Font("Courier New", 12)); // HT6, poistettu HT7
+        // panelKoehenkilo.setFitToHeight(true);
+        chooserKoehenkilot.clear(); 
+        chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
+        edits = new TextField[] {editNimi, editSukupuoli, editIkaryhma};
+        int i = 0;
+        for (TextField edit : edits) {
+        	final int k = ++i;
+        	edit.setOnKeyReleased(e -> kasitteleMuutosKoehenkiloon(k, (TextField)(e.getSource())));
+        }
+    }
+    
+    
+    private void kasitteleMuutosKoehenkiloon(int k, TextField edit) {
+		if ( koehenkiloKohdalla == null ) return;
+		String s = edit.getText();
+        switch (k) {
+	        case 1 : koehenkiloKohdalla.setNimi(s); break;
+	        case 2 : koehenkiloKohdalla.setSukupuoli(s); break;
+	        case 3 : koehenkiloKohdalla.setIkaryhma(s); break;
+        default:
+        }
+	}
+
+
+	/**
+     * Nayttaa koehenkiloiden kysymykset
+     * @param koehenkilo joka naytetaan
+     */
+    private void naytaKysymykset(Koehenkilo koehenkilo) {
+    	tableKysymykset.clear();
+    	if (koehenkilo == null) return;
+    	
+    	List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
+		if ( kysymykset.size() == 0 ) return;
+		for ( Kysymys kys : kysymykset )
+			naytaKysymys(kys);
+    }
+    
+    /**
+     * Naytetaan Kysymys per koehenkilo
+     * @param kysymys joka naytetaan
+     */
+    private void naytaKysymys(Kysymys kys) {
+    	// TODO: ratkaisun muutos, korjattava
+        String[] rivi = kys.toString().split("\\|"); 
+        tableKysymykset.add(kys, rivi[2], rivi[3], rivi[4]);
+    }
+
+    
+    
+    /*
+     * Naytetaan koehenkilo
+     * H7 MUOKATTU
+     */
+    private void naytaKoehenkilo() {
+        koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
+        if (koehenkiloKohdalla == null) return;
+        /*// HT6, H7 poistettu
+        areaKoehenkilo.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKoehenkilo)) {
+                tulosta(os, koehenkiloKohdalla);
+        }
+        */
+        // HT7: koehenkilon nayttaminen kohdalla:
+        editNimi.setText(koehenkiloKohdalla.getNimi());
+        editSukupuoli.setText(koehenkiloKohdalla.getSukupuoli());
+        editIkaryhma.setText(koehenkiloKohdalla.getIkaryhma());
+        naytaKysymykset(koehenkiloKohdalla);
+        // TODO (Ilkka): extrana: naytaVastaukset(); vaatii GUI muokkausta!
+    }
+    
+    /*
+     * Lisaa kyselyyn uuden koehenkilon
+     */
+    private void lisaaUusiKoehenkiloKyselyyn() {
+        Koehenkilo uusi = new Koehenkilo();
+        // TODO: kysy koehenkilon tietoja
+        
+        uusi.rekisteroi();
+        // koehenkilo.taytaEsimTiedot(); // Poistettu HT7:ssa
+        try {
+            kysely.lisaa(uusi);
+        } catch (TallennaException e) {
+            Dialogs.showMessageDialog("Ongelmia uuden vastauksen luomisessa.");
+            return;
+        }
+        hae(uusi.getKoehenkiloNro());
+    }
+    
     
 // ----------------------------------------------------------------------------
 // HT6: Koehenkiloiden, kysymysten ja vastausten lisaaminen (tiedostoon luku ja kirjoittaminen)
@@ -138,6 +240,7 @@ public class KyselyGUIController implements Initializable {
     private Kysely kysely;
     private Koehenkilo koehenkiloKohdalla;
     // private TextArea areaKoehenkilo = new TextArea(); //HT6, poistettu HT7
+    private TextField edits[]; 
    
    /**
     * Alustaa kyselyn lukemalla sen valitun nimisesta tiedostosta
@@ -256,72 +359,9 @@ public class KyselyGUIController implements Initializable {
     
 
 // ----------------------------------------------------------------------------   
-// HT5 tai sita aikaisempaa koodia 
-// (HT7 muokattu: naytaKoehenkilo()    
+// HT5 tai sita aikaisempaa koodia  
 // ----------------------------------------------------------------------------   
-    
-    /**
-     * Muut alustukset ja Gridpanelin tilalle tekstikentta,
-     * johon koehenkilon tiedot. Myos koehenkilolistan kuuntelijan alustus
-     */
-    protected void alusta() {
-        // panelKoehenkilo.setContent(areaKoehenkilo); // HT6, poistettu HT7
-        // areaKoehenkilo.setFont(new Font("Courier New", 12)); // HT6, poistettu HT7
-        panelKoehenkilo.setFitToHeight(true);
-        chooserKoehenkilot.clear(); 
-        chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
-    }
-    
-    
-    /**
-     * Nayttaa koehenkiloiden kysymykset
-     * @param koehenkilo joka naytetaan
-     */
-    private void naytaKysymykset(Koehenkilo koehenkilo) {
-    	tableKysymykset.clear();
-    	if (koehenkilo == null) return;
-    	
-    	List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
-		if ( kysymykset.size() == 0 ) return;
-		for ( Kysymys kys : kysymykset )
-			naytaKysymys(kys);
-    }
-    
-    /**
-     * Naytetaan Kysymys per koehenkilo
-     * @param kysymys joka naytetaan
-     */
-    private void naytaKysymys(Kysymys kys) {
-    	// TODO: ratkaisun muutos, korjattava
-        String[] rivi = kys.toString().split("\\|"); 
-        tableKysymykset.add(kys, rivi[2], rivi[3], rivi[4]);
-    }
 
-    
-    
-    /*
-     * Naytetaan koehenkilo
-     * H7 MUOKATTU
-     */
-    private void naytaKoehenkilo() {
-        koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
-        
-        if (koehenkiloKohdalla == null) return;
-        
-        /*// HT6, H7 poistettu
-        areaKoehenkilo.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKoehenkilo)) {
-                tulosta(os, koehenkiloKohdalla);
-        }
-        */
-        editNimi.setText(koehenkiloKohdalla.getNimi());
-        editSukupuoli.setText(koehenkiloKohdalla.getSukupuoli());
-        editIkaryhma.setText(koehenkiloKohdalla.getIkaryhma());
-        naytaKysymykset(koehenkiloKohdalla);
-        // TODO: jos aikaa niin extrana: naytaVastaukset(); vaatii GUI muokkausta!
-    }
-    
-    
     /**
      * Haetaan koehenkiloiden tiedot listaan
      * @param knro koehenkilon numero, joka aktivoidaan haun jalkeen
@@ -336,23 +376,6 @@ public class KyselyGUIController implements Initializable {
             chooserKoehenkilot.add(koehenkilo.getNimi(), koehenkilo);
         }
         chooserKoehenkilot.setSelectedIndex(index); // muutosviesti
-    }
-    
-    
-    /*
-     * Lisaa kyselyyn uuden vastauksen
-     */
-    private void lisaaUusiKoehenkiloKyselyyn() {
-        Koehenkilo koehenkilo = new Koehenkilo();
-        koehenkilo.rekisteroi();
-        koehenkilo.taytaEsimTiedot(); // TODO: Korvattava dialogilla
-        try {
-            kysely.lisaa(koehenkilo);
-        } catch (TallennaException e) {
-            Dialogs.showMessageDialog("Ongelmia uuden vastauksen luomisessa.");
-            return;
-        }
-        hae(koehenkilo.getKoehenkiloNro());
     }
     
     
