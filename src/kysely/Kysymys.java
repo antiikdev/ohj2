@@ -10,7 +10,8 @@ import fi.jyu.mit.ohj2.Mjonot;
 
 /**
  * Kysymys-luokka
- * @author Antiik & Doomslizer
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
  * @version 3 Nov 2021
  *
  */
@@ -112,7 +113,75 @@ public class Kysymys {
     public int getKoehenkiloNro() {
         return this.koehenkiloNro;
     }
+    
+    
+// -------------------------------------------------------------
+// ------------------------- HT7-vaihe -------------------------
+// -------------------------------------------------------------
 
+    /**
+     * @return ensimmainen kayttajan syotettavan kentan indeksi
+     */
+    public int ekaKentta() {
+    	return 2;
+    }
+    
+    /**
+     * @return kysymyksen kenttien lukumaara
+     */
+    public int getKenttia() {
+    	return 5;
+    }
+    
+    /**
+     * @param k minkä kentän kysymys halutaan
+     * @return valitun kentän kysymysteksti
+     */
+    public String getKysymys(int k) {
+        switch (k) {
+            case 0:
+                return "id";
+            case 1:
+                return "koehenkiloNro";
+            case 2:
+                return "kysymys";
+            case 3:
+                return "kysymysTyyppi";
+            case 4:
+                return "vastausVaihtoehdot";
+            default:
+                return "???";
+        }
+    }
+
+    
+    /**
+     * @param k kentta jonka sisalta otetaan
+     * @return kentan sisalto
+     * TODO: testi
+     */
+    public String anna(int k) {
+        switch (k) {
+            case 0:
+                return "" + id;
+            case 1:
+                return "" + koehenkiloNro;
+            case 2:
+                return kysymys;
+            case 3:
+                return kysymysTyyppi;
+            case 4:
+                return vastausVaihtoehdot;
+            default:
+                return "???";
+        }
+    }
+
+    
+    
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+     
     
 // -------------------------------------------------------------
 // ------------------------- HT6-vaihe -------------------------

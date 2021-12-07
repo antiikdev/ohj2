@@ -6,7 +6,8 @@ import fi.jyu.mit.ohj2.Mjonot;
 
 /**
  * Vastaus-luokka
- * @author Antiik & Doomslizer
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
  * @version 9 Nov 2021
  *
  */

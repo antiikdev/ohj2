@@ -9,8 +9,9 @@ import java.util.List;
 /**
  * Kysely-luokka
  * Sisalto: Class-responsibility-collaboration (CRC) cards
- * @author Antiik & Doomslizer
- * @version 22 Oct 2021
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @version 7 Dec 2021
  *
  */
 public class Kysely {

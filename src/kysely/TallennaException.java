@@ -2,7 +2,8 @@ package kysely;
 
 /**
  * Poikkeusluokka tietorakenteesta aiheutuville poikkeuksille
- * @author Antiik & Doomslizer
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
  * @version 22 Oct 2021
  *
  */

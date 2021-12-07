@@ -11,9 +11,9 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * Paaohjelma Kysely-ohjelman kaynnistamiseksi 
- * @author Antiikdev & Doomslizer
- * @version 28.9.2021; 22.10.2021, 22.11.2021
- *
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @version 7 Dec 2021
  */
 public class KyselyMain extends Application {
     @Override

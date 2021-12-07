@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
@@ -32,10 +33,9 @@ import kysely.Vastaus;
 
 /**
  * Luokka kyselyn käyttöliittymän tapahtumien kontrolloimiseksi
- * @author Antiikdev & Doomslizer
- * @version 28.9.2021 - ensimmainen GUI-versio
- * @version 11.10.2021 - nappainten toimimattomuus ilmoitukset lisatty
- * @version 3.11.2021 - kysymykset lisatty
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @version 7 Dec 2021
  *
  */
 public class KyselyGUIController implements Initializable {
@@ -133,34 +133,61 @@ public class KyselyGUIController implements Initializable {
 //       - sisaltaa myos muokattuja metodeja aikaisemmista tyovaiheista. 
 // ----------------------------------------------------------------------------    
     
+    private TextField edits[]; 
+    private static Kysymys apukysymys = new Kysymys();
+    
     /**
      * Muut alustukset ja Gridpanelin tilalle tekstikentta,
      * johon koehenkilon tiedot. Myos koehenkilolistan kuuntelijan alustus
      */
     protected void alusta() {
-        // panelKoehenkilo.setContent(areaKoehenkilo); // HT6, poistettu HT7
-        // areaKoehenkilo.setFont(new Font("Courier New", 12)); // HT6, poistettu HT7
-        // panelKoehenkilo.setFitToHeight(true);
+    	// Poistettu HT7:ssa (HT6 original):
+        // 	panelKoehenkilo.setContent(areaKoehenkilo); 
+        // 	areaKoehenkilo.setFont(new Font("Courier New", 12));
         chooserKoehenkilot.clear(); 
         chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
+        // HT7: koehenkilon tietojen muutokset GUI:ssa:
         edits = new TextField[] {editNimi, editSukupuoli, editIkaryhma};
         int i = 0;
         for (TextField edit : edits) {
         	final int k = ++i;
         	edit.setOnKeyReleased(e -> kasitteleMuutosKoehenkiloon(k, (TextField)(e.getSource())));
+    	panelKoehenkilo.setFitToHeight(true);
         }
+        
+        // Alustetaan KYSYMYSTAULUKON otsikot
+        int eka = apukysymys.ekaKentta();
+        int lkm = apukysymys.getKenttia();
+        String[] headings = new String[lkm-eka];
+        for (int j=0, k=eka; k<lkm; j++, k++) headings[j] = apukysymys.getKysymys(k);
+        tableKysymykset.initTable(headings);
+        tableKysymykset.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+        tableKysymykset.setEditable(false); 
+        tableKysymykset.setPlaceholder(new Label("Ei viela kysymysta")); 
+        
+        tableKysymykset.setColumnSortOrderNumber(1); 
+        tableKysymykset.setColumnSortOrderNumber(2); 
+        tableKysymykset.setColumnWidth(1, 60); 
     }
     
     
+    /**
+     * Kasittelee muutokset koehenkilon tietoihin ja
+     * kasittelee virheet
+     * @param k kenttanumero
+     * @param edit editointi
+     */
     private void kasitteleMuutosKoehenkiloon(int k, TextField edit) {
 		if ( koehenkiloKohdalla == null ) return;
 		String s = edit.getText();
+		String virhe = null;
         switch (k) {
-	        case 1 : koehenkiloKohdalla.setNimi(s); break;
-	        case 2 : koehenkiloKohdalla.setSukupuoli(s); break;
-	        case 3 : koehenkiloKohdalla.setIkaryhma(s); break;
+	        case 1 : virhe = koehenkiloKohdalla.setNimi(s); break;
+	        case 2 : virhe = koehenkiloKohdalla.setSukupuoli(s); break;
+	        case 3 : virhe = koehenkiloKohdalla.setIkaryhma(s); break;
         default:
         }
+        if (virhe != null) Dialogs.showMessageDialog("Syota arvo!");
 	}
 
 
@@ -171,24 +198,26 @@ public class KyselyGUIController implements Initializable {
     private void naytaKysymykset(Koehenkilo koehenkilo) {
     	tableKysymykset.clear();
     	if (koehenkilo == null) return;
-    	
+    	 
     	List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
 		if ( kysymykset.size() == 0 ) return;
 		for ( Kysymys kys : kysymykset )
 			naytaKysymys(kys);
     }
     
+    
     /**
      * Naytetaan Kysymys per koehenkilo
      * @param kysymys joka naytetaan
      */
     private void naytaKysymys(Kysymys kys) {
-    	// TODO: ratkaisun muutos, korjattava
-        String[] rivi = kys.toString().split("\\|"); 
-        tableKysymykset.add(kys, rivi[2], rivi[3], rivi[4]);
+    	int kenttia = kys.getKenttia();
+        String[] rivi = new String[kenttia-kys.ekaKentta()];
+        for (int i=0, k=kys.ekaKentta(); k<kenttia; i++, k++)
+        	rivi[i] = kys.anna(k);
+        tableKysymykset.add(kys, rivi);
     }
 
-    
     
     /*
      * Naytetaan koehenkilo
@@ -210,6 +239,7 @@ public class KyselyGUIController implements Initializable {
         naytaKysymykset(koehenkiloKohdalla);
         // TODO (Ilkka): extrana: naytaVastaukset(); vaatii GUI muokkausta!
     }
+    
     
     /*
      * Lisaa kyselyyn uuden koehenkilon
@@ -240,7 +270,6 @@ public class KyselyGUIController implements Initializable {
     private Kysely kysely;
     private Koehenkilo koehenkiloKohdalla;
     // private TextArea areaKoehenkilo = new TextArea(); //HT6, poistettu HT7
-    private TextField edits[]; 
    
    /**
     * Alustaa kyselyn lukemalla sen valitun nimisesta tiedostosta
@@ -303,7 +332,6 @@ public class KyselyGUIController implements Initializable {
         koehenkilo.tulosta(os);
         os.println("----------------------");
         
-        // TODO: HT6 kysymykset ja vastaukset
         try {
             List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
             for (Kysymys kys:kysymykset) 

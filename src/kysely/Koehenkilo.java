@@ -10,9 +10,9 @@ import fi.jyu.mit.ohj2.Mjonot;
 
 /**
  * Koehenkilo-luokka
- * @author Antiik & Doomslizer
- * @version 21 Oct 2021
- *
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @version 7 Dec 2021
  */
 public class Koehenkilo {
     private int     koehenkiloNro;
@@ -137,24 +137,32 @@ public class Koehenkilo {
     
 	/**
 	 * Asettaa nimen
+	 * @return null jos ok, "virhe" jos virhe
 	 */
-	public void setNimi(String s) {
+	public String setNimi(String s) {
+		if ( s.equals("") ) return "virhe";
 		nimi = s;
+		return null;
 	}
 
 	/**
-	 * Asettaa  
+	 * Asettaa sukupuolen
+	 * @return null jos ok, "virhe" jos virhe
 	 */
-	public void setSukupuoli(String s) {
+	public String setSukupuoli(String s) {
+		if ( s.equals("") ) return "virhe";
 		sukupuoli = s;
-		
+		return null;
 	}
 
 	/**
-	 * Asettaa 
+	 * Asettaa ikaryhman
+	 * @return null jos ok, "virhe" jos virhe
 	 */
-	public void setIkaryhma(String s) {
+	public String setIkaryhma(String s) {
+		if ( s.equals("") ) return "virhe";
 		ikaryhma = s;
+		return null;
 	}
     
 	

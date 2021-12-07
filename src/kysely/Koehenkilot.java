@@ -13,7 +13,8 @@ import java.util.Scanner;
 
 /**
  * Koehenkilot-luokka
- * @author Antiik & Doomslizer
+ * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
+ * @author Doomslizer (topi.val.kari@student.jyu.fi)
  * @version 21 Oct 2021
  *
  */
