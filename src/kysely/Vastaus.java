@@ -110,6 +110,108 @@ public class Vastaus {
         return this.koehenkiloNro;
     }
     
+// -------------------------------------------------------------
+// ------------------------- HT7-vaihe -------------------------
+// -------------------------------------------------------------
+
+     /**
+      * @return ensimmainen kayttajan syotettavan kentan indeksi
+      */
+     public int ekaKentta() {
+     	return 2;
+     }
+     
+     /**
+      * @return kysymyksen kenttien lukumaara
+      */
+     public int getKenttia() {
+     	return 5;
+     }
+     
+     /**
+      * @param k mink‰ kent‰n kysymys halutaan
+      * @return valitun kent‰n kysymysteksti
+      */
+     public String getVastaus(int k) {
+         switch (k) {
+             case 0:
+                 return "id";
+             case 1:
+                 return "koehenkiloNro";
+             case 2:
+                 return "vastaus";
+             case 3:
+                 return "vastausTyyppi";
+             case 4:
+                 return "vastausVaihtoehdot";
+             default:
+                 return "???";
+         }
+     }
+
+     
+     /**
+      * @param k kentta jonka sisalta otetaan
+      * @return kentan sisalto
+      * TODO: testi
+      */
+     public String anna(int k) {
+         switch (k) {
+             case 0:
+                 return "" + id;
+             case 1:
+                 return "" + koehenkiloNro;
+             case 2:
+                 return vastaus;
+             case 3:
+                 return vastausTyyppi;
+             case 4:
+                 return vastausVaihtoehdot;
+             default:
+                 return "???";
+         	}
+         }
+         
+         /*
+          * Asettaa arvot
+          */
+         public String aseta(int k, String s) {
+             String st = s.trim();
+             StringBuffer sb = new StringBuffer(st);
+             switch (k) {
+                 case 0:
+                     setId(Mjonot.erota(sb, '$', getId()));
+                     return null;
+                 case 1:
+                     koehenkiloNro = Mjonot.erota(sb, '$', koehenkiloNro);
+                     return null;
+                 case 2:
+                     vastaus = st;
+                     return null;
+                 case 3:
+                     try {
+                         vastausTyyppi = Mjonot.erotaEx(sb, 'ß', vastausTyyppi);
+                     } catch (NumberFormatException ex) {
+                         return "Virhe ("+st+")";
+                     }
+                     return null;
+
+                 case 4:
+                     try {
+                         vastausVaihtoehdot = Mjonot.erotaEx(sb, 'ß', vastausVaihtoehdot);
+                     } catch (NumberFormatException ex) {
+                         return "virhe ("+st+")";
+                     }
+                     return null;
+                     
+                 default:
+                     return "V‰‰r‰ kent‰n indeksi";
+             }
+     }
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+
+         
     // HT6
     /**
      * Asettaa id numeron

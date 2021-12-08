@@ -43,11 +43,12 @@ public class KyselyGUIController implements Initializable {
     @FXML private ListChooser<Koehenkilo> chooserKoehenkilot; 
     @FXML private ScrollPane panelKoehenkilo;
     
+    // HT7-vaihe:
     @FXML private TextField editNimi;
     @FXML private TextField editSukupuoli;
     @FXML private TextField editIkaryhma;
-    
     @FXML private StringGrid<Kysymys> tableKysymykset;
+    @FXML private StringGrid<Vastaus> tableVastaukset;
     
     
     /**
@@ -135,18 +136,20 @@ public class KyselyGUIController implements Initializable {
     
     private TextField edits[]; 
     private static Kysymys apukysymys = new Kysymys();
+    // private static Vastaus apuvastaus = new Vastaus(); // HT7: ei kaytossa
     
     /**
      * Muut alustukset ja Gridpanelin tilalle tekstikentta,
      * johon koehenkilon tiedot. Myos koehenkilolistan kuuntelijan alustus
      */
     protected void alusta() {
-    	// Poistettu HT7:ssa (HT6 original):
+	// Poistettu HT7:ssa (HT6 origin):
         // 	panelKoehenkilo.setContent(areaKoehenkilo); 
         // 	areaKoehenkilo.setFont(new Font("Courier New", 12));
         chooserKoehenkilot.clear(); 
         chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
-        // HT7: koehenkilon tietojen muutokset GUI:ssa:
+        
+    // Koehenkilon tietojen muutokset GUI:ssa:
         edits = new TextField[] {editNimi, editSukupuoli, editIkaryhma};
         int i = 0;
         for (TextField edit : edits) {
@@ -155,11 +158,11 @@ public class KyselyGUIController implements Initializable {
     	panelKoehenkilo.setFitToHeight(true);
         }
         
-        // Alustetaan KYSYMYSTAULUKON otsikot
+	// ----- Alustetaan KYSYMYSTAULUKON otsikot omaan grid tableen -----
         int eka = apukysymys.ekaKentta();
         int lkm = apukysymys.getKenttia();
         String[] headings = new String[lkm-eka];
-        for (int j=0, k=eka; k<lkm; j++, k++) headings[j] = apukysymys.getKysymys(k);
+        for (int j=0, k=eka; k<lkm; j++, k++) headings[j] = apukysymys.getKysymys(k);       
         tableKysymykset.initTable(headings);
         tableKysymykset.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         tableKysymykset.setEditable(false); 
@@ -185,11 +188,46 @@ public class KyselyGUIController implements Initializable {
             }
             return defValue;
         });
-        // tableKysymykset.add(chooserKoehenkilot);
+        // tableKysymykset.add(?);
         /*
         tableKysymykset.setColumnSortOrderNumber(1); 
         tableKysymykset.setColumnSortOrderNumber(2); 
         tableKysymykset.setColumnWidth(1, 60);
+        */
+        
+        
+    // ---- Alustetaan VASTAUSTAULUKON otsikot omaan grid tableen ----
+    // HUOM! Vastauksille ei ole ikkunassa tilaa ja fxml-tiedosto ei aukea Scenebuilderissa!
+        /*
+        int ekaV = apuvastaus.ekaKentta();
+        int lkmV = apuvastaus.getKenttia();
+        String[] headingsV = new String[lkmV-ekaV];
+        for (int j=0, k=ekaV; k<lkmV; j++, k++) headingsV[j] = apuvastaus.getVastaus(k);
+        tableVastaukset.initTable(headingsV);
+        tableVastaukset.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+        tableVastaukset.setEditable(false);
+        tableVastaukset.setPlaceholder(new Label("Ei viela vastausta"));
+        
+    // VASTAUSTEN muokkaus
+        tableVastaukset.setTableMenuButtonVisible(true);
+        tableVastaukset.setEditable(true);
+        tableVastaukset.setOnGridLiveEdit((g, koehenkilo, defValue, r, c, edit) -> {
+            String virhe = koehenkilo.aseta(c+ekaV,defValue);
+            if ( virhe == null ) {
+                try {
+					kysely.korvaaTaiLisaa(koehenkilo);
+				} catch (TallennaException ex) {
+					// virhe
+					ex.printStackTrace();
+				}
+                edit.setStyle(null);
+                 Dialogs.setToolTipText(edit,"");
+            } else {
+                 edit.setStyle("-fx-background-color: red");
+                Dialogs.setToolTipText(edit,virhe);
+            }
+            return defValue;
+        });
         */
     }
     
@@ -210,8 +248,18 @@ public class KyselyGUIController implements Initializable {
 	        case 3 : virhe = koehenkiloKohdalla.setIkaryhma(s); break;
         default:
         }
-        if (virhe != null) Dialogs.showMessageDialog("Syota arvo!");
+        if (virhe != null) ilmoitaVirhe(virhe);
+        
 	}
+    
+    /**
+     * Ilmoittaa virheen kayttajalle
+     * @param virhe teksti joka ilmoitetaan
+     */
+    private void ilmoitaVirhe(String virhe) {
+    	if ( virhe == null || virhe.isEmpty() ) return;
+    	else Dialogs.showMessageDialog(virhe);
+    }
 
 
 	/**
@@ -260,7 +308,8 @@ public class KyselyGUIController implements Initializable {
         editSukupuoli.setText(koehenkiloKohdalla.getSukupuoli());
         editIkaryhma.setText(koehenkiloKohdalla.getIkaryhma());
         naytaKysymykset(koehenkiloKohdalla);
-        // TODO (Ilkka): extrana: naytaVastaukset(); vaatii GUI muokkausta!
+        // TODO (Ilkka): naytaVastaukset(); vaatisi GUI muokkausta, mutta
+        // SceneBuilder ei toimi ja fxml-tied muokkaus ei ole onnistunut
     }
     
     
@@ -269,18 +318,18 @@ public class KyselyGUIController implements Initializable {
      */
     private void lisaaUusiKoehenkiloKyselyyn() {
         Koehenkilo uusi = new Koehenkilo();
-        // TODO: kysy koehenkilon tietoja
-        
         uusi.rekisteroi();
-        // koehenkilo.taytaEsimTiedot(); // Poistettu HT7:ssa
+        uusi.taytaEsimTiedot();
         try {
             kysely.lisaa(uusi);
         } catch (TallennaException e) {
-            Dialogs.showMessageDialog("Ongelmia uuden vastauksen luomisessa.");
+            Dialogs.showMessageDialog("Ongelmia uuden Koehenkilon luomisessa.");
             return;
         }
         hae(uusi.getKoehenkiloNro());
     }
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
     
     
 // ----------------------------------------------------------------------------

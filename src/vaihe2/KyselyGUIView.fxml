@@ -20,6 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vaihe2.KyselyGUIController">
+   
    <bottom>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -51,6 +52,8 @@
          </padding>
       </HBox>
    </bottom>
+   
+   
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -151,7 +154,7 @@
                   <Label text="Ikäryhmä" GridPane.rowIndex="4" />
                   <TextField fx:id="editNimi" text="01" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label layoutX="23.0" layoutY="27.0" text="Sukupuoli" GridPane.rowIndex="3" />
-                  <Label layoutX="23.0" layoutY="87.0" text="Vastaus #" GridPane.rowIndex="2" />
+                  <Label layoutX="23.0" layoutY="87.0" text="Nimi #" GridPane.rowIndex="2" />
                   <TextField fx:id="editSukupuoli" text="f" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="editIkaryhma" text="15-21" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Koehenkilon tiedot">
@@ -174,7 +177,7 @@
       <right>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <VBox prefWidth="200.0">
+            <VBox prefWidth="400.0">
                <children>
                   <StringGrid fx:id="tableKysymykset" rivit="Kysymykset&#10;1. Kysymys&#10;2. Kysymys&#10;3. Kysymys&#10;4. Kysymys&#10;5. Kysymys&#10;6. Kysymys&#10;" />
                </children>
@@ -183,5 +186,20 @@
       </HBox>
    </right>
    
+   
+      <!-- TODO: BOTTOM tableVastaukset -->
+   <!-- *********************************************    
+      <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefWidth="500.0">
+               <children>
+                  <StringGrid fx:id="tableVastaukset" rivit="Kysymykset&#10;1. Kysymys&#10;2. Kysymys&#10;3. Kysymys&#10;4. Kysymys&#10;5. Kysymys&#10;6. Kysymys&#10;" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </bottom>
+   -->
 
 </BorderPane>

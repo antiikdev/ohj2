@@ -48,8 +48,8 @@ public class Koehenkilo {
      */
     public void taytaEsimTiedot() {
         nimi = "k" + rand(100, 999);
-        sukupuoli = "f";
-        ikaryhma = "21-28";
+        sukupuoli = "tyhja";
+        ikaryhma = "tyhja";
     }
     
     
@@ -140,7 +140,7 @@ public class Koehenkilo {
 	 * @return null jos ok, "virhe" jos virhe
 	 */
 	public String setNimi(String s) {
-		if ( s.equals("") ) return "virhe";
+		if ( s.equals("") ) return "Syota arvo!";
 		nimi = s;
 		return null;
 	}
@@ -150,7 +150,7 @@ public class Koehenkilo {
 	 * @return null jos ok, "virhe" jos virhe
 	 */
 	public String setSukupuoli(String s) {
-		if ( s.equals("") ) return "virhe";
+		if ( s.equals("") ) return "Syota arvo!";
 		sukupuoli = s;
 		return null;
 	}
@@ -160,7 +160,7 @@ public class Koehenkilo {
 	 * @return null jos ok, "virhe" jos virhe
 	 */
 	public String setIkaryhma(String s) {
-		if ( s.equals("") ) return "virhe";
+		if ( s.equals("") ) return "Syota arvo!";
 		ikaryhma = s;
 		return null;
 	}

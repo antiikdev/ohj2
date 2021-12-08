@@ -108,7 +108,7 @@ public class Kysymys {
     
     /**
      * Palautetaan mille koehenkilolle kysymys kuuluu
-     * @return j√§senen id
+     * @return koehenkiloNro palautus
      */
     public int getKoehenkiloNro() {
         return this.koehenkiloNro;
@@ -158,7 +158,6 @@ public class Kysymys {
     /**
      * @param k kentta jonka sisalta otetaan
      * @return kentan sisalto
-     * TODO: testi
      */
     public String anna(int k) {
         switch (k) {
@@ -213,7 +212,6 @@ public class Kysymys {
                     return "V‰‰r‰ kent‰n indeksi";
             }
     }
-    
 // -------------------------------------------------------------
 // -------------------------------------------------------------
      
