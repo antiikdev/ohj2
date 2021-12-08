@@ -27,7 +27,7 @@ public class Koehenkilot {
     
     
     /**
-     * Luodaan alaustava taulukko
+     * Luodaan alustava taulukko
      */
     public Koehenkilot() {
         alkiot = new Koehenkilo[MAX_KOEHENKILOITA];
@@ -74,6 +74,23 @@ public class Koehenkilot {
     public int getLkm() {
         return lkm;
     }
+    
+
+// ---------------------------------------------------------------
+// ---------- HT7-vaihe tietojen muokkaus ja poisto  -------------
+// ---------------------------------------------------------------
+    
+    /**
+     * Poistaa koehenkilon
+     * @param koehenkilo joka poistetaan
+     */
+    public void poistaKoehenkilo(Koehenkilo koehenkilo) {
+    	this.alkiot[koehenkilo.getKoehenkiloNro()] = null;
+    	koehenkilo.poistaKoehenkilo();
+    }
+
+// ---------------------------------------------------------------
+// ---------------------------------------------------------------    
     
     
 // ---------------------------------------------------------------

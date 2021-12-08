@@ -94,7 +94,6 @@ public class Koehenkilo {
         this.koehenkiloNro = seuraavaNro;
         seuraavaNro++;
         return this.koehenkiloNro;
-        
     }
     
     
@@ -164,7 +163,19 @@ public class Koehenkilo {
 		ikaryhma = s;
 		return null;
 	}
-    
+	
+	/**
+	 * Poistaa koehenkilon
+	 */
+	public void poistaKoehenkilo() {
+	    this.koehenkiloNro = 0;
+	    this.nimi = null;
+	    this.sukupuoli = null;
+	    this.ikaryhma = null;
+	}
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+
 	
  // -------------------------------------------------------------
  // ------------------------- HT6-vaihe -------------------------
@@ -226,7 +237,6 @@ public class Koehenkilo {
         sukupuoli = Mjonot.erota(sb, '|', sukupuoli);
         ikaryhma = Mjonot.erota(sb, '|', ikaryhma);
     }
-    
 // -------------------------------------------------------------
 // -------------------------------------------------------------
     

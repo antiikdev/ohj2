@@ -72,24 +72,21 @@ public class KyselyGUIController implements Initializable {
     @FXML void handleTallenna() {
         // HT6: tallennus
         tallenna();
-        // Dialogs.showMessageDialog("Ei viela toimi!");
     }
     
     @FXML void handleLopeta() {
         // HT6: Tallennetaan ja lopetetaan
         tallenna();
         Platform.exit();
-        // Dialogs.showMessageDialog("Ala mene njet njet!");
     }
     
     // ---------- MENUBAR ITEMIT: Muokkaa ----------
     @FXML void handleLisaaUusi() {
         lisaaUusiKoehenkiloKyselyyn();
-        // Dialogs.showMessageDialog("Ei vielä toimi!");
     }
     
     @FXML void handlePoistaTama() {
-        Dialogs.showMessageDialog("Ei viela toimi!");
+    	poistaKoehenkilo();
     }
     
     // ---------- MENUBAR ITEMIT: Tietoja ---------- 
@@ -134,7 +131,7 @@ public class KyselyGUIController implements Initializable {
 //       - sisaltaa myos muokattuja metodeja aikaisemmista tyovaiheista. 
 // ----------------------------------------------------------------------------    
     
-    private TextField edits[]; 
+    private TextField edits[];
     private static Kysymys apukysymys = new Kysymys();
     // private static Vastaus apuvastaus = new Vastaus(); // HT7: ei kaytossa
     
@@ -146,6 +143,8 @@ public class KyselyGUIController implements Initializable {
 	// Poistettu HT7:ssa (HT6 origin):
         // 	panelKoehenkilo.setContent(areaKoehenkilo); 
         // 	areaKoehenkilo.setFont(new Font("Courier New", 12));
+    	
+	// Clear ja kuuntelu nayttaa koehenkilo
         chooserKoehenkilot.clear(); 
         chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
         
@@ -328,6 +327,32 @@ public class KyselyGUIController implements Initializable {
         }
         hae(uusi.getKoehenkiloNro());
     }
+    
+    
+    /**
+     * Poistaa koehenkilon kyselysta
+     * TODO: Tehtava
+     */
+    private void poistaKoehenkilo() {
+    	koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
+        if (koehenkiloKohdalla == null) return;
+    	// Taydellinen koehenkilon poisto:
+        // kysely.poistaKoehenkilo(koehenkiloKohdalla);
+        
+    	
+        // Koehenkilon rivin poistaminen tiedostosta:
+        // 1. Etsi tiedostosta rivi ja kirjoita se tyhjaksi
+    	poista(koehenkiloKohdalla);
+    	// Lue tiedosto uudestaan / alusta?
+    	avaa();
+    }
+    
+    // TODO: Tehtava
+    private void poista(Koehenkilo koehenkilo) {
+    	return;
+    }
+    
+    
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
     

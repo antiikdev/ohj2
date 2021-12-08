@@ -12,7 +12,6 @@ import java.util.List;
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
  * @version 7 Dec 2021
- *
  */
 public class Kysely {
     private Koehenkilot koehenkilot = new Koehenkilot();
@@ -127,7 +126,7 @@ public class Kysely {
     
     
 // ---------------------------------------------------------------
-// ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
+// ---------- HT7-vaihe tietojen tallennus ja poisto -------------
 // ---------------------------------------------------------------
     
     /**
@@ -137,6 +136,15 @@ public class Kysely {
      */
     public void korvaaTaiLisaa(Kysymys kysymys) throws TallennaException { 
         kysymykset.korvaaTaiLisaa(kysymys); 
+    }
+    
+    
+    /**
+     * Poistaa koehenkilon kyselysta
+     * @param koehenkilo joka poistetaan
+     */
+    public void poistaKoehenkilo(Koehenkilo koehenkilo) {
+    	koehenkilot.poistaKoehenkilo(koehenkilo);
     }
     
 // ---------------------------------------------------------------  

@@ -177,7 +177,7 @@
       <right>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <VBox prefWidth="400.0">
+            <VBox prefWidth="500.0">
                <children>
                   <StringGrid fx:id="tableKysymykset" rivit="Kysymykset&#10;1. Kysymys&#10;2. Kysymys&#10;3. Kysymys&#10;4. Kysymys&#10;5. Kysymys&#10;6. Kysymys&#10;" />
                </children>
@@ -187,7 +187,7 @@
    </right>
    
    
-      <!-- TODO: BOTTOM tableVastaukset -->
+      <!-- Testi: BOTTOM tableVastaukset -->
    <!-- *********************************************    
       <bottom>
       <HBox BorderPane.alignment="CENTER">
