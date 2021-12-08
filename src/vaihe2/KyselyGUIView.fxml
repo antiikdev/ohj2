@@ -126,6 +126,9 @@
          </center>
       </BorderPane>
    </left>
+   
+   <!-- CENTER: panelKoehenkilo -->
+   <!-- ********************************************* -->
    <center>
       <ScrollPane fx:id="panelKoehenkilo" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
@@ -142,19 +145,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
+              
                <children>
+               
                   <Label text="Ikäryhmä" GridPane.rowIndex="4" />
                   <TextField fx:id="editNimi" text="01" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label layoutX="23.0" layoutY="27.0" text="Sukupuoli" GridPane.rowIndex="3" />
                   <Label layoutX="23.0" layoutY="87.0" text="Vastaus #" GridPane.rowIndex="2" />
                   <TextField fx:id="editSukupuoli" text="f" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="editIkaryhma" text="15-21" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label text="Vastaajan tiedot">
+                  <Label text="Koehenkilon tiedot">
                      <padding>
                         <Insets bottom="5.0" />
                      </padding>
                   </Label>
                </children>
+               
                <padding>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </padding>
@@ -162,7 +168,10 @@
          </content>
       </ScrollPane>
    </center>
-   <right>
+   
+   <!-- RIGHT tableKysymykset -->
+   <!-- *********************************************    -->
+      <right>
       <HBox BorderPane.alignment="CENTER">
          <children>
             <VBox prefWidth="200.0">
@@ -173,4 +182,6 @@
          </children>
       </HBox>
    </right>
+   
+
 </BorderPane>

@@ -79,6 +79,34 @@ public class Kysymykset {
     
     
 // ---------------------------------------------------------------
+// ---------- HT7-vaihe (kysymysten nayttaminen ja muokkaus ------
+// ---------------------------------------------------------------¨
+    
+    public void korvaaTaiLisaa(Kysymys kysymys) throws TallennaException {
+        int id = kysymys.getId();
+        for (int i = 0; i < getLkm(); i++) {
+            if (((ArrayList<Kysymys>) alkiot).get(i).getId() == id) {
+                ((ArrayList<Kysymys>) alkiot).set(i, kysymys);
+                // muutettu = true;
+                return;
+            }
+        }
+        lisaa(kysymys);
+    }
+    
+
+    /**
+     * Kyselyn kysymysten maara
+     */
+    public int getLkm() {
+        return alkiot.size();
+    }
+
+// ---------------------------------------------------------------
+// ---------------------------------------------------------------        
+     
+    
+// ---------------------------------------------------------------
 // ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
 // ---------------------------------------------------------------
     

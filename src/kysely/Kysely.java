@@ -131,6 +131,23 @@ public class Kysely {
 // ---------------------------------------------------------------
     
     /**
+     * Korvaa tai lisaa kysymyksen
+     * @param kysymys viite
+     * @throws TallennaException jos taynna
+     */
+    public void korvaaTaiLisaa(Kysymys kysymys) throws TallennaException { 
+        kysymykset.korvaaTaiLisaa(kysymys); 
+    }
+    
+// ---------------------------------------------------------------  
+// ---------------------------------------------------------------   
+
+    
+// ---------------------------------------------------------------
+// ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
+// ---------------------------------------------------------------
+    
+    /**
      * Asettaa tiedostojen perusnimet
      * @param nimi uusi nimi
      */

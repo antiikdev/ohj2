@@ -163,11 +163,34 @@ public class KyselyGUIController implements Initializable {
         tableKysymykset.initTable(headings);
         tableKysymykset.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         tableKysymykset.setEditable(false); 
-        tableKysymykset.setPlaceholder(new Label("Ei viela kysymysta")); 
+        tableKysymykset.setPlaceholder(new Label("Ei viela kysymysta"));
         
+        // KYSYMYSTEN muokkaus
+        tableKysymykset.setTableMenuButtonVisible(true);
+        tableKysymykset.setEditable(true);
+        tableKysymykset.setOnGridLiveEdit((g, koehenkilo, defValue, r, c, edit) -> {
+            String virhe = koehenkilo.aseta(c+eka,defValue);
+            if ( virhe == null ) {
+                try {
+					kysely.korvaaTaiLisaa(koehenkilo);
+				} catch (TallennaException ex) {
+					// virhe
+					ex.printStackTrace();
+				}
+                edit.setStyle(null);
+                 Dialogs.setToolTipText(edit,"");
+            } else {
+                 edit.setStyle("-fx-background-color: red");
+                Dialogs.setToolTipText(edit,virhe);
+            }
+            return defValue;
+        });
+        // tableKysymykset.add(chooserKoehenkilot);
+        /*
         tableKysymykset.setColumnSortOrderNumber(1); 
         tableKysymykset.setColumnSortOrderNumber(2); 
-        tableKysymykset.setColumnWidth(1, 60); 
+        tableKysymykset.setColumnWidth(1, 60);
+        */
     }
     
     

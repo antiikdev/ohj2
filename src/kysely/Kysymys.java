@@ -174,10 +174,45 @@ public class Kysymys {
                 return vastausVaihtoehdot;
             default:
                 return "???";
+        	}
         }
-    }
+        
+        /*
+         * Asettaa arvot
+         */
+        public String aseta(int k, String s) {
+            String st = s.trim();
+            StringBuffer sb = new StringBuffer(st);
+            switch (k) {
+                case 0:
+                    setId(Mjonot.erota(sb, '$', getId()));
+                    return null;
+                case 1:
+                    koehenkiloNro = Mjonot.erota(sb, '$', koehenkiloNro);
+                    return null;
+                case 2:
+                    kysymys = st;
+                    return null;
+                case 3:
+                    try {
+                        kysymysTyyppi = Mjonot.erotaEx(sb, 'ß', kysymysTyyppi);
+                    } catch (NumberFormatException ex) {
+                        return "Virhe ("+st+")";
+                    }
+                    return null;
 
-    
+                case 4:
+                    try {
+                        vastausVaihtoehdot = Mjonot.erotaEx(sb, 'ß', vastausVaihtoehdot);
+                    } catch (NumberFormatException ex) {
+                        return "virhe ("+st+")";
+                    }
+                    return null;
+                    
+                default:
+                    return "V‰‰r‰ kent‰n indeksi";
+            }
+    }
     
 // -------------------------------------------------------------
 // -------------------------------------------------------------
