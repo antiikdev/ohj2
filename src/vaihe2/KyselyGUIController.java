@@ -85,7 +85,7 @@ public class KyselyGUIController implements Initializable {
         lisaaUusiKoehenkiloKyselyyn();
     }
     
-    @FXML void handlePoistaTama() {
+    @FXML void handlePoistaTama() throws TallennaException {
     	poistaKoehenkilo();
     }
     
@@ -332,26 +332,16 @@ public class KyselyGUIController implements Initializable {
     /**
      * Poistaa koehenkilon kyselysta
      * TODO: Tehtava
+     * @throws TallennaException jos virhe
      */
-    private void poistaKoehenkilo() {
+    private void poistaKoehenkilo() throws TallennaException {
     	koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
         if (koehenkiloKohdalla == null) return;
-    	// Taydellinen koehenkilon poisto:
-        // kysely.poistaKoehenkilo(koehenkiloKohdalla);
-        
-    	
         // Koehenkilon rivin poistaminen tiedostosta:
-        // 1. Etsi tiedostosta rivi ja kirjoita se tyhjaksi
-    	poista(koehenkiloKohdalla);
+    	kysely.poistaKoehenkilo(koehenkiloKohdalla);
     	// Lue tiedosto uudestaan / alusta?
-    	avaa();
+    	lueTiedosto(kyselynimi);
     }
-    
-    // TODO: Tehtava
-    private void poista(Koehenkilo koehenkilo) {
-    	return;
-    }
-    
     
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

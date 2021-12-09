@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
  * Koehenkilot-luokka
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
@@ -75,24 +77,49 @@ public class Koehenkilot {
         return lkm;
     }
     
-
 // ---------------------------------------------------------------
 // ---------- HT7-vaihe tietojen muokkaus ja poisto  -------------
 // ---------------------------------------------------------------
-    
-    /**
-     * Poistaa koehenkilon
-     * @param koehenkilo joka poistetaan
-     */
-    public void poistaKoehenkilo(Koehenkilo koehenkilo) {
-    	this.alkiot[koehenkilo.getKoehenkiloNro()] = null;
-    	koehenkilo.poistaKoehenkilo();
-    }
+     
+     /**
+      * Poistaa koehenkilon
+      * @param koehenkilo joka poistetaan
+      * @throws TallennaException jos virhe
+      */
+     public void poistaKoehenkilo(Koehenkilo koehenkilo) throws TallennaException {
+    	 if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "koehenkilot.dat";
+    	 File otied = new File(tiedostonPerusNimi);
+         File itied = new File("TempKoehenkilot.dat");
+    	 String rivi = koehenkilo.toString();
+    	 
 
+    	 try (Scanner fi = new Scanner(new FileInputStream(otied))) {
+    		 try (PrintStream fo = new PrintStream(new FileOutputStream(itied, false))) {
+             
+			 // Luetaan tiedosta rivi kerrallaan koehenkilot
+    			 while ( fi.hasNext() ) {
+    				 String s = "";
+    				 s = fi.nextLine();
+             	
+             // Jos ei poistettava, niin kirjoitetaan rivi uuteen valikaikaiseen tiedostoon
+	                 if ( s.equals(rivi) ) continue;
+	                 fo.println(s);      
+    			 }	
+             
+         } catch ( FileNotFoundException e) {
+             throw new TallennaException("Ei  saa luettua tiedostoa: " + tiedostonPerusNimi);
+         }
+    	 } catch (FileNotFoundException ex) {
+             throw new TallennaException("Tiedosto " + itied.getName() + " ei aukea");
+         }
+         // Poistetaan alkuperainen tiedosto ja nimetaan uusi tiedosto
+    	 otied.delete();
+         itied.renameTo(otied);
+	}
+     
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------    
-    
-    
+
 // ---------------------------------------------------------------
 // ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
 // ---------------------------------------------------------------

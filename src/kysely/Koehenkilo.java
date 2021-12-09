@@ -164,15 +164,7 @@ public class Koehenkilo {
 		return null;
 	}
 	
-	/**
-	 * Poistaa koehenkilon
-	 */
-	public void poistaKoehenkilo() {
-	    this.koehenkiloNro = 0;
-	    this.nimi = null;
-	    this.sukupuoli = null;
-	    this.ikaryhma = null;
-	}
+
 // -------------------------------------------------------------
 // -------------------------------------------------------------
 

@@ -136,16 +136,16 @@ public class Kysely {
      */
     public void korvaaTaiLisaa(Kysymys kysymys) throws TallennaException { 
         kysymykset.korvaaTaiLisaa(kysymys); 
-    }
+    }    
     
-    
-    /**
-     * Poistaa koehenkilon kyselysta
-     * @param koehenkilo joka poistetaan
-     */
-    public void poistaKoehenkilo(Koehenkilo koehenkilo) {
-    	koehenkilot.poistaKoehenkilo(koehenkilo);
-    }
+	/**
+	 * Poistaa koehenkilon kyselysta
+	 * @param koehenkilo joka poistetaan
+	 * @throws TallennaException jos virhe
+	 */
+	public void poistaKoehenkilo(Koehenkilo koehenkilo) throws TallennaException {
+		koehenkilot.poistaKoehenkilo(koehenkilo);
+	}
     
 // ---------------------------------------------------------------  
 // ---------------------------------------------------------------   
