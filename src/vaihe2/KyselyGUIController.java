@@ -32,10 +32,9 @@ import kysely.TallennaException;
 import kysely.Vastaus;
 
 /**
- * Luokka kyselyn käyttöliittymän tapahtumien kontrolloimiseksi
+ * Luokka kyselyn kayttoliittyman tapahtumien kontrolloimiseksi
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
- * @version 7 Dec 2021
  *
  */
 public class KyselyGUIController implements Initializable {
@@ -206,8 +205,7 @@ public class KyselyGUIController implements Initializable {
 	        case 3 : virhe = koehenkiloKohdalla.setIkaryhma(s); break;
         default:
         }
-        if (virhe != null) ilmoitaVirhe(virhe);
-        
+        if (virhe != null) ilmoitaVirhe(virhe); 
 	}
     
     

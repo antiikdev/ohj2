@@ -11,7 +11,6 @@ import java.util.List;
  * Sisalto: Class-responsibility-collaboration (CRC) cards
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
- * @version 7 Dec 2021
  */
 public class Kysely {
     private Koehenkilot koehenkilot = new Koehenkilot();

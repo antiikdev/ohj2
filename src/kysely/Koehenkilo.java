@@ -150,6 +150,7 @@ public class Koehenkilo {
 	 */
 	public String setSukupuoli(String s) {
 		if ( s.equals("") ) return "Syota arvo!";
+		if ( !s.equals("m") || !s.equals("f") ) return "Syota m tai f!";
 		sukupuoli = s;
 		return null;
 	}

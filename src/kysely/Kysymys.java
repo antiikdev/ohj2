@@ -12,15 +12,14 @@ import fi.jyu.mit.ohj2.Mjonot;
  * Kysymys-luokka
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
- * @version 3 Nov 2021
  *
  */
 public class Kysymys {
     private int id;
     private int koehenkiloNro;
     private String kysymys;
-    private String kysymysTyyppi;
     private String vastausVaihtoehdot;
+    private String vastaus;
     
     private static int seuraavaNro = 1;
     
@@ -48,8 +47,8 @@ public class Kysymys {
     public void taytaEsimKysymysTiedot(int numero) {
         this.koehenkiloNro = numero;
         this.kysymys = "Syota kysymys";
-        this.kysymysTyyppi = "Syota vastausvaihtoehdot";
-        this.vastausVaihtoehdot = "Syota vastaus";
+        this.vastausVaihtoehdot = "Syota vastausvaihtoehdot";
+        this.vastaus = "Syota vastaus";
     }
     
     
@@ -60,7 +59,7 @@ public class Kysymys {
      */
     public void tulosta(PrintStream out) throws TallennaException  {
         out.println(id + "|" + koehenkiloNro + "|"  + kysymys + "|" +
-                    kysymysTyyppi + "|" + vastausVaihtoehdot);
+                    vastausVaihtoehdot + "|" + vastaus);
     }
     
     
@@ -134,6 +133,7 @@ public class Kysymys {
     }
     
     /**
+     * Kysymys-luokan otsikot per atribuutti tyyppi
      * @param k minkä kentän kysymys halutaan
      * @return valitun kentän kysymysteksti
      */
@@ -144,11 +144,11 @@ public class Kysymys {
             case 1:
                 return "koehenkiloNro";
             case 2:
-                return "kysymys";
+                return "Kysymys";
             case 3:
-                return "kysymysTyyppi";
+                return "Vastausvaihtoehdot";
             case 4:
-                return "vastausVaihtoehdot";
+                return "Vastaus";
             default:
                 return "???";
         }
@@ -168,9 +168,9 @@ public class Kysymys {
             case 2:
                 return kysymys;
             case 3:
-                return kysymysTyyppi;
-            case 4:
                 return vastausVaihtoehdot;
+            case 4:
+                return vastaus;
             default:
                 return "???";
         	}
@@ -194,7 +194,7 @@ public class Kysymys {
                     return null;
                 case 3:
                     try {
-                        kysymysTyyppi = Mjonot.erotaEx(sb, '§', kysymysTyyppi);
+                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '§', vastausVaihtoehdot);
                     } catch (NumberFormatException ex) {
                         return "Virhe ("+st+")";
                     }
@@ -202,7 +202,7 @@ public class Kysymys {
 
                 case 4:
                     try {
-                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '§', vastausVaihtoehdot);
+                        vastaus = Mjonot.erotaEx(sb, '§', vastaus);
                     } catch (NumberFormatException ex) {
                         return "virhe ("+st+")";
                     }
@@ -248,8 +248,8 @@ public class Kysymys {
                getId() + "|" +
                getKoehenkiloNro() + "|" +
                kysymys + "|" +
-               kysymysTyyppi + "|" +
-               vastausVaihtoehdot;
+               vastausVaihtoehdot + "|" +
+               vastaus;
    }
    
    
@@ -265,8 +265,8 @@ public class Kysymys {
        setId(Mjonot.erota(sb, '|', getId()));
        setKoehenkiloNro(Mjonot.erota(sb, '|', getKoehenkiloNro()));
        kysymys = Mjonot.erota(sb, '|', kysymys);
-       kysymysTyyppi = Mjonot.erota(sb, '|', kysymysTyyppi);
        vastausVaihtoehdot = Mjonot.erota(sb, '|', vastausVaihtoehdot);
+       vastaus = Mjonot.erota(sb, '|', vastaus);
    }
    
 // -------------------------------------------------------------

@@ -35,7 +35,7 @@
                   <Tooltip text="Tallenna kyselyn vastaus" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleUusiKysymys" text="Lisaa uusi kysymys">
+            <Button mnemonicParsing="false" onAction="#handleUusiKysymys" text="Lisaa uusi kysymys/vastaus">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>

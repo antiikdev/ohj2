@@ -17,7 +17,6 @@ import fi.jyu.mit.ohj2.Mjonot;
  * Koehenkilot-luokka
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
- * @version 21 Oct 2021
  *
  */
 public class Koehenkilot {

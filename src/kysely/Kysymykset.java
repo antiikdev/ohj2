@@ -18,7 +18,6 @@ import java.util.Scanner;
  * Kysymykset-luokka
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
- * @version 3 Nov 2021
  *
  */
 public class Kysymykset {
