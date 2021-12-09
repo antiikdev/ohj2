@@ -47,9 +47,9 @@ public class Kysymys {
      */
     public void taytaEsimKysymysTiedot(int numero) {
         this.koehenkiloNro = numero;
-        this.kysymys = "Kissapetoelain?";
-        this.kysymysTyyppi = "Monivalinta";
-        this.vastausVaihtoehdot = "a)Kissa,b)Tiikeri";
+        this.kysymys = "Syota kysymys";
+        this.kysymysTyyppi = "Syota vastausvaihtoehdot";
+        this.vastausVaihtoehdot = "Syota vastaus";
     }
     
     

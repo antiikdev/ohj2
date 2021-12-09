@@ -180,54 +180,13 @@ public class KyselyGUIController implements Initializable {
 					ex.printStackTrace();
 				}
                 edit.setStyle(null);
-                 Dialogs.setToolTipText(edit,"");
+                Dialogs.setToolTipText(edit,"");
             } else {
-                 edit.setStyle("-fx-background-color: red");
+            	edit.setStyle("-fx-background-color: red");
                 Dialogs.setToolTipText(edit,virhe);
             }
             return defValue;
         });
-        // tableKysymykset.add(?);
-        /*
-        tableKysymykset.setColumnSortOrderNumber(1); 
-        tableKysymykset.setColumnSortOrderNumber(2); 
-        tableKysymykset.setColumnWidth(1, 60);
-        */
-        
-        
-    // ---- Alustetaan VASTAUSTAULUKON otsikot omaan grid tableen ----
-    // HUOM! Vastauksille ei ole ikkunassa tilaa ja fxml-tiedosto ei aukea Scenebuilderissa!
-        /*
-        int ekaV = apuvastaus.ekaKentta();
-        int lkmV = apuvastaus.getKenttia();
-        String[] headingsV = new String[lkmV-ekaV];
-        for (int j=0, k=ekaV; k<lkmV; j++, k++) headingsV[j] = apuvastaus.getVastaus(k);
-        tableVastaukset.initTable(headingsV);
-        tableVastaukset.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
-        tableVastaukset.setEditable(false);
-        tableVastaukset.setPlaceholder(new Label("Ei viela vastausta"));
-        
-    // VASTAUSTEN muokkaus
-        tableVastaukset.setTableMenuButtonVisible(true);
-        tableVastaukset.setEditable(true);
-        tableVastaukset.setOnGridLiveEdit((g, koehenkilo, defValue, r, c, edit) -> {
-            String virhe = koehenkilo.aseta(c+ekaV,defValue);
-            if ( virhe == null ) {
-                try {
-					kysely.korvaaTaiLisaa(koehenkilo);
-				} catch (TallennaException ex) {
-					// virhe
-					ex.printStackTrace();
-				}
-                edit.setStyle(null);
-                 Dialogs.setToolTipText(edit,"");
-            } else {
-                 edit.setStyle("-fx-background-color: red");
-                Dialogs.setToolTipText(edit,virhe);
-            }
-            return defValue;
-        });
-        */
     }
     
     
@@ -250,6 +209,7 @@ public class KyselyGUIController implements Initializable {
         if (virhe != null) ilmoitaVirhe(virhe);
         
 	}
+    
     
     /**
      * Ilmoittaa virheen kayttajalle
@@ -291,7 +251,7 @@ public class KyselyGUIController implements Initializable {
     
     /*
      * Naytetaan koehenkilo
-     * H7 MUOKATTU
+     * HT7 MUOKATTU
      */
     private void naytaKoehenkilo() {
         koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
@@ -331,7 +291,6 @@ public class KyselyGUIController implements Initializable {
     
     /**
      * Poistaa koehenkilon kyselysta
-     * TODO: Tehtava
      * @throws TallennaException jos virhe
      */
     private void poistaKoehenkilo() throws TallennaException {
@@ -339,7 +298,7 @@ public class KyselyGUIController implements Initializable {
         if (koehenkiloKohdalla == null) return;
         // Koehenkilon rivin poistaminen tiedostosta:
     	kysely.poistaKoehenkilo(koehenkiloKohdalla);
-    	// Lue tiedosto uudestaan / alusta?
+    	// Lue tiedosto uudestaan
     	lueTiedosto(kyselynimi);
     }
     

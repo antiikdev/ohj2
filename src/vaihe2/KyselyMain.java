@@ -35,7 +35,7 @@ public class KyselyMain extends Application {
             primaryStage.show();
             //  --------------------------------------------------   
 
-            
+
             //  --------  HT6-vaihetta - tiedoston luku -------
             // HT6: Ilmoitetaan suoraan tassa versiossa juuressa oleva tiednimi:
             kyselyCtrl.lueTiedosto("koehenkilot.dat");

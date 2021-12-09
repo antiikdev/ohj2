@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vaihe2.KyselyGUIController">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vaihe2.KyselyGUIController">
    
    <bottom>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
@@ -29,23 +29,17 @@
                   <Tooltip text="Lisää uusi jäsen" />
                </tooltip>
             </Button>
+            <Button mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista koehenkilo" />
             <Button mnemonicParsing="false" onAction="#handleTallennaTama" text="Tallenna">
                <tooltip>
                   <Tooltip text="Tallenna kyselyn vastaus" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleUusiKysymys" text="Lisaa kysymys">
+            <Button mnemonicParsing="false" onAction="#handleUusiKysymys" text="Lisaa uusi kysymys">
                <HBox.margin>
                   <Insets left="40.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista kysymys" />
-            <Button mnemonicParsing="false" onAction="#handleUusiVastaus" text="Lisaa vastaus">
-               <HBox.margin>
-                  <Insets left="40.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista vastaus" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

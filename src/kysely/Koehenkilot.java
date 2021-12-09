@@ -89,19 +89,18 @@ public class Koehenkilot {
      public void poistaKoehenkilo(Koehenkilo koehenkilo) throws TallennaException {
     	 if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "koehenkilot.dat";
     	 File otied = new File(tiedostonPerusNimi);
-         File itied = new File("TempKoehenkilot.dat");
+         File itied = new File("TempKoehenkilot.dat"); // uusi tiedosto
     	 String rivi = koehenkilo.toString();
     	 
-
     	 try (Scanner fi = new Scanner(new FileInputStream(otied))) {
     		 try (PrintStream fo = new PrintStream(new FileOutputStream(itied, false))) {
              
-			 // Luetaan tiedosta rivi kerrallaan koehenkilot
+			 // Luetaan tiedosta rivi (s) kerrallaan koehenkilot
     			 while ( fi.hasNext() ) {
     				 String s = "";
     				 s = fi.nextLine();
              	
-             // Jos ei poistettava, niin kirjoitetaan rivi uuteen valikaikaiseen tiedostoon
+             // Jos poistettava rivi (s) sisaltaa poistettavan, hypataan yli, eika kirjoiteta 
 	                 if ( s.equals(rivi) ) continue;
 	                 fo.println(s);      
     			 }	
@@ -112,14 +111,16 @@ public class Koehenkilot {
     	 } catch (FileNotFoundException ex) {
              throw new TallennaException("Tiedosto " + itied.getName() + " ei aukea");
          }
-         // Poistetaan alkuperainen tiedosto ja nimetaan uusi tiedosto
+         // Poistetaan alkuperainen tiedosto ja nimetaan uusi tiedosto korvaamaan alkuperainen
     	 otied.delete();
          itied.renameTo(otied);
+         // lkm?
 	}
      
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------    
 
+     
 // ---------------------------------------------------------------
 // ---------- HT6-vaihe (tiedoston tallennus ja luku -------------
 // ---------------------------------------------------------------
