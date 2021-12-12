@@ -230,6 +230,30 @@ public class Koehenkilo {
         sukupuoli = Mjonot.erota(sb, '|', sukupuoli);
         ikaryhma = Mjonot.erota(sb, '|', ikaryhma);
     }
+    
+    
+    //Haku
+    /**
+     * Antaa k:n kentän sisällön
+     * @param k monesko kenttä
+     * @return kentän sisällön
+     */
+    public String anna(int k) {
+        switch (k) {
+        case 1: return "" + nimi;
+        case 2: return "" + sukupuoli;
+        case 3: return "" + ikaryhma;
+        default: return "Tyhäm";
+        }
+    }
+    
+    /**
+     * Eka kenttä joka on sopiva kysyttäväksi
+     * @return ekan kentän indeksi
+     */
+    public int ekaKentta() {
+        return 1;
+    }
 // -------------------------------------------------------------
 // -------------------------------------------------------------
     

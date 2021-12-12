@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -13,12 +14,14 @@ import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.StringAndObject;
 import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -48,7 +51,9 @@ public class KyselyGUIController implements Initializable {
     @FXML private TextField editIkaryhma;
     @FXML private StringGrid<Kysymys> tableKysymykset;
     @FXML private StringGrid<Vastaus> tableVastaukset;
-    
+    //private ComboBoxChooser<Koehenkilo> cbKentat;
+    @FXML private ComboBoxChooser<String> cbKentat;
+    @FXML private TextField hakuehto;
     
     /**
      * Alustetaan
@@ -118,6 +123,11 @@ public class KyselyGUIController implements Initializable {
     @FXML void handleUusiVastaus() {
         lisaaUusiVastaus();
     }
+    
+    @FXML void handleHakuehto() {
+     //Dialogs.showMessageDialog("Haku ei vielä toimi!");
+     hae(0);
+    }
 // ----------------------------------------------------------------------------    
     
 
@@ -133,6 +143,7 @@ public class KyselyGUIController implements Initializable {
     private TextField edits[];
     private static Kysymys apukysymys = new Kysymys();
     // private static Vastaus apuvastaus = new Vastaus(); // HT7: ei kaytossa
+    private static Koehenkilo apukoehenkilo = new Koehenkilo();
     
     /**
      * Muut alustukset ja Gridpanelin tilalle tekstikentta,
@@ -313,6 +324,7 @@ public class KyselyGUIController implements Initializable {
     private String kyselynimi = "";
     private Kysely kysely;
     private Koehenkilo koehenkiloKohdalla;
+    
     // private TextArea areaKoehenkilo = new TextArea(); //HT6, poistettu HT7
    
    /**
@@ -436,17 +448,42 @@ public class KyselyGUIController implements Initializable {
 
     /**
      * Haetaan koehenkiloiden tiedot listaan
-     * @param knro koehenkilon numero, joka aktivoidaan haun jalkeen
+     * @param knr koehenkilon numero, joka aktivoidaan haun jalkeen
      */
-    private void hae (int knro) {
+    private void hae (int knr) {
         chooserKoehenkilot.clear();
-        
-        int index = 0;
-        for (int i = 0; i < kysely.getKoehenkiloita(); i++) {
-            Koehenkilo koehenkilo = kysely.annaKoehenkilo(i);
-            if (koehenkilo.getKoehenkiloNro() == knro) index = i;
-            chooserKoehenkilot.add(koehenkilo.getNimi(), koehenkilo);
+        int knro = knr;
+        if (knro <= 0)
+        {
+            Koehenkilo kohdalla = koehenkiloKohdalla;
+            if (kohdalla != null) knro = kohdalla.getKoehenkiloNro();
         }
+        int index = 0;
+        
+        //haku
+        int k = cbKentat.getSelectedIndex() + apukoehenkilo.ekaKentta();
+        String ehto = hakuehto.getText();
+        if (ehto.indexOf('*') < 0) ehto = "*" + ehto + "*";
+        
+        Collection<Koehenkilo> koehenkilot;
+        try {
+            koehenkilot = kysely.etsi(ehto, k);
+            int i = 0;
+            for (Koehenkilo koehenkilo:koehenkilot)
+            {
+                if (koehenkilo.getKoehenkiloNro() == knro) index = i;
+                chooserKoehenkilot.add(koehenkilo.getNimi(), koehenkilo);
+                i++;
+            }
+        } catch (TallennaException ex) {
+            Dialogs.showMessageDialog("Koehenkilön hakemisessa ongelmia! " + ex.getMessage());
+        }
+        
+        //for (int i = 0; i < kysely.getKoehenkiloita(); i++) {
+            //Koehenkilo koehenkilo = kysely.annaKoehenkilo(i);
+            //if (koehenkilo.getKoehenkiloNro() == knro) index = i;
+            //chooserKoehenkilot.add(koehenkilo.getNimi(), koehenkilo);
+        //}
         chooserKoehenkilot.setSelectedIndex(index); // muutosviesti
     }
     

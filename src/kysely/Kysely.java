@@ -4,6 +4,7 @@
 package kysely;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -224,6 +225,21 @@ public class Kysely {
     }
 // ---------------------------------------------------------------  
 // ---------------------------------------------------------------    
+    
+    // Haku TODO testit
+    /**
+     * Palauttaa hakuehtoon vastaavien koehenkilöiden viitteet
+     * @param hakuehto mitä haetaan
+     * @param k etsittävän kentän indeksi
+     * @return tietorakenteen löydetyistä
+     * @throws TallennaException virhe talteen
+     *
+     */
+    public Collection<Koehenkilo> etsi(String hakuehto, int k) throws TallennaException {
+        return koehenkilot.etsi(hakuehto, k);
+    }
+    
+    
     
     
     /**

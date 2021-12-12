@@ -9,9 +9,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 // import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import fi.jyu.mit.ohj2.Mjonot;
+import fi.jyu.mit.ohj2.WildChars;
 
 /**
  * Koehenkilot-luokka
@@ -19,7 +24,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
  *
  */
-public class Koehenkilot {
+public class Koehenkilot implements Iterable<Koehenkilo> {
     
     private static final int MAX_KOEHENKILOITA = 8;
     private int lkm = 0;
@@ -199,6 +204,78 @@ public class Koehenkilot {
     }
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------    
+    
+    //Haku TODO testit
+    /**
+     * Luokka koehenkilöiden iteroimiseen
+     * @author TopiK
+     * @version 12.12.2021
+     *
+     */
+    public class KoehenkilotIterator implements Iterator<Koehenkilo> {
+     private int kohdalla = 0;
+     
+     /**
+      * Onko olemassa seuraavaa
+      * @see java.util.Iterator#hasNext()
+      * @return true jos on seuraava
+      */
+     @Override
+     public boolean hasNext() {
+         return kohdalla < getLkm();
+     }
+     
+     /**
+      * Annetaan seuraava
+      * @return seuraava
+      * @throws NoSuchElementException jos ei ole seuraavaa
+      * @see java.util.Iterator#next()
+      */
+     @Override
+     public Koehenkilo next() throws NoSuchElementException {
+         if (!hasNext()) throw new NoSuchElementException("Ei oo enempää");
+         return anna(kohdalla++);
+     }
+     
+     /**
+      * Tuhoamista ei toteutettu
+      * @throws UnsupportedOperationException aina
+      * @see  java.util.Iterator#remove()
+      */
+     @Override
+     public void remove() throws UnsupportedOperationException {
+         throw new UnsupportedOperationException("Ei poistella");
+     }
+    }
+    
+    /**
+     * Palutetaan iteraattori koehenkilöistään
+     * @return koehenkilö iteraattori
+     */
+    @Override
+    public Iterator<Koehenkilo> iterator() {
+        return new KoehenkilotIterator();
+    }
+    
+    /**
+     * @param hakuehto mitä haetaan
+     * @param k etsittävän indeksi
+     * @return tietorakenteen löydetyistä
+     */
+    public Collection<Koehenkilo> etsi(String hakuehto, int k) {
+        String ehto = "*";
+        if (hakuehto != null && hakuehto.length() > 0) ehto = hakuehto;
+        int hk = k;
+        if (hk < 0) hk = 1;
+        Collection<Koehenkilo> loytyneet = new ArrayList<Koehenkilo>();
+        for (Koehenkilo koehenkilo : this) {
+            if (WildChars.onkoSamat(koehenkilo.anna(hk), ehto)) loytyneet.add(koehenkilo);
+        }
+        
+        
+        return loytyneet;
+    }
+    
     
     
     /**
