@@ -276,8 +276,6 @@ public class KyselyGUIController implements Initializable {
         editSukupuoli.setText(koehenkiloKohdalla.getSukupuoli());
         editIkaryhma.setText(koehenkiloKohdalla.getIkaryhma());
         naytaKysymykset(koehenkiloKohdalla);
-        // TODO (Ilkka): naytaVastaukset(); vaatisi GUI muokkausta, mutta
-        // SceneBuilder ei toimi ja fxml-tied muokkaus ei ole onnistunut
     }
     
     

@@ -148,10 +148,12 @@ public class Koehenkilo {
 	 * Asettaa sukupuolen
 	 * @return null jos ok, "virhe" jos virhe
 	 */
-	public String setSukupuoli(String s) {
-		if ( s.equals("") ) return "Syota arvo!";
+	public String setSukupuoli(String s) {	
 		sukupuoli = s;
-		if ( !s.equals("m") || !s.equals("f") ) return "Syota m tai f!";
+		if ( s.equals("") ) return "Syota arvo!";
+		if ( !s.equals("m") || !s.equals("f") || !s.equals("e")) {
+			return "Syota m, f tai e!";
+		}
 		return null;
 	}
 

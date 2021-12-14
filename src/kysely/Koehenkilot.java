@@ -44,6 +44,17 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      * Lisataan uusi koehenkilo
      * @param koehenkilo uusi
      * @throws TallennaException jos tietorakenne on jo taynna
+     * @example
+     * <pre name="test">
+     *  #THROWS TallennaException
+     *  Koehenkilot koeapinat = new Koehenkilot();
+     *  Koehenkilo cheeta = new Koehenkilo(), apina = new Koehenkilo();
+     *  koeapinat.getLkm() === 0;
+     *  koeapinat.lisaa(cheeta); koeapinat.getLkm() === 1;
+     *  koeapinat.lisaa(apina); koeapinat.getLkm() === 2;
+     *  koeapinat.anna(0) === cheeta;
+     *  koeapinat.anna(1) === apina;
+     * </pre>
      */
     public void lisaa(Koehenkilo koehenkilo) throws TallennaException {
         if ( lkm > alkiot.length ) throw new TallennaException("Liikaa alkioita");
@@ -120,6 +131,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
          itied.renameTo(otied);
          // lkm?
 	}
+
      
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------    
@@ -159,7 +171,26 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
     /**
      * Lukee koehenkilot tiedostosta
      * @throws TallennaException jos lukeminen epaonnistuu
-     * TODO: comtestit
+     * @example
+     * <pre name="test">
+     *  #THROWS TallennaException
+     *  #import java.io.File;
+     *  #import java.util.Iterator;
+     *  
+     *  Koehenkilot kaniinit = new Koehenkilot();
+     *  Koehenkilo kani = new Koehenkilo(), pupu = new Koehenkilo();
+     *  kani.taytaEsimTiedot();
+     *  pupu.taytaEsimTiedot();
+     *  kaniinit.lueTiedostosta();
+     *  kaniinit.lisaa(kani);
+     *  kaniinit.lisaa(pupu);
+     *  kaniinit.tallenna();
+     *  kaniinit = new Koehenkilot(); // poistetaan aikaisemmat
+     *  kaniinit.lueTiedostosta();
+     *  Iterator<Koehenkilo> iteroi = kaniinit.iterator();
+     *  iteroi.next() === kani;
+     *  iteroi.next() === pupu;
+     * </pre>
      */
     public void lueTiedostosta() throws TallennaException {
         // throw new TallennaException("Ei osata viela lukea tiedostoa " + hakemisto);
@@ -188,7 +219,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      * 1|k100|  m       |15-21|
      * 2|k101|  f       |21-28|
      * </pre>
-     * @throws TallennaException poikkeus jos tallennus epäonnistuu
+     * @throws TallennaException poikkeus jos tallennus epaonnistuu
      */
     public void tallenna() throws TallennaException {
         if ( tiedostonPerusNimi.length() <= 0 ) tiedostonPerusNimi = "koehenkilot.dat";
@@ -207,7 +238,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
     
     //Haku TODO testit
     /**
-     * Luokka koehenkilöiden iteroimiseen
+     * Luokka koehenkiloiden iteroimiseen
      * @author TopiK
      * @version 12.12.2021
      *
