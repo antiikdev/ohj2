@@ -63,6 +63,16 @@ public class Koehenkilo {
         out.println();
     }
     
+    /**
+     * 
+     * Tulostetaan koehenkilon tiedot
+     * @return koehenkilon tiedot
+     */
+    public String tulosta() {
+        String tiedot = koehenkiloNro + "|" + nimi + "|" + sukupuoli + "|" + ikaryhma;
+        return tiedot;
+    }
+    
     
     /**
      * 

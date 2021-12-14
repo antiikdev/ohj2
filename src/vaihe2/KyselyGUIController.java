@@ -317,13 +317,25 @@ public class KyselyGUIController implements Initializable {
     
     /**
      * Tulostaa pienen raportin Kyselyn koehenkiloista
-     * TODO: tahan voi yrittaa keksia esim. koehenkilomaaran
      */
     private void tulostaRaportti() {
     	int lkm = kysely.getKoehenkiloita();
-    	String teksti = "Kyselyssa on " + lkm + " koehenkiloa.";
-    	Dialogs.showMessageDialog(teksti);
+    	String teksti = "Kyselyssa on yhteensa " + lkm + " koehenkiloa.";
+    	String koehenkTied = "";
+    	
+    	for (int i = 0; i < kysely.getKoehenkiloita(); i++) {
+    		Koehenkilo koehenkilo = kysely.annaKoehenkilo(i);
+    		koehenkTied += koehenkilo.tulosta();
+    		koehenkTied += "\n";
+    		
+			// List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
+			// koehenkTied += kysymykset.annaKysymys(); 
+    		// koehenkTied += "\n";
+    		}
+    	
+    	Dialogs.showMessageDialog(teksti + "\n" + koehenkTied);
     }
+    
     
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
