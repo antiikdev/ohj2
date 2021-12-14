@@ -61,6 +61,7 @@
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleLisaaUusi" text="Lisaa koehenkilo" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleNaytaRaportti" text="Nayta raportti" />
                   <MenuItem mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista vastaus" />
             </items>
           </Menu>

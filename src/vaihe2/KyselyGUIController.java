@@ -28,6 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import kysely.Koehenkilo;
+import kysely.Koehenkilot;
 import kysely.Kysely;
 import kysely.Kysymykset;
 import kysely.Kysymys;
@@ -87,6 +88,10 @@ public class KyselyGUIController implements Initializable {
     // ---------- MENUBAR ITEMIT: Muokkaa ----------
     @FXML void handleLisaaUusi() {
         lisaaUusiKoehenkiloKyselyyn();
+    }
+    
+    @FXML void handleNaytaRaportti() {
+        tulostaRaportti();
     }
     
     @FXML void handlePoistaTama() throws TallennaException {
@@ -309,6 +314,17 @@ public class KyselyGUIController implements Initializable {
     	lueTiedosto(kyselynimi);
     }
     
+    
+    /**
+     * Tulostaa pienen raportin Kyselyn koehenkiloista
+     * TODO: tahan voi yrittaa keksia esim. koehenkilomaaran
+     */
+    private void tulostaRaportti() {
+    	int lkm = kysely.getKoehenkiloita();
+    	String teksti = "Kyselyssa on " + lkm + " koehenkiloa.";
+    	Dialogs.showMessageDialog(teksti);
+    }
+    
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
     
@@ -378,7 +394,7 @@ public class KyselyGUIController implements Initializable {
     
     /*
      * Naytetaan koehenkilo ja kysymykset
-     * TODO: supresswarning asetettu HT7, tarvetta?
+     * Supresswarning asetettu HT7-vaiheessa, kun ei tarvetta.
      */
     @SuppressWarnings("unused")
 	private void tulosta(PrintStream os, final Koehenkilo koehenkilo) {
