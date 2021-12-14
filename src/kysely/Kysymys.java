@@ -64,6 +64,18 @@ public class Kysymys {
     
     
     /**
+     * Tulostetaan kysymyksen tiedot
+     * @throws TallennaException jos poikkeus
+     * @return tulostus kysymyksesta
+     */
+    public String tulosta() throws TallennaException  {
+        String tulos = id + "|" + koehenkiloNro + "|"  + kysymys + "|" +
+                    vastausVaihtoehdot + "|" + vastaus;
+        return tulos;
+    }
+    
+    
+    /**
      * Tulostetaan koehenkilon tiedot
      * @param os tulostettava tietovirta
      * @throws TallennaException jos poikkeus
