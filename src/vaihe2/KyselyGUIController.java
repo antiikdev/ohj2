@@ -231,7 +231,7 @@ public class KyselyGUIController implements Initializable {
      */
     private void ilmoitaVirhe(String virhe) {
     	if ( virhe == null || virhe.isEmpty() ) return;
-    	else Dialogs.showMessageDialog(virhe);
+    	Dialogs.showMessageDialog(virhe);
     }
 
 

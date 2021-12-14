@@ -41,7 +41,7 @@ public class Kysymykset {
     /**
      * Lisataan kysymys
      * @param kys lisattava kysymys
-     * @thrwos TallennaException jos ongelmia
+     * @throws TallennaException jos ongelmia
      */
     public void lisaa(Kysymys kys) throws TallennaException {
         // Tietorakenteesta loytyy valmiiksi .add-metodi lisaamiseen
@@ -82,8 +82,13 @@ public class Kysymykset {
     
 // ---------------------------------------------------------------
 // ---------- HT7-vaihe (kysymysten nayttaminen ja muokkaus ------
-// ---------------------------------------------------------------�
+// ---------------------------------------------------------------占�
     
+    /**
+     * Korvaa tai lis채채 kysymyksen
+     * @param kysymys korvaava tai lis채tt채v채 kysymys
+     * @throws TallennaException jos virheit채
+     */
     public void korvaaTaiLisaa(Kysymys kysymys) throws TallennaException {
         int id = kysymys.getId();
         for (int i = 0; i < getLkm(); i++) {
@@ -99,6 +104,7 @@ public class Kysymykset {
 
     /**
      * Kyselyn kysymysten maara
+     * @return kysymysten m채채r채n
      */
     public int getLkm() {
         return alkiot.size();

@@ -228,14 +228,27 @@ public class Kysely {
 // ---------------------------------------------------------------  
 // ---------------------------------------------------------------    
     
-    // Haku TODO testit
+    // Haku
     /**
      * Palauttaa hakuehtoon vastaavien koehenkilöiden viitteet
      * @param hakuehto mitä haetaan
      * @param k etsittävän kentän indeksi
      * @return tietorakenteen löydetyistä
      * @throws TallennaException virhe talteen
-     *
+     * @example
+     * <pre name="test">
+     * #THROWS CloneNotSupportedException, TallennaException
+     * Kysely kysely = new Kysely();
+     * Koehenkilo kissa6 = new Koehenkilo(); kissa6.rekisteroi();
+     * kissa6.setNimi("k100");
+     * kissa6.setSukupuoli("m");
+     * kissa6.setIkaryhma("10-15");
+     * kysely.lisaa(kissa6);
+     * Collection<Koehenkilo> loytyneet = kysely.etsi("*100*", 1);
+     * loytyneet.size() === 1;
+     * Iterator<Koehenkilo> it = loytyneet.iterator();
+     * it.next() == kissa6 === true;
+     * it.hasNext() === false;
      */
     public Collection<Koehenkilo> etsi(String hakuehto, int k) throws TallennaException {
         return koehenkilot.etsi(hakuehto, k);

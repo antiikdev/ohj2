@@ -136,6 +136,7 @@ public class Koehenkilo {
     
 	/**
 	 * Asettaa nimen
+	 * @param s nimi
 	 * @return null jos ok, "virhe" jos virhe
 	 */
 	public String setNimi(String s) {
@@ -146,6 +147,7 @@ public class Koehenkilo {
 
 	/**
 	 * Asettaa sukupuolen
+	 * @param s sukupuoli
 	 * @return null jos ok, "virhe" jos virhe
 	 */
 	public String setSukupuoli(String s) {	
@@ -159,6 +161,7 @@ public class Koehenkilo {
 
 	/**
 	 * Asettaa ikaryhman
+	 * @param s ikäryhmä
 	 * @return null jos ok, "virhe" jos virhe
 	 */
 	public String setIkaryhma(String s) {

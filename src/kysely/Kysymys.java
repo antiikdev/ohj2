@@ -134,8 +134,8 @@ public class Kysymys {
     
     /**
      * Kysymys-luokan otsikot per atribuutti tyyppi
-     * @param k minkä kentän kysymys halutaan
-     * @return valitun kentän kysymysteksti
+     * @param k minkï¿½ kentï¿½n kysymys halutaan
+     * @return valitun kentï¿½n kysymysteksti
      */
     public String getKysymys(int k) {
         switch (k) {
@@ -176,8 +176,11 @@ public class Kysymys {
         	}
         }
         
-        /*
+        /**
          * Asettaa arvot
+         * @param k mitÃ¤ muokataan
+         * @param s mitÃ¤ pistetÃ¤Ã¤n
+         * @return tyhjÃ¤Ã¤ tai virheen
          */
         public String aseta(int k, String s) {
             String st = s.trim();
@@ -194,7 +197,7 @@ public class Kysymys {
                     return null;
                 case 3:
                     try {
-                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '§', vastausVaihtoehdot);
+                        vastausVaihtoehdot = Mjonot.erotaEx(sb, 'ï¿½', vastausVaihtoehdot);
                     } catch (NumberFormatException ex) {
                         return "Virhe ("+st+")";
                     }
@@ -202,14 +205,14 @@ public class Kysymys {
 
                 case 4:
                     try {
-                        vastaus = Mjonot.erotaEx(sb, '§', vastaus);
+                        vastaus = Mjonot.erotaEx(sb, 'ï¿½', vastaus);
                     } catch (NumberFormatException ex) {
                         return "virhe ("+st+")";
                     }
                     return null;
                     
                 default:
-                    return "Väärä kentän indeksi";
+                    return "Vï¿½ï¿½rï¿½ kentï¿½n indeksi";
             }
     }
 // -------------------------------------------------------------
@@ -240,7 +243,12 @@ public class Kysymys {
    
    /**
     * Tulostetaan merkkijonona
-    * TODO: Testit
+    * <pre name="test">
+    * Kysymys kys = new Kysymys();
+    * kys.parse("1|2|kissako|a) joo b) ei|a) joo");
+    * String tulos = kys.toString();
+    * tulos === "1|2|kissako|a) joo b) ei|a) joo";
+    * </pre>
     */
    @Override
    public String toString() {
@@ -258,7 +266,12 @@ public class Kysymys {
     * erotellaan |-merkilla merkkijonosta.
     * Huolehtii, etta seuraavaNro on suurempi kuin tuleva id-numero
     * @param rivi merkkijonorivi joka luetaan
-    * TODO: Testit
+    * <pre name="test">
+    * Kysymys kys = new Kysymys();
+    * kys.parse("1|2|kissako|a) joo b) ei|a) joo");
+    * kys.anna(2) === "kissako";
+    * kys.anna(4) === "a) joo";
+    * </pre>
     */
    public void parse(String rivi) {
        StringBuilder sb = new StringBuilder(rivi);

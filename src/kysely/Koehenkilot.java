@@ -236,12 +236,40 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------    
     
-    //Haku TODO testit
+    //Haku
     /**
      * Luokka koehenkiloiden iteroimiseen
      * @author TopiK
      * @version 12.12.2021
-     *
+     * @example
+     * <pre name="test">
+     * #THROWS TallennaException
+     * #PACKAGEIMPORT
+     * #import java.util.*;
+     * 
+     * Koehenkilot koehenkilot = new Koehenkilot();
+     * Koehenkilo kissa1 = new Koehenkilo(), kissa2 = new Koehenkilo();
+     * kissa1.rekisteroi(); kissa2.rekisteroi();
+     * 
+     * koehenkilot.lisaa(kissa1);
+     * koehenkilot.lisaa(kissa2);
+     * koehenkilot.lisaa(kissa1);
+     * 
+     * StringBuffer ids = new StringBuffer(30);
+     * for (Koehenkilo koehenkilo:koehenkilot)
+     *      ids.append(" "+koehenkilo.getKoehenkiloNro());
+     *      
+     * String tulos = " " + kissa1.getKoehenkiloNro() + " " + kissa2.getKoehenkiloNro() + " " + kissa1.getKoehenkiloNro();
+     * 
+     * ids.toString() === tulos;
+     * 
+     * Iterator<Koehenkilo> i=koehenkilot.iterator();
+     * i.next() == kissa1 === true;
+     * i.next() == kissa2 === true;
+     * i.next() == kissa1 === true;
+     * 
+     * i.next(); #THROWS NoSuchElementException
+     * </pre>
      */
     public class KoehenkilotIterator implements Iterator<Koehenkilo> {
      private int kohdalla = 0;
@@ -289,9 +317,38 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
     }
     
     /**
+     * Palauttaa hakuehtoon vastaavien koehenkilöiden viitteet
      * @param hakuehto mitä haetaan
      * @param k etsittävän indeksi
      * @return tietorakenteen löydetyistä
+     * <pre name="test">
+     * #THROWS TallennaException
+     * Koehenkilot koehenkilot = new Koehenkilot();
+     * Koehenkilo kissa1 = new Koehenkilo(); kissa1.parse("1|k100|m|11-15");
+     * Koehenkilo kissa2 = new Koehenkilo(); kissa2.parse("2|k101|f|15-21");
+     * Koehenkilo kissa3 = new Koehenkilo(); kissa3.parse("3|k102|m|5-11");
+     * Koehenkilo kissa4 = new Koehenkilo(); kissa4.parse("4|k103|m|15-21");
+     * Koehenkilo kissa5 = new Koehenkilo(); kissa5.parse("5|k104|f|5-11");
+     * koehenkilot.lisaa(kissa1); koehenkilot.lisaa(kissa2); koehenkilot.lisaa(kissa3); koehenkilot.lisaa(kissa4); koehenkilot.lisaa(kissa5);
+     * List<Koehenkilo> loytyneet;
+     * loytyneet = (List<Koehenkilo>)koehenkilot.etsi("f",2);
+     * loytyneet.size() === 2;
+     * loytyneet.get(0) == kissa2 === true;
+     * loytyneet.get(1) == kissa5 === true;
+     * 
+     * loytyneet = (List<Koehenkilo>)koehenkilot.etsi("*4*",1);
+     * loytyneet.size() === 1;
+     * loytyneet.get(0) == kissa5 === true;
+     * 
+     * loytyneet = (List<Koehenkilo>)koehenkilot.etsi("*11*",3);
+     * loytyneet.size() === 3;
+     * loytyneet.get(0) == kissa1 === true;
+     * loytyneet.get(1) == kissa3 === true;
+     * loytyneet.get(2) == kissa5 === true;
+     * 
+     * loytyneet = (List<Koehenkilo>)koehenkilot.etsi(null,-1);
+     * loytyneet.size() === 5;
+     * </pre>
      */
     public Collection<Koehenkilo> etsi(String hakuehto, int k) {
         String ehto = "*";

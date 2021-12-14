@@ -143,8 +143,8 @@ public class Vastaus {
      }
      
      /**
-      * @param k minkä kentän kysymys halutaan
-      * @return valitun kentän kysymysteksti
+      * @param k minkï¿½ kentï¿½n kysymys halutaan
+      * @return valitun kentï¿½n kysymysteksti
       */
      public String getVastaus(int k) {
          switch (k) {
@@ -167,7 +167,15 @@ public class Vastaus {
      /**
       * @param k kentta jonka sisalta otetaan
       * @return kentan sisalto
-      * TODO: testi
+      * <pre name="test">
+      * Vastaus vas = new Vastaus();
+      * vas.parse("1|1|kissa|monivalinta|a) kissa b) pissa");
+      * vas.anna(0) === "1";
+      * vas.anna(1) === "1";
+      * vas.anna(2) === "kissa";
+      * vas.anna(3) === "monivalinta";
+      * vas.anna(4) === "a) kissa b) pissa";
+      * </pre>
       */
      public String anna(int k) {
          switch (k) {
@@ -186,8 +194,11 @@ public class Vastaus {
          	}
          }
          
-         /*
+         /**
           * Asettaa arvot
+          * @param k minne laitetaan
+          * @param s mitÃ¤ laitetaan
+          * @return tyhjÃ¤Ã¤ tai virheen
           */
          public String aseta(int k, String s) {
              String st = s.trim();
@@ -204,7 +215,7 @@ public class Vastaus {
                      return null;
                  case 3:
                      try {
-                         vastausTyyppi = Mjonot.erotaEx(sb, '§', vastausTyyppi);
+                         vastausTyyppi = Mjonot.erotaEx(sb, 'ï¿½', vastausTyyppi);
                      } catch (NumberFormatException ex) {
                          return "Virhe ("+st+")";
                      }
@@ -212,14 +223,14 @@ public class Vastaus {
 
                  case 4:
                      try {
-                         vastausVaihtoehdot = Mjonot.erotaEx(sb, '§', vastausVaihtoehdot);
+                         vastausVaihtoehdot = Mjonot.erotaEx(sb, 'ï¿½', vastausVaihtoehdot);
                      } catch (NumberFormatException ex) {
                          return "virhe ("+st+")";
                      }
                      return null;
                      
                  default:
-                     return "Väärä kentän indeksi";
+                     return "Vï¿½ï¿½rï¿½ kentï¿½n indeksi";
              }
      }
 // -------------------------------------------------------------
