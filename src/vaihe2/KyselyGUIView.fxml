@@ -40,6 +40,7 @@
                   <Insets left="40.0" />
                </HBox.margin>
             </Button>
+            <Button layoutX="134.0" layoutY="20.0" mnemonicParsing="false" onAction="#handlePoistaKysymysVastaus" text="Poista kysymys/vastaus" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -62,7 +63,8 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleLisaaUusi" text="Lisaa koehenkilo" />
                   <MenuItem mnemonicParsing="false" onAction="#handleNaytaRaportti" text="Nayta raportti" />
-                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista vastaus" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaTama" text="Poista koehenkilo" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKysymysVastaus" text="Poista kysymys/vastaus" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Tietoja">

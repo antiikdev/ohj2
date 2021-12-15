@@ -85,9 +85,9 @@ public class Kysymykset {
 // ---------------------------------------------------------------�
     
     /**
-     * Korvaa tai lisää kysymyksen
-     * @param kysymys korvaava tai lisättävä kysymys
-     * @throws TallennaException jos virheitä
+     * Korvaa tai lisaa kysymyksen
+     * @param kysymys korvaava tai lisattava kysymys
+     * @throws TallennaException jos virheita
      */
     public void korvaaTaiLisaa(Kysymys kysymys) throws TallennaException {
         int id = kysymys.getId();
@@ -104,7 +104,7 @@ public class Kysymykset {
 
     /**
      * Kyselyn kysymysten maara
-     * @return kysymysten määrän
+     * @return kysymysten maaran
      */
     public int getLkm() {
         return alkiot.size();
@@ -118,8 +118,19 @@ public class Kysymykset {
     public Iterator<Kysymys> iterator() {
         return alkiot.iterator();
     }
-
-
+    
+    
+    /**
+     * Poistaa koehenkilon valitun harrastuksen
+     * @param kysymys joka poistetaan
+     * @return true jos muutettu, false jos ei
+     */
+    public void poista(Kysymys kysymys) {
+    	alkiot.remove(kysymys);
+    	// if (ret) muutettu = true;
+    	// return retu;
+    }
+    
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------        
      

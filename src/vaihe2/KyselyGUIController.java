@@ -90,21 +90,28 @@ public class KyselyGUIController implements Initializable {
         lisaaUusiKoehenkiloKyselyyn();
     }
     
+    // HT7
     @FXML void handleNaytaRaportti() {
         tulostaRaportti();
     }
     
+    // HT7
     @FXML void handlePoistaTama() throws TallennaException {
     	poistaKoehenkilo();
     }
     
+    // HT7
+    @FXML void handlePoistaKysymysVastaus() throws TallennaException {
+    	poistaKysymysVastaus();
+    }
+    
     // ---------- MENUBAR ITEMIT: Tietoja ---------- 
     @FXML void handleApua() {
-        Dialogs.showMessageDialog("Apua ei ole saatavilla!");
+        Dialogs.showMessageDialog("Apupalveluksi ja oheita parhaiten saatavilla: google.com");
     }
     
     @FXML void handleTiedot() {
-        Dialogs.showMessageDialog("Kysely-ohjelma, ver. X, (c) Antiikdev & Doomslizer, 2021");
+        Dialogs.showMessageDialog("Kysely-ohjelma, ver. 1.0, (c) Antiikdev & Doomslizer, 2021");
     }
     
     
@@ -112,13 +119,13 @@ public class KyselyGUIController implements Initializable {
 // HT5: Koehenkiloiden, kysymysten ja vastausten lisaaminen
 // ----------------------------------------------------------------------------
     @FXML void handleUusiKoehenkilo() {
-        // Dialogs.showMessageDialog("Uuden vastauksen lisäys ei vielä toimi!");
+        // Dialogs.showMessageDialog("Uuden vastauksen lisays ei viela toimi!");
         lisaaUusiKoehenkiloKyselyyn();
     }
     
     @FXML void handleTallennaTama() {
         tallenna();
-        // Dialogs.showMessageDialog("Vastauksen tallennus ei vielä toimi!");
+        // Dialogs.showMessageDialog("Vastauksen tallennus ei viela toimi!");
     }
     
     @FXML void handleUusiKysymys() {
@@ -130,7 +137,7 @@ public class KyselyGUIController implements Initializable {
     }
     
     @FXML void handleHakuehto() {
-     //Dialogs.showMessageDialog("Haku ei vielä toimi!");
+     //Dialogs.showMessageDialog("Haku ei viela toimi!");
      hae(0);
     }
 // ----------------------------------------------------------------------------    
@@ -320,20 +327,33 @@ public class KyselyGUIController implements Initializable {
      */
     private void tulostaRaportti() {
     	int lkm = kysely.getKoehenkiloita();
-    	String teksti = "Kyselyssa on yhteensa " + lkm + " koehenkiloa.";
+    	String teksti = "Kyselyssa on yhteensa " + lkm + " koehenkiloa.\n";
     	String koehenkTied = "";
     	
     	for (int i = 0; i < kysely.getKoehenkiloita(); i++) {
     		Koehenkilo koehenkilo = kysely.annaKoehenkilo(i);
     		koehenkTied += koehenkilo.tulosta();
     		koehenkTied += "\n";
-    		
-			// List<Kysymys> kysymykset = kysely.annaKysymykset(koehenkilo);
-			// koehenkTied += kysymykset.annaKysymys(); 
-    		// koehenkTied += "\n";
     		}
     	
     	Dialogs.showMessageDialog(teksti + "\n" + koehenkTied);
+    }
+    
+    
+    /**
+     * Poistetaan Kysymys/vastaus valitulta kohdalta Koehenkilolta
+     */
+    private void poistaKysymysVastaus() {
+    	int rivi = tableKysymykset.getRowNr();
+    	if ( rivi < 0) return;
+    	Kysymys kysymys = tableKysymykset.getObject();
+    	if ( kysymys == null) return;
+    	kysely.poistaKysymys(kysymys);
+    	naytaKysymykset(koehenkiloKohdalla);
+    	int kysymyksia = tableKysymykset.getItems().size();
+    	if ( rivi >= kysymyksia ) rivi = kysymyksia -1;
+    	tableKysymykset.getFocusModel().focus(rivi);
+    	tableKysymykset.getSelectionModel().select(rivi);
     }
     
     

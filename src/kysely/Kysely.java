@@ -148,6 +148,14 @@ public class Kysely {
 	public void poistaKoehenkilo(Koehenkilo koehenkilo) throws TallennaException {
 		koehenkilot.poistaKoehenkilo(koehenkilo);
 	}
+	
+	/**
+	 * Poistaa koehenkilon kysymyksen/vastauksen
+	 * @param kysymys joko poistetaan
+	 */
+	public void poistaKysymys(Kysymys kysymys) {
+		kysymykset.poista(kysymys);
+	}
     
 // ---------------------------------------------------------------  
 // ---------------------------------------------------------------   
