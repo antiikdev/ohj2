@@ -17,8 +17,8 @@ import java.util.Scanner;
 
 /**
  * Kysymykset-luokka
- * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
- * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @author Antiikdev
+ * @author Doomslizer
  *
  */
 public class Kysymykset {

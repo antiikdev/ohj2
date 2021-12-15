@@ -37,8 +37,8 @@ import kysely.Vastaus;
 
 /**
  * Luokka kyselyn kayttoliittyman tapahtumien kontrolloimiseksi
- * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
- * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @author Antiikdev 
+ * @author Doomslizer 
  * EI KAYTOSSA: handleAvaaKysely() ja tulosta() (HT5-vaiheessa kaytetty
  */
 public class KyselyGUIController implements Initializable {

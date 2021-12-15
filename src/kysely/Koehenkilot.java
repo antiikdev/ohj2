@@ -20,8 +20,8 @@ import fi.jyu.mit.ohj2.WildChars;
 
 /**
  * Koehenkilot-luokka
- * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
- * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @author Antiikdev
+ * @author Doomslizer
  *
  */
 public class Koehenkilot implements Iterable<Koehenkilo> {

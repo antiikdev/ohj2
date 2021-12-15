@@ -26,8 +26,8 @@ import java.util.Scanner;
 
 /**
  * Vastaukset-luokka
- * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
- * @author Doomslizer (topi.val.kari@student.jyu.fi)
+ * @author Antiikdev 
+ * @author Doomslizer 
  * @version 9 Nov 2021
  *
  */
