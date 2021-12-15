@@ -7,7 +7,6 @@
 0|1|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 0|2|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 0|3|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
-1|5|Onko kissa elain?|a) ei, b) kylla|a
 2|5|Onko kani kissa?|a) ehka, b) ei, c) kylla|a
 0|1|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 0|2|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
@@ -35,8 +34,8 @@
 14|10|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 15|10|testi|joo|kissa
 1|12|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
-2|12|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 3|12|testi|Syota vastausvaihtoehdot|Syota vastaus
 1|15|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 1|15|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
 2|15|Syota kysymys|Syota vastausvaihtoehdot|Syota vastaus
+1|14|Kissako elain?|a) ei b) kylla|a

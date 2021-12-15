@@ -39,7 +39,7 @@ import kysely.Vastaus;
  * Luokka kyselyn kayttoliittyman tapahtumien kontrolloimiseksi
  * @author Antiikdev (ilkka.a.kotilainen@gmail.com)
  * @author Doomslizer (topi.val.kari@student.jyu.fi)
- *
+ * EI KAYTOSSA: handleAvaaKysely() ja tulosta() (HT5-vaiheessa kaytetty
  */
 public class KyselyGUIController implements Initializable {
     
@@ -70,9 +70,11 @@ public class KyselyGUIController implements Initializable {
 // ================== TOIMINNOT ========================
     
     // -------- MENUBAR ITEMIT: Tiedosto -------
+    
+    /* // Ei kayteta
     @FXML void handleAvaaKysely() {
         ModalController.showModal(KyselyGUIController.class.getResource("KyselyKaynnistysView.fxml"), "Kysely", null, "");
-    }
+    } */
     
     @FXML void handleTallenna() {
         // HT6: tallennus

@@ -54,7 +54,6 @@
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleAvaaKysely" text="Avaa" />
                   <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
                   <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
             </items>
