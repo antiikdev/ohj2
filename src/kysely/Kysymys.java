@@ -1,5 +1,5 @@
 /**
- * 
+ * Kysymys-luokka
  */
 package kysely;
 
@@ -41,7 +41,7 @@ public class Kysymys {
     
     
     /**
-     * ESIMERKKI taytto kysymystiedoille  
+     * Taytto tyhjille kysymystiedoille  
      * @param numero kysymyksen
      */
     public void taytaEsimKysymysTiedot(int numero) {
@@ -190,9 +190,9 @@ public class Kysymys {
         
         /**
          * Asettaa arvot
-         * @param k mitä muokataan
-         * @param s mitä pistetään
-         * @return tyhjää tai virheen
+         * @param k mita muokataan
+         * @param s mita pistetaan
+         * @return tyhjaa tai virheen
          */
         public String aseta(int k, String s) {
             String st = s.trim();
@@ -209,7 +209,7 @@ public class Kysymys {
                     return null;
                 case 3:
                     try {
-                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '�', vastausVaihtoehdot);
+                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '�', vastausVaihtoehdot);
                     } catch (NumberFormatException ex) {
                         return "Virhe ("+st+")";
                     }
@@ -217,14 +217,14 @@ public class Kysymys {
 
                 case 4:
                     try {
-                        vastaus = Mjonot.erotaEx(sb, '�', vastaus);
+                        vastaus = Mjonot.erotaEx(sb, '�', vastaus);
                     } catch (NumberFormatException ex) {
                         return "virhe ("+st+")";
                     }
                     return null;
                     
                 default:
-                    return "V��r� kent�n indeksi";
+                    return "Vaara kentan indeksi";
             }
     }
 // -------------------------------------------------------------

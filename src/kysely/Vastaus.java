@@ -215,7 +215,7 @@ public class Vastaus {
                      return null;
                  case 3:
                      try {
-                         vastausTyyppi = Mjonot.erotaEx(sb, 'ï¿½', vastausTyyppi);
+                         vastausTyyppi = Mjonot.erotaEx(sb, '§', vastausTyyppi);
                      } catch (NumberFormatException ex) {
                          return "Virhe ("+st+")";
                      }
@@ -223,14 +223,14 @@ public class Vastaus {
 
                  case 4:
                      try {
-                         vastausVaihtoehdot = Mjonot.erotaEx(sb, 'ï¿½', vastausVaihtoehdot);
+                         vastausVaihtoehdot = Mjonot.erotaEx(sb, '§', vastausVaihtoehdot);
                      } catch (NumberFormatException ex) {
                          return "virhe ("+st+")";
                      }
                      return null;
                      
                  default:
-                     return "Vï¿½ï¿½rï¿½ kentï¿½n indeksi";
+                     return "Vaara kentan indeksi";
              }
      }
 // -------------------------------------------------------------
