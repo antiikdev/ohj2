@@ -131,6 +131,21 @@ public class Kysymykset {
     	// return retu;
     }
     
+    
+    /**
+     * Poistaa tietyn koehenkilon kaikki kysymykset ja vastaukset
+     * @param tunnusNro viite koehenkilon jonka kys-vas poistetaan
+     */
+    public void poistaKoehenkilonKysVas(int tunnusNro) {
+    	for (Iterator<Kysymys> iter = alkiot.iterator(); iter.hasNext();) {
+    		Kysymys kys = iter.next();
+    		if (kys.getKoehenkiloNro() == tunnusNro) {
+    			iter.remove();
+    		}
+    	}
+    }
+    
+    
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------        
      

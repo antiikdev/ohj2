@@ -311,20 +311,6 @@ public class KyselyGUIController implements Initializable {
     
     
     /**
-     * Poistaa koehenkilon kyselysta
-     * @throws TallennaException jos virhe
-     */
-    private void poistaKoehenkilo() throws TallennaException {
-    	koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
-        if (koehenkiloKohdalla == null) return;
-        // Koehenkilon rivin poistaminen tiedostosta:
-    	kysely.poistaKoehenkilo(koehenkiloKohdalla);
-    	// Lue tiedosto uudestaan
-    	lueTiedosto(kyselynimi);
-    }
-    
-    
-    /**
      * Tulostaa pienen raportin Kyselyn koehenkiloista
      */
     private void tulostaRaportti() {
@@ -339,6 +325,20 @@ public class KyselyGUIController implements Initializable {
     		}
     	
     	Dialogs.showMessageDialog(teksti + "\n" + koehenkTied);
+    }
+    
+    
+    /**
+     * Poistaa koehenkilon kyselysta
+     * @throws TallennaException jos virhe
+     */
+    private void poistaKoehenkilo() throws TallennaException {
+    	koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
+        if (koehenkiloKohdalla == null) return;
+        // Koehenkilon rivin poistaminen tiedostosta:
+    	kysely.poistaKoehenkilo(koehenkiloKohdalla);
+    	// Lue tiedosto uudestaan
+    	lueTiedosto(kyselynimi);
     }
     
     

@@ -15,8 +15,8 @@ import fi.jyu.mit.ohj2.Mjonot;
  *
  */
 public class Kysymys {
-    private int id;
-    private int koehenkiloNro;
+    private int id; // Kysymyksen id
+    private int koehenkiloNro; // Mille koehehenk. kysymys kuuluu
     private String kysymys;
     private String vastausVaihtoehdot;
     private String vastaus;

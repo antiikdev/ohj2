@@ -140,14 +140,18 @@ public class Kysely {
         kysymykset.korvaaTaiLisaa(kysymys); 
     }    
     
+    
 	/**
 	 * Poistaa koehenkilon kyselysta
 	 * @param koehenkilo joka poistetaan
 	 * @throws TallennaException jos virhe
 	 */
 	public void poistaKoehenkilo(Koehenkilo koehenkilo) throws TallennaException {
+		if (koehenkilo == null) return;
+		kysymykset.poistaKoehenkilonKysVas(koehenkilo.getKoehenkiloNro());
 		koehenkilot.poistaKoehenkilo(koehenkilo);
 	}
+	
 	
 	/**
 	 * Poistaa koehenkilon kysymyksen/vastauksen
