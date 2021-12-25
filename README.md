@@ -1,6 +1,5 @@
-# pohja
+# Software to store research participant information
 
-Pohja kevään 2020 harjoitustöiden GIT-repoille
+Implemented by AntiikDev & Doomslizer in Java programming course at the University of Jyväskylä (JYU).
 
-Lue käyttöohjeet TIMistä: <https://tim.jyu.fi/view/kurssit/tie/ohj2/tyokalut/git/ohj2git#fork>
-
+Instructions (JYU, TIM): <https://tim.jyu.fi/view/kurssit/tie/ohj2/tyokalut/git/ohj2git#fork>
