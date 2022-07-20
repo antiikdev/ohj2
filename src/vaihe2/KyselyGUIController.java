@@ -103,6 +103,9 @@ public class KyselyGUIController implements Initializable {
     }
     
     // HT7
+    /**
+     * @throws TallennaException dokumentaatio lisatty ongelman vuoksi 
+     */
     @FXML void handlePoistaKysymysVastaus() throws TallennaException {
     	poistaKysymysVastaus();
     }

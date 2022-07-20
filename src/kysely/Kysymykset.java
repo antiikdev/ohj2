@@ -123,7 +123,6 @@ public class Kysymykset {
     /**
      * Poistaa koehenkilon valitun harrastuksen
      * @param kysymys joka poistetaan
-     * @return true jos muutettu, false jos ei
      */
     public void poista(Kysymys kysymys) {
     	alkiot.remove(kysymys);
