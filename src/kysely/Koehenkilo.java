@@ -5,6 +5,10 @@ package kysely;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -21,6 +25,96 @@ public class Koehenkilo {
     private String  ikaryhma        = "";
     
     private static int seuraavaNro    = 1;
+    
+    
+// ------------------------------------------------------------------
+// --------------- Java ja tietokannat - vaihe 6 --------------------
+// ------------------------------------------------------------------
+    
+    /**
+     * Testien toimintaa varten sisältöjen vertailuun
+     */
+    @Override
+    public boolean equals(Object jasen) {
+        return this.toString().equals(jasen.toString());
+    }
+    
+    
+    /**
+     * Java vaatimus equals-metodille, koska Override
+     */
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+    
+    
+    /**
+     * Tietokannan luontilauseke koehenkilon taululle
+     * @return koehenkilotaulun luontilauseke
+     */
+    public String annaLuontilauseke() {
+        return "CREATE TABLE Jasenet (" +
+                "koehenkiloNro INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                "nimi VARCHAR(100) NOT NULL, " +
+                "sukupuoli VARCHAR(10), " +
+                "ikaryhma VARCHAR(100)" +
+                  // "PRIMARY KEY (jasenID)" + 
+                  ")";
+    }
+    
+    
+    /**
+     * Koehenkilon lisayslause
+     * @param con tietokantayhteys
+     * @return koehenkilon lisayslauseke
+     * @throws SQLException jos lausekkeen luonnissa on ongelmia
+     */
+    public PreparedStatement annaLisayslauseke(Connection con) throws SQLException {
+        PreparedStatement sql = con.prepareStatement("INSERT INTO Koehenkilot" +
+                "(koehenkiloNro, nimi, sukupuoli, ikaryhma) " +
+                "VALUES (?, ?, ?, ?)");
+                       
+                // Syötetään kentät välttääksemme SQL injektiot!
+                if ( koehenkiloNro != 0 ) sql.setInt(1, koehenkiloNro); else sql.setString(1, null);
+                sql.setString(2, nimi);
+                sql.setString(3, sukupuoli);
+                sql.setString(4, ikaryhma);
+                
+                return sql;
+    }
+
+    
+    /**
+     * Tarkistetaan onko koehenkiloNro muuttunut lisäyksessä
+     * @param rs lisäyslauseen ResultSet
+     * @throws SQLException jos tulee jotakin vikaa
+     */
+    public void tarkistaId(ResultSet rs) throws SQLException {
+        if ( !rs.next() ) return;
+        int id = rs.getInt(1);
+        if ( id == koehenkiloNro ) return;
+        setKoehenkiloNro(id);
+    }
+
+    
+    /** 
+    * Ottaa koehenkilon tiedot ResultSetistä
+    * @param tulokset mistä tiedot otetaan
+    * @throws SQLException jos jokin menee väärin
+    */
+    public void parse(ResultSet tulokset) throws SQLException {
+        setKoehenkiloNro(tulokset.getInt("koehenkiloNro"));
+        nimi = tulokset.getString("nimi");
+        sukupuoli = tulokset.getString("sukupuoli");
+        ikaryhma = tulokset.getString("ikaryhma");
+    }
+
+
+         
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
     
     
     /**
@@ -269,6 +363,9 @@ public class Koehenkilo {
     public int ekaKentta() {
         return 1;
     }
+
+
+
 // -------------------------------------------------------------
 // -------------------------------------------------------------
     

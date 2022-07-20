@@ -5,6 +5,10 @@ package kysely;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -23,7 +27,99 @@ public class Kysymys {
     
     private static int seuraavaNro = 1;
     
+       
+// ------------------------------------------------------------------
+// --------------- Java ja tietokannat - vaihe 6 --------------------
+// ------------------------------------------------------------------
+     
+     /**
+      * Testien toimintaa varten sisältöjen vertailuun
+      */
+     @Override
+     public boolean equals(Object jasen) {
+         return this.toString().equals(jasen.toString());
+     }
+     
+     
+     /**
+      * Java vaatimus equals-metodille, koska Override
+      */
+     @Override
+     public int hashCode() {
+         // TODO Auto-generated method stub
+         return super.hashCode();
+     }
+     
+     
+     /**
+      * Antaa tietokannan luontilausekkeen kysymykset taululle
+      * @return kysymykset-taulun luontilauseke
+      */
+     public String annaLuontilauseke() {
+         return "CREATE TABLE Kysymykset (" +
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                 "koehenkiloNro INTEGER, " +
+                 "kysymys VARCHAR(100), " +
+                 "vastausVaihtoehdot VARCHAR(100), " +
+                 "vastaus VARCHAR(100), " +
+                 "FOREIGN KEY (koehenkiloNro) REFERENCES Koehenkilot(koehenkiloNro)" +
+                 ")";
+     }
+
+     
+     /**
+      * Antaa kysymykset lisäyslausekkeen
+      * @param con tietokantayhteys
+      * @return kysymyksen lisäyslauseke
+      * @throws SQLException jos lausekkeen luonnissa on ongelmia
+      */
+     public PreparedStatement annaLisayslauseke(Connection con) 
+             throws SQLException {
+         PreparedStatement sql = con.prepareStatement(
+                 "INSERT INTO Kysymykset (id, koehenkiloNro, kysymys, " +
+                 "vastausVaihtoehdot, vastaus) VALUES (?, ?, ?, ?, ?)");
+         
+         // Syötetään kentät välttääksemme SQL injektiot!
+         if ( id != 0 ) sql.setInt(1, id); else sql.setString(1, null);
+         sql.setInt(2, koehenkiloNro);
+         sql.setString(3, kysymys);
+         sql.setString(4, vastausVaihtoehdot);
+         sql.setString(5, vastaus);
+         
+         return sql;
+     }
+     
+     
+     /**
+      * Tarkistetaan onko id muuttunut lisäyksessä
+      * @param rs lisäyslauseen ResultSet
+      * @throws SQLException jos tulee jotakin vikaa
+      */
+     public void tarkistaId(ResultSet rs) throws SQLException {
+         if ( !rs.next() ) return;
+         int idVertaa = rs.getInt(1);
+         if ( idVertaa == id ) return;
+         setId(id);
+     }
+     
+     
+     /**
+      * Otetaan tiedot ResultSetistä
+      * @param tulokset mistä tiedot otetaan
+      * @throws SQLException jos jokin menee vikaan
+      */
+     public void parse(ResultSet tulokset) throws SQLException {
+         setId(tulokset.getInt("id"));
+         koehenkiloNro = tulokset.getInt("koehenkiloNro");
+         kysymys = tulokset.getString("kysymys");
+         vastausVaihtoehdot = tulokset.getString("vastausVaihtoehdot");
+         vastaus = tulokset.getString("vastaus");
+     }
+     
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
     
+     
     /**
      * Alustetaan kysymys
      */
@@ -209,7 +305,7 @@ public class Kysymys {
                     return null;
                 case 3:
                     try {
-                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '�', vastausVaihtoehdot);
+                        vastausVaihtoehdot = Mjonot.erotaEx(sb, '�', vastausVaihtoehdot);
                     } catch (NumberFormatException ex) {
                         return "Virhe ("+st+")";
                     }
@@ -217,7 +313,7 @@ public class Kysymys {
 
                 case 4:
                     try {
-                        vastaus = Mjonot.erotaEx(sb, '�', vastaus);
+                        vastaus = Mjonot.erotaEx(sb, '�', vastaus);
                     } catch (NumberFormatException ex) {
                         return "virhe ("+st+")";
                     }
