@@ -9,6 +9,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 // import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,6 +23,8 @@ import java.util.Scanner;
 import fi.jyu.mit.ohj2.Mjonot;
 import fi.jyu.mit.ohj2.WildChars;
 
+import static kysely.Kanta.alustaKanta;
+
 /**
  * Koehenkilot-luokka
  * @author Antiikdev
@@ -26,21 +33,186 @@ import fi.jyu.mit.ohj2.WildChars;
  */
 public class Koehenkilot implements Iterable<Koehenkilo> {
     
+    // TIETOKANTA-vaiheen Comtestit, jossa tuhotaan mahd tietok.
+    // ja luodaan uusi Koehenkilot-luokka
+    /*
+     * Alustuksia ja puhdistuksia testi� varten
+     * @example
+     * <pre name="testJAVA">
+     * #import java.io.*;
+     * #import java.util.*;
+     * 
+     * private Koehenkilot koehenkilot;
+     * private String tiedNimi;
+     * private File ftied;
+     * 
+     * @Before
+     * public void alusta() throws TallennaException { 
+     *    tiedNimi = "testikysely";
+     *    ftied = new File(tiedNimi+".db");
+     *    ftied.delete();
+     *    koehenkilot = new Koehenkilot(tiedNimi);
+     * }   
+     *
+     * @After
+     * public void siivoa() {
+     *    ftied.delete();
+     * }   
+     * </pre>
+     */ 
+    
     private static final int MAX_KOEHENKILOITA = 8;
     private int lkm = 0;
     private Koehenkilo[] alkiot;
     private String tiedostonPerusNimi = "";
     
     
+// ------------------------------------------------------------------
+// --------------- Java ja tietokannat - vaihe 6 --------------------
+// ------------------------------------------------------------------
+    
+    private Kanta kanta;
+    private static Koehenkilo apujasen = new Koehenkilo();
+
     /**
-     * Luodaan alustava taulukko
+     * Tarkistetaan etta kannassa koehenkiloiden tarvitsema taulu
+     * @param nimi tietokannan nimi
+     * @throws TallennaException jos jokin menee pieleen
      */
+    public Koehenkilot(String nimi) throws TallennaException {
+        kanta = alustaKanta(nimi);
+        try ( Connection con = kanta.annaKantayhteys() ) {
+            // Hankitaan tietokannan metadata ja tarkistetaan siita onko
+            // Koehenkilot nimista taulua olemassa.
+            // Jos ei ole, luodaan se. Ei puututa tassa siihen, onko
+            // mahdollisesti olemassa olevalla taululla oikea rakenne,
+            // kayttaja saa kuulla siita virheilmoituksen kautta
+            DatabaseMetaData meta = con.getMetaData();
+            
+            try ( ResultSet taulu = meta.getTables(null, null, "Koehenkilot", null) ) {
+                if ( !taulu.next() ) {
+                    // Luodaan Koehenkilot taulu
+                    try ( PreparedStatement sql = con.prepareStatement(apujasen.annaLuontilauseke()) ) {
+                        sql.execute();
+                    }
+                }
+            }
+            
+        } catch ( SQLException e ) {
+            throw new TallennaException("Ongelmia tietokannan kanssa:" + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Lisaa uuden koehenkilon tietorakenteeseen.  Ottaa koehenkilon omistukseensa.
+     * @param koehenkilo lisattavan koehenkilon viite.  Huom tietorakenne muuttuu omistajaksi
+     * @throws TallennaException jos tietorakenne on jo taynna
+     * @example
+     * <pre name="test">
+     * #THROWS TallennaException 
+     * 
+     * Collection<Koehenkilo> loytyneet = koehenkilot.etsi("", 1);
+     * loytyneet.size() === 0;
+     * 
+     * Koehenkilo aku1 = new Koehenkilo(), aku2 = new Koehenkilo();
+     * koehenkilot.lisaa(aku1); 
+     * koehenkilot.lisaa(aku2);
+     *  
+     * loytyneet = koehenkilot.etsi("", 1);
+     * loytyneet.size() === 2;
+     * 
+     * // Unique constraint ei hyvaksy
+     * koehenkilot.lisaa(aku1); #THROWS TallennaException
+     * Koehenkilo aku3 = new Koehenkilo(); Koehenkilo aku4 = new Koehenkilo();
+     * Koehenkilo aku5 = new Koehenkilo();
+     * koehenkilot.lisaa(aku3); 
+     * koehenkilot.lisaa(aku4); 
+     * koehenkilot.lisaa(aku5); 
+
+     * loytyneet = koehenkilot.etsi("", 1);
+     * loytyneet.size() === 5;
+     * Iterator<Koehenkilo> i = loytyneet.iterator();
+     * i.next() === aku1;
+     * i.next() === aku2;
+     * i.next() === aku3;
+     * </pre>
+     */
+    public void lisaa(Koehenkilo koehenkilo) throws TallennaException {
+        try ( Connection con = kanta.annaKantayhteys(); PreparedStatement sql = koehenkilo.annaLisayslauseke(con) ) {
+            sql.executeUpdate();
+            try ( ResultSet rs = sql.getGeneratedKeys() ) {
+                koehenkilo.tarkistaId(rs);
+            }   
+            
+        } catch (SQLException e) {
+            throw new TallennaException("Ongelmia tietokannan kanssa:" + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Palauttaa koehenkilot listassa
+     * @param hakuehto hakuehto  
+     * @param k etsittavan kentan indeksi 
+     * @return koehenkilot listassa
+     * @throws TallennaException jos tietokannan kanssa ongelmia
+     * @example
+     * <pre name="test">
+     * #THROWS TallennaException
+     * Koehenkilo aku1 = new Koehenkilo(); aku1.taytaEsimTiedot(); 
+     * Koehenkilo aku2 = new Koehenkilo(); aku2.taytaEsimTiedot(); 
+     * koehenkilot.lisaa(aku1);
+     * koehenkilot.lisaa(aku2);
+     * koehenkilot.lisaa(aku2);  #THROWS TallennaException  // ei saa lisata sama id:ta uudelleen
+     * Collection<Koehenkilo> loytyneet = koehenkilot.etsi(aku1.getNimi(), 1);
+     * loytyneet.size() === 1;
+     * loytyneet.iterator().next() === aku1;
+     * loytyneet = koehenkilot.etsi(aku2.getNimi(), 1);
+     * loytyneet.size() === 1;
+     * loytyneet.iterator().next() === aku2;
+     * loytyneet = koehenkilot.etsi("", 15); #THROWS TallennaException
+     *
+     * ftied.delete();
+     * </pre>
+     */
+    public Collection<Koehenkilo> etsi(String hakuehto, int k) throws TallennaException {
+        String ehto = hakuehto;
+        String kysymys = apujasen.anna(k);
+        if ( k < 0 ) { kysymys = apujasen.anna(0); ehto = ""; }
+        // Avataan yhteys tietokantaan try .. with lohkossa.
+        try ( Connection con = kanta.annaKantayhteys();
+              PreparedStatement sql = con.prepareStatement("SELECT * FROM Koehenkilot WHERE " + kysymys + " LIKE ?") ) {
+            ArrayList<Koehenkilo> loytyneet = new ArrayList<Koehenkilo>();
+            
+            sql.setString(1, "%" + ehto + "%");
+            try ( ResultSet tulokset = sql.executeQuery() ) {
+                while ( tulokset.next() ) {
+                    Koehenkilo j = new Koehenkilo();
+                    j.parse(tulokset);
+                    loytyneet.add(j);
+                }
+            }
+            return loytyneet;
+        } catch ( SQLException e ) {
+            throw new TallennaException("Ongelmia tietokannan kanssa:" + e.getMessage());
+        }
+    }
+
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
+    
+    /**
+     * HUOM! ALKUPERAINEN Koehenkilot muodostoja, ennen tietokantaa
+     * Luodaan alustava taulukko
+     */ 
     public Koehenkilot() {
         alkiot = new Koehenkilo[MAX_KOEHENKILOITA];
     }
     
     
     /**
+     * HUOM! ALKUPERAINEN lisaa-luokka ENNEN TIETOKANTAA
      * Lisataan uusi koehenkilo
      * @param koehenkilo uusi
      * @throws TallennaException jos tietorakenne on jo taynna
@@ -56,6 +228,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      *  koeapinat.anna(1) === apina;
      * </pre>
      */
+    /*
     public void lisaa(Koehenkilo koehenkilo) throws TallennaException {
         if ( lkm > alkiot.length ) throw new TallennaException("Liikaa alkioita");
         // HT6: Kasvatetaan taulukko (+10)
@@ -69,6 +242,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
         this.alkiot[this.lkm] = koehenkilo;
         lkm++;
     }
+    */
     
     
     /**
@@ -316,7 +490,9 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
         return new KoehenkilotIterator();
     }
     
+    
     /**
+     * HUOM! ALKUPERAINEN lisaa-luokka ENNEN TIETOKANTAA
      * Palauttaa hakuehtoon vastaavien koehenkilöiden viitteet
      * @param hakuehto mitä haetaan
      * @param k etsittävän indeksi
@@ -350,6 +526,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      * loytyneet.size() === 5;
      * </pre>
      */
+    /*
     public Collection<Koehenkilo> etsi(String hakuehto, int k) {
         String ehto = "*";
         if (hakuehto != null && hakuehto.length() > 0) ehto = hakuehto;
@@ -363,7 +540,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
         
         return loytyneet;
     }
-    
+    */
     
     
     /**
@@ -371,6 +548,39 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      * @param args ei kaytossa
      */
     public static void main(String[] args) {
+        try {
+            new File("kokeilu.db").delete();
+            Koehenkilot koehenkilot = new Koehenkilot("kokeilu");
+    
+            Koehenkilo aku = new Koehenkilo(), aku2 = new Koehenkilo();
+            aku.taytaEsimTiedot();
+            //aku2.rekisteroi();
+            aku2.taytaEsimTiedot();
+            
+            koehenkilot.lisaa(aku);
+            koehenkilot.lisaa(aku2);
+            aku2.tulosta(System.out);
+            
+            System.out.println("=========== Koehenkilot testi =============");
+
+            // Ongelma ratkaistu:
+            // .etsi (koehenkilo.anna) antoi defaultin, koska
+            // puuttui switch case 0 tietokannan attribuutti koehenkiloNro
+            // (alkupe: jasen.getKysymys)
+            int i = 0;
+            for (Koehenkilo koehenkilo:koehenkilot.etsi("", -1)) {
+                System.out.println("Koehenkilo nro: " + i++);
+                koehenkilo.tulosta(System.out);
+            }
+            
+            new File("kokeilu.db").delete();
+        } catch ( TallennaException ex ) {
+            System.out.println(ex.getMessage());
+        }
+        
+        /*
+         * HUOM! ALKUPERAINEN testipaaohjelma ennen TIETOKANTAA
+         * 
         Koehenkilot koehenkilot = new Koehenkilot();
         
         try {
@@ -407,6 +617,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
         } catch (TallennaException e) {
             e.printStackTrace();
         }
+        */
 
     }
 

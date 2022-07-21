@@ -35,8 +35,8 @@ public class Koehenkilo {
      * Testien toimintaa varten sisältöjen vertailuun
      */
     @Override
-    public boolean equals(Object jasen) {
-        return this.toString().equals(jasen.toString());
+    public boolean equals(Object koehenkilo) {
+        return this.toString().equals(koehenkilo.toString());
     }
     
     
@@ -55,12 +55,12 @@ public class Koehenkilo {
      * @return koehenkilotaulun luontilauseke
      */
     public String annaLuontilauseke() {
-        return "CREATE TABLE Jasenet (" +
+        return "CREATE TABLE Koehenkilot (" +
                 "koehenkiloNro INTEGER PRIMARY KEY AUTOINCREMENT , " +
                 "nimi VARCHAR(100) NOT NULL, " +
                 "sukupuoli VARCHAR(10), " +
                 "ikaryhma VARCHAR(100)" +
-                  // "PRIMARY KEY (jasenID)" + 
+                  // "PRIMARY KEY (koehenkiloID)" + 
                   ")";
     }
     
@@ -142,8 +142,8 @@ public class Koehenkilo {
      */
     public void taytaEsimTiedot() {
         nimi = "k" + rand(100, 999);
-        sukupuoli = "tyhja";
-        ikaryhma = "tyhja";
+        sukupuoli = "f";
+        ikaryhma = "18-25";
     }
     
     
@@ -349,12 +349,14 @@ public class Koehenkilo {
      */
     public String anna(int k) {
         switch (k) {
-        case 1: return "" + nimi;
-        case 2: return "" + sukupuoli;
-        case 3: return "" + ikaryhma;
-        default: return "Tyhäm";
+            case 0: return "koehenkiloNro";
+            case 1: return "" + nimi;
+            case 2: return "" + sukupuoli;
+            case 3: return "" + ikaryhma;
+            default: return "Tyhäm";
         }
     }
+    
     
     /**
      * Eka kenttä joka on sopiva kysyttäväksi
