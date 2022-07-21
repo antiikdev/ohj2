@@ -68,6 +68,7 @@ public class Kysely {
      * Antaa koehenkilon kysymykset 
      * @param koehenkilo jonka kysymyksia haetaan
      * @return tietorakenne, jossa viitteet loydettyihin kysymyksiin
+     * @throws TallennaException jos ongelmia
      * @example
      * <pre name="test">
      *  #THROWS TallennaException
@@ -91,7 +92,7 @@ public class Kysely {
      *  // loydetyt.get(0) == kys1 === true;
      * </pre>
      */
-    public List<Kysymys> annaKysymykset(Koehenkilo koehenkilo) {
+    public List<Kysymys> annaKysymykset(Koehenkilo koehenkilo) throws TallennaException {
         return kysymykset.annaKysymykset(koehenkilo.getKoehenkiloNro());
     }
     

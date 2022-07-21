@@ -72,7 +72,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
 // ------------------------------------------------------------------
     
     private Kanta kanta;
-    private static Koehenkilo apujasen = new Koehenkilo();
+    private static Koehenkilo apukoehenkilo = new Koehenkilo();
 
     /**
      * Tarkistetaan etta kannassa koehenkiloiden tarvitsema taulu
@@ -92,7 +92,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
             try ( ResultSet taulu = meta.getTables(null, null, "Koehenkilot", null) ) {
                 if ( !taulu.next() ) {
                     // Luodaan Koehenkilot taulu
-                    try ( PreparedStatement sql = con.prepareStatement(apujasen.annaLuontilauseke()) ) {
+                    try ( PreparedStatement sql = con.prepareStatement(apukoehenkilo.annaLuontilauseke()) ) {
                         sql.execute();
                     }
                 }
@@ -178,8 +178,8 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      */
     public Collection<Koehenkilo> etsi(String hakuehto, int k) throws TallennaException {
         String ehto = hakuehto;
-        String kysymys = apujasen.anna(k);
-        if ( k < 0 ) { kysymys = apujasen.anna(0); ehto = ""; }
+        String kysymys = apukoehenkilo.anna(k);
+        if ( k < 0 ) { kysymys = apukoehenkilo.anna(0); ehto = ""; }
         // Avataan yhteys tietokantaan try .. with lohkossa.
         try ( Connection con = kanta.annaKantayhteys();
               PreparedStatement sql = con.prepareStatement("SELECT * FROM Koehenkilot WHERE " + kysymys + " LIKE ?") ) {
@@ -203,7 +203,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
 // ------------------------------------------------------------------
     
     /**
-     * HUOM! ALKUPERAINEN Koehenkilot muodostoja, ennen tietokantaa
+     * HUOM! ALKUPERAINEN Koehenkilot muodostoja
      * Luodaan alustava taulukko
      */ 
     public Koehenkilot() {

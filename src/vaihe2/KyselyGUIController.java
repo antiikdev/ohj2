@@ -63,7 +63,12 @@ public class KyselyGUIController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        alusta();
+        try {
+            alusta();
+        } catch (TallennaException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     
@@ -165,15 +170,23 @@ public class KyselyGUIController implements Initializable {
     /**
      * Muut alustukset ja Gridpanelin tilalle tekstikentta,
      * johon koehenkilon tiedot. Myos koehenkilolistan kuuntelijan alustus
+     * @throws TallennaException jos ongelmia (tietokanta)
      */
-    protected void alusta() {
+    protected void alusta() throws TallennaException {
 	// Poistettu HT7:ssa (HT6 origin):
         // 	panelKoehenkilo.setContent(areaKoehenkilo); 
         // 	areaKoehenkilo.setFont(new Font("Courier New", 12));
     	
 	// Clear ja kuuntelu nayttaa koehenkilo
         chooserKoehenkilot.clear(); 
-        chooserKoehenkilot.addSelectionListener(e -> naytaKoehenkilo());
+        chooserKoehenkilot.addSelectionListener(e -> {
+            try {
+                naytaKoehenkilo();
+            } catch (TallennaException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
         
     // Koehenkilon tietojen muutokset GUI:ssa:
         edits = new TextField[] {editNimi, editSukupuoli, editIkaryhma};
@@ -250,8 +263,9 @@ public class KyselyGUIController implements Initializable {
 	/**
      * Nayttaa koehenkiloiden kysymykset
      * @param koehenkilo joka naytetaan
+	 * @throws TallennaException jos ongelmia (tietokanta)
      */
-    private void naytaKysymykset(Koehenkilo koehenkilo) {
+    private void naytaKysymykset(Koehenkilo koehenkilo) throws TallennaException {
     	tableKysymykset.clear();
     	if (koehenkilo == null) return;
     	 
@@ -279,7 +293,7 @@ public class KyselyGUIController implements Initializable {
      * Naytetaan koehenkilo
      * HT7 MUOKATTU
      */
-    private void naytaKoehenkilo() {
+    private void naytaKoehenkilo() throws TallennaException {
         koehenkiloKohdalla = chooserKoehenkilot.getSelectedObject();
         if (koehenkiloKohdalla == null) return;
         /*// HT6, H7 poistettu
@@ -347,8 +361,9 @@ public class KyselyGUIController implements Initializable {
     
     /**
      * Poistetaan Kysymys/vastaus valitulta kohdalta Koehenkilolta
+     * @throws TallennaException jos ongelmia (tietokanta)
      */
-    private void poistaKysymysVastaus() {
+    private void poistaKysymysVastaus() throws TallennaException {
     	int rivi = tableKysymykset.getRowNr();
     	if ( rivi < 0) return;
     	Kysymys kysymys = tableKysymykset.getObject();

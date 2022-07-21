@@ -9,11 +9,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+
+import static kysely.Kanta.alustaKanta;
 
 /**
  * Kysymykset-luokka
@@ -23,11 +30,146 @@ import java.util.Scanner;
  */
 public class Kysymykset {
     
+    /*
+     * Alustuksia ja puhdistuksia testia varten
+     * @example
+     * <pre name="testJAVA">
+     * #import java.io.*;
+     * #import java.util.*;
+     * 
+     * private Kysymykset kyssarit;
+     * private String tiedNimi;
+     * private File ftied;
+     * 
+     * @Before
+     * public void alusta() throws TallennaException { 
+     *    tiedNimi = "testikysely";
+     *    ftied = new File(tiedNimi+".db");
+     *    ftied.delete();
+     *    kyssarit = new Kysymykset(tiedNimi);
+     * }   
+     *
+     * @After
+     * public void siivoa() {
+     *    ftied.delete();
+     * }   
+     * </pre>
+     */ 
+    
+    
     private String tiedostonPerusNimi = "";
     // private boolean muutettu = false;
     
     // Tietorakenteiden perintahierrarkiasta ylimmaisen Collection > Iterable
     private Collection<Kysymys> alkiot = new ArrayList<Kysymys>();
+    
+    
+// ------------------------------------------------------------------
+// --------------- Java ja tietokannat - vaihe 6 --------------------
+// ------------------------------------------------------------------
+ 
+    private static Kysymys apukysymys = new Kysymys();
+    private Kanta kanta;
+    
+    /**
+     * Tarkistetaan etta kannassa kysymysten tarvitsema taulu
+     * @param nimi tietokannan nimi
+     * @throws TallennaException jos jokin menee pieleen
+     */
+    public Kysymykset(String nimi) throws TallennaException {
+        kanta = alustaKanta(nimi);
+        try ( Connection con = kanta.annaKantayhteys() ) {
+            DatabaseMetaData meta = con.getMetaData();
+            try ( ResultSet taulu = meta.getTables(null, null, "Kysymykset", null) ) {
+                if ( !taulu.next() ) {
+                    // Luodaan kysymykset taulu
+                    try ( PreparedStatement sql = con.prepareStatement(apukysymys.annaLuontilauseke()) ) {
+                        sql.execute();
+                    }
+                }
+            }
+                
+        } catch ( SQLException e ) {
+            throw new TallennaException("Ongelmia tietokannan kanssa:" + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Listaan uusi kysymys kyselyyn
+     * @param kys lisattava kysymys 
+     * @throws TallennaException jos tietokantayhteyden kanssa ongelmia
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException
+     * </pre>
+     */
+    public void lisaa(Kysymys kys) throws TallennaException {
+        try ( Connection con = kanta.annaKantayhteys(); PreparedStatement sql = kys.annaLisayslauseke(con) ) {
+            sql.executeUpdate();
+            try ( ResultSet rs = sql.getGeneratedKeys() ) {
+                kys.tarkistaId(rs);
+             }   
+        } catch (SQLException e) {
+            throw new TallennaException("Ongelmia tietokannan kanssa:" + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Haetaan kaikki koehenkilo kysymykset
+     * @param tunnusnro koehenkilon tunnusnumero jolle kysymksia haetaan
+     * @return tietorakenne jossa viiteet loydetteyihin kysymyksiin
+     * @throws TallennaException jos kysymysten hakeminen tietokannasta epaonnistuu
+     * @example
+     * <pre name="test">
+     * #THROWS TallennaException
+     *  
+     *  Kysymys pitsi21 = new Kysymys(2); pitsi21.vastaaPitsinNyplays(2); kyssarit.lisaa(pitsi21);
+     *  Kysymys pitsi11 = new Kysymys(1); pitsi11.vastaaPitsinNyplays(1); kyssarit.lisaa(pitsi11);
+     *  Kysymys pitsi22 = new Kysymys(2); pitsi22.vastaaPitsinNyplays(2); kyssarit.lisaa(pitsi22);
+     *  Kysymys pitsi12 = new Kysymys(1); pitsi12.vastaaPitsinNyplays(1); kyssarit.lisaa(pitsi12);
+     *  Kysymys pitsi23 = new Kysymys(2); pitsi23.vastaaPitsinNyplays(2); kyssarit.lisaa(pitsi23);
+     *  Kysymys pitsi51 = new Kysymys(5); pitsi51.vastaaPitsinNyplays(5); kyssarit.lisaa(pitsi51);
+     *  
+     *  
+     *  List<Kysymys> loytyneet;
+     *  loytyneet = kyssarit.annaKysymykset(3);
+     *  loytyneet.size() === 0; 
+     *  loytyneet = kyssarit.annaKysymykset(1);
+     *  loytyneet.size() === 2; 
+     *  
+     *  loytyneet.get(0) === pitsi11;
+     *  loytyneet.get(1) === pitsi12;
+     *  
+     *  loytyneet = kyssarit.annaKysymykset(5);
+     *  loytyneet.size() === 1; 
+     *  loytyneet.get(0) === pitsi51;
+     * </pre> 
+     */
+    public List<Kysymys> annaKysymykset(int tunnusnro) throws TallennaException {
+        List<Kysymys> loydetyt = new ArrayList<Kysymys>();
+        
+        try ( Connection con = kanta.annaKantayhteys();
+              PreparedStatement sql = con.prepareStatement("SELECT * FROM Kysymykset WHERE koehenkiloNro = ?")
+                ) {
+            sql.setInt(1, tunnusnro);
+            try ( ResultSet tulokset = sql.executeQuery() )  {
+                while ( tulokset.next() ) {
+                    Kysymys kys = new Kysymys();
+                    kys.parse(tulokset);
+                    loydetyt.add(kys);
+                }
+            }
+            
+        } catch (SQLException e) {
+            throw new TallennaException("Ongelmia tietokannan kanssa:" + e.getMessage());
+        }
+        return loydetyt;
+    }
+    
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
     
     
     /**
@@ -39,18 +181,21 @@ public class Kysymykset {
     
     
     /**
+     * HUOM! TIETOKANTA-vaiheessa luotu uusi lisaa-metodi (tama on vanha)
      * Lisataan kysymys
      * @param kys lisattava kysymys
      * @throws TallennaException jos ongelmia
      */
+    /*
     public void lisaa(Kysymys kys) throws TallennaException {
         // Tietorakenteesta loytyy valmiiksi .add-metodi lisaamiseen
         alkiot.add(kys);
         // muutettu = true;
     }
-    
+    */
     
     /**
+     * HUOM! TIETOKANTA-vaiheessa tama metodi on korvattu uudella
      * Etsitaan koehenkilon kysymykset
      * @param koehenkiloN jolla haetaan
      * @return loydetyista lista
@@ -72,13 +217,14 @@ public class Kysymykset {
      *  loydetyt.get(0) == kys1 === true;
      * </pre>
      */
+    /*
     public List<Kysymys> annaKysymykset(int koehenkiloN) {
         ArrayList<Kysymys> loydetyt = new ArrayList<Kysymys>();
         for (Kysymys kys : alkiot)
             if ( kys.getKoehenkiloNro() == koehenkiloN ) loydetyt.add(kys);
         return loydetyt;
     }
-    
+    */
     
 // ---------------------------------------------------------------
 // ---------- HT7-vaihe (kysymysten nayttaminen ja muokkaus ------
@@ -121,7 +267,7 @@ public class Kysymykset {
     
     
     /**
-     * Poistaa koehenkilon valitun harrastuksen
+     * Poistaa koehenkilon valitun kysymykset
      * @param kysymys joka poistetaan
      */
     public void poista(Kysymys kysymys) {
@@ -255,6 +401,43 @@ public class Kysymykset {
      * @throws TallennaException jos ongelmia
      */
     public static void main(String[] args) throws TallennaException {
+        try {
+            Kysymykset kyssarit = new Kysymykset("kokeilu");
+            Kysymys pitsi1 = new Kysymys();
+            pitsi1.taytaEsimKysymysTiedot(2);
+            Kysymys pitsi2 = new Kysymys();
+            pitsi2.taytaEsimKysymysTiedot(1);
+            Kysymys pitsi3 = new Kysymys();
+            pitsi3.taytaEsimKysymysTiedot(2);
+            Kysymys pitsi4 = new Kysymys();
+            pitsi4.taytaEsimKysymysTiedot(2);
+
+            kyssarit.lisaa(pitsi1);
+            kyssarit.lisaa(pitsi2);
+            kyssarit.lisaa(pitsi3);
+            kyssarit.lisaa(pitsi2);
+            kyssarit.lisaa(pitsi4);
+            
+            System.out.println("============= Harrastukset testi =================");
+    
+            List<Kysymys> kysymykset2;
+            
+            kysymykset2 = kyssarit.annaKysymykset(2);
+            
+            for (Kysymys kys : kysymykset2) {
+                System.out.print(kys.getId() + " ");
+                kys.tulosta(System.out);
+            }
+            
+            new File("kokeilu.db").delete();
+        } catch (TallennaException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        
+        /*
+         * HUOM! ALKUPERAINEN testipaaohjelma ennen TIETOKANTAA
+         * 
         Kysymykset kysymykset = new Kysymykset();
         
         try {
@@ -294,6 +477,7 @@ public class Kysymykset {
         } catch (TallennaException e) {
             e.printStackTrace();
         }
+       */
     }
     
 }
