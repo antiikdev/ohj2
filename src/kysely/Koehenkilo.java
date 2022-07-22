@@ -350,9 +350,9 @@ public class Koehenkilo {
     public String anna(int k) {
         switch (k) {
             case 0: return "koehenkiloNro";
-            case 1: return "" + nimi;
-            case 2: return "" + sukupuoli;
-            case 3: return "" + ikaryhma;
+            case 1: return "nimi";
+            case 2: return "sukupuoli";
+            case 3: return "ikaryhma";
             default: return "Tyhäm";
         }
     }

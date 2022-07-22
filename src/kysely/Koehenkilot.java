@@ -141,8 +141,8 @@ public class Koehenkilot { // implements Iterable<Koehenkilo>
      * </pre>
      */
     public Collection<Koehenkilo> etsi(String hakuehto, int k) throws TallennaException {
-        String ehto = hakuehto;
-        String kysymys = apukoehenkilo.anna(k);
+        String ehto = hakuehto; // krand
+        String kysymys = apukoehenkilo.anna(k); // k = 1 = nimi
         if ( k < 0 ) { kysymys = apukoehenkilo.anna(0); ehto = ""; }
         // Avataan yhteys tietokantaan try .. with lohkossa.
         try ( Connection con = kanta.annaKantayhteys();
