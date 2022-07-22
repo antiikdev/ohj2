@@ -36,6 +36,7 @@ public class Koehenkilo {
      */
     @Override
     public boolean equals(Object koehenkilo) {
+        if (koehenkilo == null) return false;
         return this.toString().equals(koehenkilo.toString());
     }
     
@@ -45,8 +46,7 @@ public class Koehenkilo {
      */
     @Override
     public int hashCode() {
-        // Auto-generated method stub
-        return super.hashCode();
+        return koehenkiloNro;
     }
     
     

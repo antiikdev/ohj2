@@ -101,7 +101,7 @@ public class Kysymykset {
      * @throws TallennaException jos tietokantayhteyden kanssa ongelmia
      * @example
      * <pre name="test">
-     * #THROWS SailoException
+     * #THROWS TallennaException
      * </pre>
      */
     public void lisaa(Kysymys kys) throws TallennaException {
@@ -125,12 +125,12 @@ public class Kysymykset {
      * <pre name="test">
      * #THROWS TallennaException
      *  
-     *  Kysymys pitsi21 = new Kysymys(2); pitsi21.vastaaPitsinNyplays(2); kyssarit.lisaa(pitsi21);
-     *  Kysymys pitsi11 = new Kysymys(1); pitsi11.vastaaPitsinNyplays(1); kyssarit.lisaa(pitsi11);
-     *  Kysymys pitsi22 = new Kysymys(2); pitsi22.vastaaPitsinNyplays(2); kyssarit.lisaa(pitsi22);
-     *  Kysymys pitsi12 = new Kysymys(1); pitsi12.vastaaPitsinNyplays(1); kyssarit.lisaa(pitsi12);
-     *  Kysymys pitsi23 = new Kysymys(2); pitsi23.vastaaPitsinNyplays(2); kyssarit.lisaa(pitsi23);
-     *  Kysymys pitsi51 = new Kysymys(5); pitsi51.vastaaPitsinNyplays(5); kyssarit.lisaa(pitsi51);
+     *  Kysymys pitsi21 = new Kysymys(2); pitsi21.taytaEsimKysymysTiedot(2); kyssarit.lisaa(pitsi21);
+     *  Kysymys pitsi11 = new Kysymys(1); pitsi11.taytaEsimKysymysTiedot(1); kyssarit.lisaa(pitsi11);
+     *  Kysymys pitsi22 = new Kysymys(2); pitsi22.taytaEsimKysymysTiedot(2); kyssarit.lisaa(pitsi22);
+     *  Kysymys pitsi12 = new Kysymys(1); pitsi12.taytaEsimKysymysTiedot(1); kyssarit.lisaa(pitsi12);
+     *  Kysymys pitsi23 = new Kysymys(2); pitsi23.taytaEsimKysymysTiedot(2); kyssarit.lisaa(pitsi23);
+     *  Kysymys pitsi51 = new Kysymys(5); pitsi51.taytaEsimKysymysTiedot(5); kyssarit.lisaa(pitsi51);
      *  
      *  
      *  List<Kysymys> loytyneet;

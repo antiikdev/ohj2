@@ -36,8 +36,9 @@ public class Kysymys {
       * Testien toimintaa varten sisältöjen vertailuun
       */
      @Override
-     public boolean equals(Object jasen) {
-         return this.toString().equals(jasen.toString());
+     public boolean equals(Object obj) {
+         if ( kysymys == null ) return false;
+         return this.toString().equals(obj.toString());
      }
      
      
@@ -46,8 +47,7 @@ public class Kysymys {
       */
      @Override
      public int hashCode() {
-         // TODO Auto-generated method stub
-         return super.hashCode();
+         return id;
      }
      
      
