@@ -111,6 +111,32 @@ public class Koehenkilo {
         ikaryhma = tulokset.getString("ikaryhma");
     }
 
+    
+
+    /**
+     * Antaa koehenkilon päivityslausekkeen
+     * @param con tietokantayhteys
+     * @return koehenkilon päivityslauseke
+     * @throws SQLException Jos lausekkeen luonnissa on ongelmia
+     */
+    @SuppressWarnings("unused")
+    public PreparedStatement annaPaivityslauseke(Connection con)
+            throws SQLException {
+        return null;
+    }
+    
+    
+    /**
+     * Antaa koehenkilon poistolausekkeen
+     * @param con tietokantayhteys
+     * @return koehenkilon poistolauseke
+     * @throws SQLException Jos lausekkeen luonnissa on ongelmia
+     */
+    @SuppressWarnings("unused")
+    public PreparedStatement annaPoistolauseke(Connection con)
+            throws SQLException {
+        return null;
+    }
 
          
 // ------------------------------------------------------------------

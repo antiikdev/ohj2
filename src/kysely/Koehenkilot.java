@@ -133,10 +133,18 @@ public class Koehenkilot { // implements Iterable<Koehenkilo>
      * <pre name="test">
      * #THROWS TallennaException
      * Koehenkilo aku1 = new Koehenkilo(); aku1.taytaEsimTiedot(); 
+     * Koehenkilo aku2 = new Koehenkilo(); aku2.taytaEsimTiedot(); 
      * koehenkilot.lisaa(aku1);
+     * koehenkilot.lisaa(aku2);
+     * koehenkilot.lisaa(aku2);  #THROWS TallennaException  // ei samaa id:tä uudelleen!
      * Collection<Koehenkilo> loytyneet = koehenkilot.etsi(aku1.getNimi(), 1);
      * loytyneet.size() === 1;
-     *
+     * loytyneet.iterator().next() === aku1;
+     * loytyneet = koehenkilot.etsi(aku2.getNimi(), 1);
+     * loytyneet.size() === 1;
+     * loytyneet.iterator().next() === aku2;
+     * loytyneet = koehenkilot.etsi("", 15); #THROWS TallennaException
+     * 
      * ftied.delete();
      * </pre>
      */

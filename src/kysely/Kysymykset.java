@@ -142,10 +142,11 @@ public class Kysymykset {
      *  loytyneet.get(0) === pitsi11;
      *  loytyneet.get(1) === pitsi12;
      *  
+     *  
      *  loytyneet = kyssarit.annaKysymykset(5);
      *  loytyneet.size() === 1; 
      *  loytyneet.get(0) === pitsi51;
-     * </pre> 
+     * </pre>
      */
     public List<Kysymys> annaKysymykset(int tunnusnro) throws TallennaException {
         List<Kysymys> loydetyt = new ArrayList<Kysymys>();
@@ -199,23 +200,6 @@ public class Kysymykset {
      * Etsitaan koehenkilon kysymykset
      * @param koehenkiloN jolla haetaan
      * @return loydetyista lista
-     * @example
-     * <pre name="test">
-     *  #THROWS TallennaException
-     *  #import java.util.*;
-     *  Kysymykset kyssarit = new Kysymykset();
-     *  Kysymys kys1 = new Kysymys(1); kyssarit.lisaa(kys1);
-     *  Kysymys kys2 = new Kysymys(2); kyssarit.lisaa(kys2);
-     *  Kysymys kys3 = new Kysymys(1); kyssarit.lisaa(kys3);
-     *  Kysymys kys4 = new Kysymys(2); kyssarit.lisaa(kys4);
-     *  
-     *  List<Kysymys> loydetyt;
-     *  loydetyt = kyssarit.annaKysymykset(6);
-     *  loydetyt.size() === 0;
-     *  loydetyt = kyssarit.annaKysymykset(1);
-     *  loydetyt.size() === 2;
-     *  loydetyt.get(0) == kys1 === true;
-     * </pre>
      */
     /*
     public List<Kysymys> annaKysymykset(int koehenkiloN) {
@@ -320,27 +304,6 @@ public class Kysymykset {
     /**
      * Lukee koehenkilot tiedostosta
      * @throws TallennaException jos lukeminen epaonnistuu
-     * @example
-     * <pre name="test">
-     *  #THROWS TallennaException
-     * 	#import java.io.File;
-     * 	#import java.util.Iterator;
-     * 	Kysymykset kyssarit = new Kysymykset();
-     * 	Kysymys kys1 = new Kysymys(); kys1.taytaEsimKysymysTiedot(1);
-     * 	Kysymys kys2 = new Kysymys(); kys2.taytaEsimKysymysTiedot(2);
-     * 	Kysymys kys3 = new Kysymys(); kys3.taytaEsimKysymysTiedot(3);
-     * 	kyssarit.lueTiedostosta();
-     * 	kyssarit.lisaa(kys1);
-     * 	kyssarit.lisaa(kys2);
-     * 	kyssarit.lisaa(kys3);
-     * 	kyssarit.tallenna();
-     * 	kyssarit = new Kysymykset();
-     * 	kyssarit.lueTiedostosta();
-     * 	Iterator<Kysymys> i = kyssarit.iterator();
-     * 	i.next().toString() === kys1.toString();
-     * 	i.next().toString() === kys2.toString();
-     * 	i.next().toString() === kys3.toString();
-     * </pre>
      */
     public void lueTiedostosta() throws TallennaException {
         // throw new TallennaException("Ei osata viela lukea tiedostoa " + hakemisto);

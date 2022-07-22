@@ -37,7 +37,6 @@ public class Kysymys {
       */
      @Override
      public boolean equals(Object obj) {
-         if ( kysymys == null ) return false;
          return this.toString().equals(obj.toString());
      }
      
@@ -99,7 +98,7 @@ public class Kysymys {
          if ( !rs.next() ) return;
          int idVertaa = rs.getInt(1);
          if ( idVertaa == id ) return;
-         setId(id);
+         setId(idVertaa);
      }
      
      
@@ -114,6 +113,32 @@ public class Kysymys {
          kysymys = tulokset.getString("kysymys");
          vastausVaihtoehdot = tulokset.getString("vastausVaihtoehdot");
          vastaus = tulokset.getString("vastaus");
+     }
+     
+     
+     /**
+      * Antaa kysymyksen paivityslausekkeen
+      * @param con tietokantayhteys
+      * @return kysymyksen paivityslauseke
+      * @throws SQLException Jos lausekkeen luonnissa on ongelmia
+      */
+     @SuppressWarnings("unused")
+     public PreparedStatement annaPaivityslauseke(Connection con)
+             throws SQLException {
+         return null;
+     }
+     
+     
+     /**
+      * Antaa kysymyksen poistolausekkeen
+      * @param con tietokantayhteys
+      * @return kysymyksen poistolauseke
+      * @throws SQLException Jos lausekkeen luonnissa on ongelmia
+      */
+     @SuppressWarnings("unused")
+     public PreparedStatement annaPoistolauseke(Connection con)
+             throws SQLException {
+         return null;
      }
      
 // ------------------------------------------------------------------
@@ -242,8 +267,8 @@ public class Kysymys {
     
     /**
      * Kysymys-luokan otsikot per atribuutti tyyppi
-     * @param k mink� kent�n kysymys halutaan
-     * @return valitun kent�n kysymysteksti
+     * @param k minka kentan kysymys halutaan
+     * @return valitun kentan kysymysteksti
      */
     public String getKysymys(int k) {
         switch (k) {
@@ -272,13 +297,13 @@ public class Kysymys {
             case 0:
                 return "id"; // Tietokantavaiheessa muutettu
             case 1:
-                return "" + koehenkiloNro;
+                return "koehenkiloNro";
             case 2:
-                return kysymys;
+                return "kysymys";
             case 3:
-                return vastausVaihtoehdot;
+                return "vastausVaihtoehdot";
             case 4:
-                return vastaus;
+                return "vastaus";
             default:
                 return "???";
         	}
@@ -336,7 +361,8 @@ public class Kysymys {
     * @param nr asetettava id
     */
    private void setId(int nr) {
-       id = nr; 
+       id = nr;
+       if ( id >= seuraavaNro ) seuraavaNro = id + 1;
    }
    
    
@@ -374,17 +400,15 @@ public class Kysymys {
     * erotellaan |-merkilla merkkijonosta.
     * Huolehtii, etta seuraavaNro on suurempi kuin tuleva id-numero
     * @param rivi merkkijonorivi joka luetaan
-    * <pre name="test">
-    * Kysymys kys = new Kysymys();
-    * kys.parse("1|2|kissako|a) joo b) ei|a) joo");
-    * kys.anna(2) === "kissako";
-    * kys.anna(4) === "a) joo";
-    * </pre>
     */
    public void parse(String rivi) {
-       StringBuilder sb = new StringBuilder(rivi);
-       setId(Mjonot.erota(sb, '|', getId()));
-       setKoehenkiloNro(Mjonot.erota(sb, '|', getKoehenkiloNro()));
+       StringBuffer sb = new StringBuffer(rivi);
+       
+       // // db-vaiheen korjaukset:
+       setId(Mjonot.erota(sb, '|', getId())); // id = Mjonot...?
+       //setKoehenkiloNro(Mjonot.erota(sb, '|', getKoehenkiloNro())); 
+       koehenkiloNro =  Mjonot.erota(sb, '|', koehenkiloNro);
+               
        kysymys = Mjonot.erota(sb, '|', kysymys);
        vastausVaihtoehdot = Mjonot.erota(sb, '|', vastausVaihtoehdot);
        vastaus = Mjonot.erota(sb, '|', vastaus);

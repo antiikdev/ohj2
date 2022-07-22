@@ -15,13 +15,18 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    // kysely.test.KyselyTest.class, // error?
-    // kysely.test.KoehenkilotTest.class, // error?
+    // Poistettu tietokantavaiheessa:
+    // kysely.test.KyselyTest.class, 
+    
+    // Tietokantavaiheen testit:
+    kysely.test.KoehenkilotTest.class,
     kysely.test.KoehenkiloTest.class,
     kysely.test.KysymyksetTest.class,
     kysely.test.KysymysTest.class,
-    kysely.test.VastauksetTest.class,
-    kysely.test.VastausTest.class
+    
+    // Poistettu Vastaukset-luokat tietokantavaiheessa:
+    // kysely.test.VastauksetTest.class,
+    // kysely.test.VastausTest.class
 
 })
     
