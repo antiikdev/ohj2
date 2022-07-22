@@ -270,7 +270,7 @@ public class Kysymys {
     public String anna(int k) {
         switch (k) {
             case 0:
-                return "" + id;
+                return "id"; // Tietokantavaiheessa muutettu
             case 1:
                 return "" + koehenkiloNro;
             case 2:

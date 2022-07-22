@@ -142,9 +142,13 @@ public class KyselyGUIController implements Initializable {
         lisaaUusiKysymys();
     }
     
+    /*
+     * HUOM! POISTETTU tietokantavaiheessa
+     * 
     @FXML void handleUusiVastaus() {
         lisaaUusiVastaus();
     }
+    */
     
     @FXML void handleHakuehto() {
      //Dialogs.showMessageDialog("Haku ei viela toimi!");
@@ -461,6 +465,9 @@ public class KyselyGUIController implements Initializable {
         } catch (TallennaException ex) {
             Dialogs.showMessageDialog("Kysymysten hakemisessa ongelmia! " + ex.getMessage());
         }
+        /**
+         * HUOM! Poistettu tietokantavaiheessa
+         * 
         try {
             List<Vastaus> vastaukset = kysely.annaVastaukset(koehenkilo);
             for (Vastaus vas:vastaukset) 
@@ -468,6 +475,7 @@ public class KyselyGUIController implements Initializable {
         } catch (TallennaException ex) {
             Dialogs.showMessageDialog("Vastausten hakemisessa ongelmia! " + ex.getMessage());
         }
+        */
     }
     
     
@@ -489,8 +497,11 @@ public class KyselyGUIController implements Initializable {
     
     
     /** 
+     * HUOM! POISTETTU tietokantavaiheessa
+     * 
      * Lisaa uuden vastauksen koehenkilolle
      */ 
+    /*
     public void lisaaUusiVastaus() { 
         if ( koehenkiloKohdalla == null ) return;
         Vastaus vas = new Vastaus();
@@ -503,6 +514,7 @@ public class KyselyGUIController implements Initializable {
         }
         hae(koehenkiloKohdalla.getKoehenkiloNro());
     } 
+    */
     
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -517,6 +529,10 @@ public class KyselyGUIController implements Initializable {
      * @param knr koehenkilon numero, joka aktivoidaan haun jalkeen
      */
     private void hae (int knr) {
+        
+        /*
+         * HUOM! Tietokantavaiheessa poistettu osuus
+         *
         chooserKoehenkilot.clear();
         int knro = knr;
         if (knro <= 0)
@@ -530,14 +546,21 @@ public class KyselyGUIController implements Initializable {
         int k = cbKentat.getSelectedIndex() + apukoehenkilo.ekaKentta();
         String ehto = hakuehto.getText();
         if (ehto.indexOf('*') < 0) ehto = "*" + ehto + "*";
+        */
         
+        int k = cbKentat.getSelectionModel().getSelectedIndex();
+        String ehto = hakuehto.getText(); 
+        // Virheiden kasittely poistettu tasta kohtaa
+        
+        // Tasta alkaa tietokantavaiheessa korvattu osuus:
+        chooserKoehenkilot.clear();
+        int index = 0;
         Collection<Koehenkilo> koehenkilot;
         try {
             koehenkilot = kysely.etsi(ehto, k);
             int i = 0;
-            for (Koehenkilo koehenkilo:koehenkilot)
-            {
-                if (koehenkilo.getKoehenkiloNro() == knro) index = i;
+            for (Koehenkilo koehenkilo:koehenkilot) {
+                if (koehenkilo.getKoehenkiloNro() == knr) index = i;
                 chooserKoehenkilot.add(koehenkilo.getNimi(), koehenkilo);
                 i++;
             }
@@ -545,6 +568,7 @@ public class KyselyGUIController implements Initializable {
             Dialogs.showMessageDialog("Koehenkilön hakemisessa ongelmia! " + ex.getMessage());
         }
         
+        // Vanha poistettu osuus:
         //for (int i = 0; i < kysely.getKoehenkiloita(); i++) {
             //Koehenkilo koehenkilo = kysely.annaKoehenkilo(i);
             //if (koehenkilo.getKoehenkiloNro() == knro) index = i;
@@ -554,7 +578,7 @@ public class KyselyGUIController implements Initializable {
     }
     
     
-    //Vanha
+    // Poistettu vastausosuudet
     /** 
      * Lisaa uuden vastauksen koehenkilolle
      */ 

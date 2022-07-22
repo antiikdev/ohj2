@@ -61,6 +61,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
      * </pre>
      */ 
     
+    
     private static final int MAX_KOEHENKILOITA = 8;
     private int lkm = 0;
     private Koehenkilo[] alkiot;
@@ -201,6 +202,7 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
 
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
+
     
     /**
      * HUOM! ALKUPERAINEN Koehenkilot muodostoja
@@ -564,9 +566,9 @@ public class Koehenkilot implements Iterable<Koehenkilo> {
             System.out.println("=========== Koehenkilot testi =============");
 
             // Ongelma ratkaistu:
-            // .etsi (koehenkilo.anna) antoi defaultin, koska
-            // puuttui switch case 0 tietokannan attribuutti koehenkiloNro
-            // (alkupe: jasen.getKysymys)
+            // .etsi (koehenkilo.anna) antoi switch defaultin, koska
+            // puuttui case 0 tietokannan attribuutti koehenkiloNro
+            // (malli esim.: jasen.getKysymys)
             int i = 0;
             for (Koehenkilo koehenkilo:koehenkilot.etsi("", -1)) {
                 System.out.println("Koehenkilo nro: " + i++);

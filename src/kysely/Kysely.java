@@ -14,9 +14,74 @@ import java.util.List;
  * @author Doomslizer 
  */
 public class Kysely {
+    
+// ------------------------------------------------------------------
+// --------------- Java ja tietokannat - vaihe 6 --------------------
+// ------------------------------------------------------------------
+    
+    private Koehenkilot koehenkilot;
+    private Kysymykset kysymykset;
+    
+    /*
+     * Alustuksia ja puhdistuksia testia varten
+     * @example
+     * <pre name="testJAVA">
+     * #import java.io.*;
+     * #import java.util.*;
+     * 
+     * private Kysely kysely;
+     * private String tiedNimi;
+     * private File ftied;
+     * 
+     * @Before
+     * public void alusta() throws TallennaException { 
+     *    kysely = new Kysely();
+     *    tiedNimi = "testikysely";
+     *    ftied = new File(tiedNimi+".db");
+     *    ftied.delete();
+     *    kysely.lueTiedostosta(tiedNimi);
+     * }   
+     *
+     * @After
+     * public void siivoa() {
+     *    ftied.delete();
+     * }   
+     * </pre>
+     */ 
+    
+    /*
+     * Alkuperaiset attribuutit ennen tietokantoja
     private Koehenkilot koehenkilot = new Koehenkilot();
     private Kysymykset kysymykset = new Kysymykset();
     private Vastaukset vastaukset = new Vastaukset();
+    */
+    
+    
+    /**
+     * Luo tietokannan. Jos annettu tiedosto on jo olemassa ja
+     * sisaltaa tarvitut taulut, ei luoda mitaan
+     * @param nimi tietokannan nimi
+     * @throws TallennaException jos tietokannan luominen epaonnistuu
+     */
+    public void lueTiedostosta(String nimi) throws TallennaException {
+        koehenkilot = new Koehenkilot(nimi);
+        kysymykset = new  Kysymykset(nimi);
+    }
+    
+    
+    /**
+     * Tallentaa kyselyn tiedot tiedostoon.  
+     * Tassa tietokantaversiossa ei tarvitse tehda mitaan
+     * @throws TallennaException jos tallettamisessa ongelmia
+     */
+    public void tallenna() throws TallennaException {
+        return;
+    }
+    
+    
+// ------------------------------------------------------------------
+// ------------------------------------------------------------------
+    
     
     /**
      * Lisataan koehenkilo
@@ -37,14 +102,20 @@ public class Kysely {
         this.kysymykset.lisaa(kysymys);
     }
     
+    
     /**
+     * HUOM! EI KAYTOSSA (poistettu tietokantavaiheessa)
+     * 
      * Lisataan vastaus
      * @param vastaus lisattava vastaus
      * @throws TallennaException jos ongelmia
      */
+    /*
     public void lisaa(Vastaus vastaus) throws TallennaException {
         this.vastaukset.lisaa(vastaus);
     }
+    */
+    
     
     /**
      * @return koehenkiloiden lukumaaran
@@ -96,7 +167,10 @@ public class Kysely {
         return kysymykset.annaKysymykset(koehenkilo.getKoehenkiloNro());
     }
     
+    
     /**
+     * HUOM! EI KAYTOSSA (poistettu tietokantavaiheessa)
+     * 
      * Antaa koehenkilon vastaukset 
      * @param koehenkilo jonka vastauksia haetaan
      * @return tietorakenne, jossa viitteet loydettyihin vastauksiin
@@ -123,9 +197,11 @@ public class Kysely {
      *  // loydetyt.get(0) == kys1 === true;
      * </pre>
      */
+    /*
     public List<Vastaus> annaVastaukset(Koehenkilo koehenkilo) {
         return vastaukset.annaVastaukset(koehenkilo.getKoehenkiloNro());
     }
+    */
     
     
 // ---------------------------------------------------------------
@@ -188,9 +264,12 @@ public class Kysely {
 
     
     /**
+     * HUOM! Korvattu uudelle metodilla tietokantavaiheessa
+     * 
      * @param nimi tiedoston josta luetaan
      * @throws TallennaException virhe talteen
      */
+    /*
     public void lueTiedostosta(String nimi) throws TallennaException {
         // tyhjennetaan jos olemassa oleva
         koehenkilot = new Koehenkilot(); 
@@ -202,13 +281,17 @@ public class Kysely {
         kysymykset.lueTiedostosta();
         vastaukset.lueTiedostosta();
     }
+    */
     
     
     /**
+     * HUOM! EI KAYTOSSA, poistettu tietokantavaiheessa
+     * 
      * Tallentaa tiedot tiedostoon
      * Tallenttaa kyselyn tiedot tiedostoon.  
      * @throws TallennaException jos tallettamisessa ongelmia
      */
+    /*
     public void tallenna() throws TallennaException {
         // HT6: tallennetaan kaikki tietueet ja
         // otetaan kaikista talteen virheet jos niita loytyy
@@ -228,16 +311,19 @@ public class Kysely {
             virhe += ex.getMessage();
         }
         
+        // HUOM! EI KAYTOSSA (poistettu tietokantavaiheessa)
+
         try {
             vastaukset.tallenna();
         } catch ( TallennaException ex ) {
             virhe += ex.getMessage();
         }
-        
+      
         
         if ( !"".equals(virhe) ) throw new TallennaException(virhe);
-        
     }
+    */
+    
 // ---------------------------------------------------------------  
 // ---------------------------------------------------------------    
     
@@ -275,6 +361,48 @@ public class Kysely {
      * @param args ei kaytossa
      */
     public static void main(String[] args) {
+        try {
+            new File("kokeilu.db").delete();
+            Kysely kysely = new Kysely();
+            kysely.lueTiedostosta("kokeilu");
+
+            Koehenkilo aku1 = new Koehenkilo(), aku2 = new Koehenkilo();
+            aku1.taytaEsimTiedot();
+            aku2.taytaEsimTiedot();
+
+            kysely.lisaa(aku1);
+            kysely.lisaa(aku2);
+            int id1 = aku1.getKoehenkiloNro();
+            int id2 = aku2.getKoehenkiloNro();
+            Kysymys pitsi11 = new Kysymys(id1); pitsi11.taytaEsimKysymysTiedot(id1);  kysely.lisaa(pitsi11);
+            Kysymys pitsi12 = new Kysymys(id1); pitsi12.taytaEsimKysymysTiedot(id1);  kysely.lisaa(pitsi12);
+            Kysymys pitsi21 = new Kysymys(id2); pitsi21.taytaEsimKysymysTiedot(id2);  kysely.lisaa(pitsi21);
+            Kysymys pitsi22 = new Kysymys(id2); pitsi22.taytaEsimKysymysTiedot(id2);  kysely.lisaa(pitsi22);
+            Kysymys pitsi23 = new Kysymys(id2); pitsi23.taytaEsimKysymysTiedot(id2);  kysely.lisaa(pitsi23);
+
+            System.out.println("========= Kysely testi ===========");
+            
+            Collection<Koehenkilo> koehenkilot = kysely.etsi("", -1);
+            int i = 0;
+            for (Koehenkilo koehenkilo : koehenkilot) {
+                System.out.println("Koehenkilo paikassa: " + i);
+                koehenkilo.tulosta(System.out);
+                List<Kysymys> loytyneet = kysely.annaKysymykset(koehenkilo);
+                for (Kysymys kysymys : loytyneet)
+                    kysymys.tulosta(System.out);
+                i++;
+            }
+
+        } catch ( TallennaException ex ) {
+            System.out.println(ex.getMessage());
+        }
+        
+        new File("kokeilu.db").delete();
+        
+        /*
+         * HUOM! Alkuperainen paaohjelman testaus, joka
+         * poistettu tietokantavaiheessa
+         * 
         Kysely kysely = new Kysely();
         
         // Tiedostosta lukemisen testaus:
@@ -304,6 +432,7 @@ public class Kysely {
             Koehenkilo koehenkilo = kysely.annaKoehenkilo(i);
             koehenkilo.tulosta(System.out);
         }
+    */
     }
-
+        
 }

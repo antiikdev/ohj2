@@ -45,7 +45,7 @@ public class Koehenkilo {
      */
     @Override
     public int hashCode() {
-        // TODO Auto-generated method stub
+        // Auto-generated method stub
         return super.hashCode();
     }
     

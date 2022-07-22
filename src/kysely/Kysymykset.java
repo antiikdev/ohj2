@@ -418,7 +418,7 @@ public class Kysymykset {
             kyssarit.lisaa(pitsi2);
             kyssarit.lisaa(pitsi4);
             
-            System.out.println("============= Harrastukset testi =================");
+            System.out.println("========= Kysymykset testi ==========");
     
             List<Kysymys> kysymykset2;
             
